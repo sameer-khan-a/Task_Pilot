@@ -12,13 +12,13 @@ const Register = () => {
 
   // useNavigate hook for redirecting user after registration
   const navigate = useNavigate();
-  console.log(process.env.REACT_APP_BACKEND_URL);
+  console.log(process.env.VITE_BACKEND_URL);
 
   // Handler function for form submission
 const handleRegister = async (e) => {
   e.preventDefault();
   try {
-    await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+    await axios.post(`${process.env.VITE_BACKEND_URL}/api/auth/register`, {
       name,
       email,
       password,
