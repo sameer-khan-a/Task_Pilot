@@ -39,7 +39,7 @@ const app = express();
 
 // Enable CORS to allow cross-origin requests from frontend or other clients
 app.use(cors({
-  origin: "task-pilot-mu.vercel.app",
+  origin: "https://task-pilot-mu.vercel.app",  // add https://
   credentials: true
 }));
 
