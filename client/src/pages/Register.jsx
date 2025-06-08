@@ -18,7 +18,7 @@ const handleRegister = async (e) => {
   e.preventDefault();
 
   try {
-    await axios.post(`${process.env.CLIENT_URL}/api/auth/register`, {
+    await axios.post(`${process.env.BACKEND_URL}/api/auth/register`, {
       name,
       email,
       password,
