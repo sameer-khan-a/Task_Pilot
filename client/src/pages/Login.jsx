@@ -20,31 +20,32 @@ function Login() {
 
   // Function called when login form is submitted
   const login = async (e) => {
-    e.preventDefault(); // Prevent default form submission (page reload)
-    setError("");       // Clear previous errors
-    setLoading(true);   // Set loading state to disable button during request
+  e.preventDefault(); // Prevent default form submission (page reload)
+  setError("");       // Clear previous errors
+  setLoading(true);   // Set loading state to disable button during request
 
-    try {
-      // Send POST request to backend login endpoint with email and password
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+  try {
+    // Send POST request to backend login endpoint with email and password
+    const res = await axios.post(`${process.env.CLIENT_URL}/api/auth/login`, {
+      email,
+      password,
+    });
 
-      // Save the received token in localStorage for authenticated requests
-      localStorage.setItem("token", res.data.token);
+    // Save the received token in localStorage for authenticated requests
+    localStorage.setItem("token", res.data.token);
 
-      // Redirect to the homepage on successful login without reloading the page
-      navigate("/");
-    } catch (err) {
-      // If login fails, set error message to be displayed on UI
-      setError("Login failed. Please check your email and password.");
-      alert('User Login Failed');
-    } finally {
-      // Regardless of success or failure, loading is finished
-      setLoading(false);
-    }
-  };
+    // Redirect to the homepage on successful login without reloading the page
+    navigate("/");
+  } catch (err) {
+    // If login fails, set error message to be displayed on UI
+    setError("Login failed. Please check your email and password.");
+    alert('User Login Failed');
+  } finally {
+    // Regardless of success or failure, loading is finished
+    setLoading(false);
+  }
+};
+
 
   return (
     <>

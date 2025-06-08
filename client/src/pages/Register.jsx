@@ -14,22 +14,23 @@ const Register = () => {
   const navigate = useNavigate();
 
   // Handler function for form submission
-  const handleRegister = async (e) => {
-    e.preventDefault(); // Prevent default form submit behavior (page reload)
+const handleRegister = async (e) => {
+  e.preventDefault();
 
-    try {
-      // POST request to backend register API with email and password
-      // NOTE: You may want to also send the name if backend supports it
-      await axios.post('/api/auth/register', { email, password });
+  try {
+    await axios.post(`${process.env.CLIENT_URL}/api/auth/register`, {
+      name,
+      email,
+      password,
+    });
 
-      // On successful registration, redirect user to login page
-      navigate('/login');
-    } catch (err) {
-      // Log any registration error to the console for debugging
-      console.error('Registration error: ', err);
-      alert("User Registration Failed !!!");
-    }
-  };
+    navigate('/login');
+  } catch (err) {
+    console.error('Registration error: ', err);
+    alert('User Registration Failed !!!');
+  }
+};
+
 
   return (
     <>
