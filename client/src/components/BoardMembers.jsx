@@ -9,7 +9,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Fetch members from the API
   const fetchMembers = async () => {
     try {
-      const res = await axios.get(`/api/boardmembers/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -28,7 +28,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Handle removing a member from the board
   const removeMembers = async (userId) => {
     try {
-      await axios.delete(`/api/boardmembers/${boardId}/members/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}/members/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       fetchMembers(); // Refresh member list after removal

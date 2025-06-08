@@ -33,7 +33,7 @@ const BoardSelector = () => {
     const fetchBoards = async () => {
       try {
         // Get all boards for the user
-        const res = await axios.get('/api/boards', {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Auth token from localStorage
           },
@@ -45,7 +45,7 @@ const BoardSelector = () => {
         const boardsWithOwnerEmail = await Promise.all(
           boardsData.map(async (board) => {
             try {
-              const userRes = await axios.get(`/api/user/${board.createdBy}`, {
+              const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${board.createdBy}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -76,7 +76,7 @@ const BoardSelector = () => {
     try {
       // Create new board via API
       const res = await axios.post(
-        '/api/boards/create',
+        `${import.meta.env.VITE_BACKEND_URL}/api/boards/create`,
         { name: newBoardName },
         {
           headers: {
@@ -86,7 +86,7 @@ const BoardSelector = () => {
       );
 
       // Fetch owner's email for the new board
-      const userRes = await axios.get(`/api/user/${res.data.createdBy}`, {
+      const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${res.data.createdBy}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -106,7 +106,7 @@ const BoardSelector = () => {
     try {
       // Update board name via API
       const res = await axios.put(
-        `/api/boards/${boardId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`,
         { name: editedName },
         {
           headers: {
@@ -134,7 +134,7 @@ const BoardSelector = () => {
 
     try {
       // Delete board via API
-      await axios.delete(`/api/boards/${boardId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -154,7 +154,7 @@ const BoardSelector = () => {
 
     try {
       // Post to leave board API
-      await axios.post(`/api/boards/${boardId}/leave`, {}, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -175,7 +175,7 @@ const BoardSelector = () => {
 
     try {
       // Send invite via API
-      await axios.post(`/api/boards/${boardId}/invite`, { email }, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/invite`, { email }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

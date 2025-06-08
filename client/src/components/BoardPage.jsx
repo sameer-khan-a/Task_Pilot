@@ -14,7 +14,7 @@ const BoardPage = () => {
   // Fetch all tasks for the specific board
   const fetchTasks = async () => {
     try {
-      const res = await axios.get(`/api/tasks/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -36,7 +36,7 @@ const BoardPage = () => {
   // Fetch the board's metadata (e.g. name)
   const fetchBoardDetails = async () => {
     try {
-      const res = await axios.get(`/api/boards/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -57,7 +57,7 @@ const BoardPage = () => {
     if (newTitle && newStatus) {
       try {
         const res = await axios.put(
-          `/api/tasks/${task.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${task.id}`,
           { title: newTitle, description: newDesc, status: newStatus },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
@@ -74,7 +74,7 @@ const BoardPage = () => {
   const handleDeleteTask = async (taskId) => {
     if (!window.confirm('Are you sure?')) return;
     try {
-      await axios.delete(`/api/tasks/${taskId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setTasks(tasks.filter((t) => t.id !== taskId)); // Remove deleted task from list
@@ -96,7 +96,7 @@ const BoardPage = () => {
   const handleDragUpdate = async (taskId, newStatus) => {
     try {
       const res = await axios.put(
-        `/api/tasks/${taskId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

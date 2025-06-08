@@ -14,7 +14,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
     try {
       // POST request to create a new task
       const res = await axios.post(
-        '/api/tasks/create',
+        `${import.meta.env.VITE_BACKEND_URL}/api/tasks/create`,
         {
           title, // Task title from state
           description, // Task description from state

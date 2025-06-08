@@ -26,7 +26,7 @@ function Login() {
 
   try {
     // Send POST request to backend login endpoint with email and password
-    const res = await axios.post(`${process.env.CLIENT_URL}/api/auth/login`, {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
       email,
       password,
     });
