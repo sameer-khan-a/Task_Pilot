@@ -40,7 +40,7 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors({
-  origin: "https://task-pilot-2zla4jmzn-sameer-khan-as-projects-6af58ee7.vercel.app",
+  origin: "*",
   credentials: true,
 }));
 
