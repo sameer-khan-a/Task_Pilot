@@ -6,7 +6,11 @@ require('./models');
 
 // Import core modules
 const express = require('express');
-const cors = require('cors');
+
+const cors = require("cors");
+
+
+
 
 // Import database connection functions and Sequelize instance
 const { connectDB } = require('./config/db');
@@ -34,7 +38,10 @@ sequelize.sync({ alter: true })
 const app = express();
 
 // Enable CORS to allow cross-origin requests from frontend or other clients
-app.use(cors());
+app.use(cors({
+  origin: "task-pilot-mu.vercel.app",
+  credentials: true
+}));
 
 // Middleware to parse incoming requests with JSON payloads
 app.use(express.json());
