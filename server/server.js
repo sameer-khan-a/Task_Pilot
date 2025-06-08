@@ -7,7 +7,6 @@ require('./models');
 // Import core modules
 const express = require('express');
 
-const cors = require("cors");
 
 
 
