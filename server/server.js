@@ -38,10 +38,13 @@ sequelize.sync({ alter: true })
 const app = express();
 
 // Enable CORS to allow cross-origin requests from frontend or other clients
+const cors = require("cors");
+
 app.use(cors({
-  origin: "https://task-pilot-mu.vercel.app",  // add https://
-  credentials: true
+  origin: "https://task-pilot-2zla4jmzn-sameer-khan-as-projects-6af58ee7.vercel.app",
+  credentials: true,
 }));
+
 
 // Middleware to parse incoming requests with JSON payloads
 app.use(express.json());
