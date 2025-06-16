@@ -68,7 +68,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
     <div className="text-center">
       <h4 style={{ color: '#2c3e50' }}>👥 Board Members</h4>
 
-      <ul className="list-unstyled mb-0">
+      <ol className="mb-0">
         {displayedMembers.length === 0 ? (
           <p style={{ color: 'black', fontWeight: 'bold' }}>
             No members to show !!
@@ -100,7 +100,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
             </li>
           ))
         )}
-      </ul>
+      </ol>
 
       {/* Show toggle if there are more than 2 members */}
       {finalMembersToShow.length > 2 && (
