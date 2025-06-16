@@ -13,7 +13,7 @@ function Navbar2 () {
   const fetchInvitations = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/my`, {
         headers: {Authorization: `Bearer ${token}`},
       });
       setInvitations(res.data.invitations || []);
