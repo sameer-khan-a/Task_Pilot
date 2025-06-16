@@ -56,5 +56,5 @@ BoardInvitation.belongsTo(User, {foreignKey: 'invitedBy', as:'Inviter'});
 
 BoardInvitation.belongsTo(Board, {foreignKey: 'boardId'});
 // Export all models for use elsewhere in the app
-module.exports = { User, Board, Task, BoardMember };
+module.exports = { User, Board, Task, BoardMember, BoardInvitation };
 
