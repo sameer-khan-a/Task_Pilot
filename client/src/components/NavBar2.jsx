@@ -104,6 +104,15 @@ function Navbar2 ({fetchBoards}) {
               </button>
             </li>
           </ul>
+          {/* Navbar right side text */}
+          <span
+            className="navbar-text"
+            style={{color: 'rgb(200, 218, 219)', fontWeight: 'bold'}}
+          >
+            Where Productivity Takes Flight !
+          </span>
+        </div>
+      </div>
           
           <div className="d-flex align-items-center gap-3">
             <div className="dropdown position-relative">
@@ -149,15 +158,6 @@ function Navbar2 ({fetchBoards}) {
               
               </ul>
             </div>
-          {/* Navbar right side text */}
-          <span
-            className="navbar-text"
-            style={{color: 'rgb(200, 218, 219)', fontWeight: 'bold'}}
-          >
-            Where Productivity Takes Flight !
-          </span>
-        </div>
-      </div>
       </div>
     </nav>
   );
