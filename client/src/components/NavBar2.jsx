@@ -32,7 +32,7 @@ function Navbar2 () {
           headers: {Authorization: `Bearer ${token}`},
         }
       );
-      fetchInvitations();
+      setInvitations(prev => prev.filter(inv => inv.id !== invitationId));
     } catch(err){
       console.error(`Error on ${action}:`, err);
     }

@@ -94,6 +94,9 @@ exports.respondInvitation = async (req, res) => {
                 role: 'member',
             });
         }
+        if(response === 'rejected') {
+            await BoardInvitation.destroy({where: {id: invitationId}});
+        }
 
         res.status(200).json({message: `Invitation ${response}`});
     } catch(err){
