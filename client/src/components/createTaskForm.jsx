@@ -65,7 +65,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
           <input
             type="text"
             className="form-control w-100 rounded-5"
-            placeholder="task title"
+            placeholder="Task Title"
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
@@ -78,7 +78,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
             rows="5"
             cols="10"
             className="form-control w-100 h-100 rounded-5"
-            placeholder="task description"
+            placeholder="Task Description"
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);

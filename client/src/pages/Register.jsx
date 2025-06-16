@@ -101,7 +101,7 @@ const handleRegister = async (e) => {
               </label>
               <input
                 type="email"
-                placeholder="email"
+                placeholder="Email"
                 className="form-control rounded-5"
                 value={email} // Controlled input value
                 onChange={(e) => setEmail(e.target.value)} // Update state on change
