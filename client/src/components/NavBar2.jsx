@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function Navbar2 () {
   const [invitations, setInvitations] = useState([]);
   // Function to handle logout action
