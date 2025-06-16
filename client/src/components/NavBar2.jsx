@@ -119,8 +119,8 @@ function Navbar2 ({fetchBoards}) {
              
                 {invitations.length > 0 &&  (
                 <span
-                className="position-absolute start-50 translate-middle badge rounded-pill bg-danger"
-                style={{top: '5px', fontSize: '0.7rem'}}>
+                className="position-absolute translate-middle badge rounded-pill bg-danger"
+                style={{top: '5px',left: '5px', fontSize: '0.7rem'}}>
                   {invitations.length}
                 </span> 
                 )}
