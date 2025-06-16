@@ -138,7 +138,7 @@ function Navbar2 ({fetchBoards}) {
                       <span><strong>
                         {inv.Board.name}
                         </strong></span>
-                        <div className="d-flex justify-content-sm-end mt-1">
+                        <div className="d-flex justify-content-center mt-1">
 
                         <button className="btn btn-sm btn-success me-2" onClick={() => respondToInvitation(inv.id, 'accepted')}>Accept</button>
                         <button className="btn btn-sm btn-danger" onClick={() => respondToInvitation(inv.id, 'declined')}>Reject</button>
