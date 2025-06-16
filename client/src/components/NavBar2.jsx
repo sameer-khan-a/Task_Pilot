@@ -16,7 +16,7 @@ function Navbar2 () {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/my`, {
         headers: {Authorization: `Bearer ${token}`},
       });
-      setInvitations(res.data.invitations || []);
+      setInvitations(res.data);
     } catch(err) {
       console.error("Error fetching invitations: ", err);
     }
