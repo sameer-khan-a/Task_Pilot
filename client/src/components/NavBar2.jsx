@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-function Navbar2 () {
+
+function Navbar2 ({fetchBoards}) {
   const [invitations, setInvitations] = useState([]);
   // Function to handle logout action
   const handleLogout = () => {
@@ -33,6 +34,10 @@ function Navbar2 () {
         }
       );
       setInvitations(prev => prev.filter(inv => inv.id !== invitationId));
+      if(action==='accepted'){
+        fetchBoards();
+      }
+    
     } catch(err){
       console.error(`Error on ${action}:`, err);
     }

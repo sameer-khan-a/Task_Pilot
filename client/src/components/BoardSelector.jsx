@@ -29,8 +29,7 @@ const BoardSelector = () => {
   const [memberRefreshKeys, setMemberRefreshKeys] = useState({});
 
   // Fetch boards and their owner emails from API when component mounts
-  useEffect(() => {
-    const fetchBoards = async () => {
+   const fetchBoards = async () => {
       try {
         // Get all boards for the user
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
@@ -66,6 +65,7 @@ const BoardSelector = () => {
       }
     };
 
+  useEffect(() => {
     fetchBoards();
   }, []);
 
@@ -212,7 +212,7 @@ const BoardSelector = () => {
 
   return (
     <div className="container py-5">
-      <Navbar2 />
+      <Navbar2 fetchBoards={fetchBoards}/>
 
       <div
         className="container"
