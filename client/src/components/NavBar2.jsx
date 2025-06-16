@@ -1,4 +1,5 @@
 function Navbar2 () {
+  const [invitations, setInvitations] = useState([]);
   // Function to handle logout action
   const handleLogout = () => {
     // Remove the authentication token from localStorage
@@ -6,6 +7,37 @@ function Navbar2 () {
     // Redirect the user to the login page after logout
     window.location.href = '/login';
   };
+
+  const fetchInvitations = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.get('/api/invitations/my', {
+        headers: {Authorization: `Bearer ${token}`},
+      });
+      setInvitations(res.data);
+    } catch(err) {
+      console.error("Error fetching invitations: ", err);
+    }
+  };
+
+  const respondToInvitation = async (invitationId, action) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        '/api/invitations/${invitationId}/respond',
+        {action},
+        {
+          headers: {Authorization: `Bearer %{token}`},
+        }
+      );
+      fetchInvitations();
+    } catch(err){
+      console.error(`Error on ${action}:`, err);
+    }
+  };
+  useEffect(() => {
+    fetchInvitations();
+  }, []);
 
   return (
     <nav
@@ -65,7 +97,37 @@ function Navbar2 () {
               </button>
             </li>
           </ul>
+          
+          <div className="d-flex align-items-center gap-3">
+            <div className="dropdown">
+              <button
+              className="btn btn-outline-light dropdown-toggle"
+              type="button"
+              id="invitationDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              >
+                Invitations ({invitations.length})
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby = "invitationDropdown" style={{minWidth: '300px'}}>
+                {invitations.length===0 ? (
+                  <li className="dropdown-item text-muted">No Invitations</li>
+                ): (
+                  invitations.map(inv => (
+                    <li key={inv.id} className="dropdown-item d-flex flex-column">
+                      <span><strong>
+                        {inv.Board.name}
+                        </strong></span>
+                        <div className="d-flex justify-content-end mt-1">
 
+                        <button className="btn btn-sm btn-success me-2" onClick={() => respondToInvitation(inv.id, 'accept')}>Accept</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => respondToInvitation(inv.id, 'reject')}>Reject</button>
+                        </div>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
           {/* Navbar right side text */}
           <span
             className="navbar-text"
@@ -74,6 +136,7 @@ function Navbar2 () {
             Where Productivity Takes Flight !
           </span>
         </div>
+      </div>
       </div>
     </nav>
   );

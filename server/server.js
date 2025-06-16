@@ -19,7 +19,7 @@ const { sequelize } = require('./config/db');
 const boardRoutes = require('./routes/boardRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const boardMemberRoutes = require('./routes/boardMemberRoutes');
-
+const invitationRoutes = require('./routes/invitationRoutes');
 // Connect to the database (could be MongoDB or any other DB based on config)
 connectDB();
 
@@ -48,6 +48,7 @@ app.use(cors({
 // Middleware to parse incoming requests with JSON payloads
 app.use(express.json());
 
+app.use('/api/invitations', invitationRoutes);
 // Setup API routes with their respective route handlers
 
 // Routes for authentication like login, register, etc.

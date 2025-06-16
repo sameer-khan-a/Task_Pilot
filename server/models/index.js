@@ -2,7 +2,7 @@ const User = require('./User');
 const Board = require('./Board');
 const Task = require('./Task');
 const BoardMember = require('./BoardMember');
-
+const BoardInvitation = require('./BoardInvitation');
 // Define many-to-many relationship between Users and Boards through BoardMember join table
 // This sets up which boards a user is a member of (sharedBoards)
 User.belongsToMany(Board, {
@@ -50,5 +50,11 @@ Task.belongsTo(User, { foreignKey: 'userId' });
 // User can have many Tasks assigned or created by them
 User.hasMany(Task, { foreignKey: 'userId' });
 
+BoardInvitation.belongsTo(User, {foreignKey: 'invitedUserId', as: 'invitedUser'});
+
+BoardInvitation.belongsTo(User, {foreignKey: 'invitedBy', as:'inviter'});
+
+BoardInvitation.belongsTo(Board, {foreignKey: 'boardId'});
 // Export all models for use elsewhere in the app
 module.exports = { User, Board, Task, BoardMember };
+
