@@ -65,7 +65,7 @@ exports.getInvitations = async (req, res) => {
                 }
             ]
         });
-        res.status(200).json({invitations});
+        res.status(200).json(invitations);
     } catch(err){
         console.error('Fetch Invitations Error: ', err);
         res.status(500).json({message: 'Internal server error'});
