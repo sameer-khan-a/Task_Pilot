@@ -126,7 +126,7 @@ function Navbar2 ({fetchBoards}) {
                 )}
                 </button>
                   <ul
-                  className="dropdown-menu dropdown-menu-end"
+                  className="dropdown-menu dropdown-menu-start"
                   aria-labelledby="invitationDropdown"
                   style={{minWidth: '300px'}}
                   >
@@ -138,7 +138,7 @@ function Navbar2 ({fetchBoards}) {
                       <span><strong>
                         {inv.Board.name}
                         </strong></span>
-                        <div className="d-flex justify-content-center mt-1">
+                        <div className="d-flex justify-content-end mt-1">
 
                         <button className="btn btn-sm btn-success me-2" onClick={() => respondToInvitation(inv.id, 'accepted')}>Accept</button>
                         <button className="btn btn-sm btn-danger" onClick={() => respondToInvitation(inv.id, 'declined')}>Reject</button>
