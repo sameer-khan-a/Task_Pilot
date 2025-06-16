@@ -9,7 +9,7 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [confirmPassword, setConfirmPassword] = useState('');
   // useNavigate hook for redirecting user after registration
   const navigate = useNavigate();
   console.log(import.meta.env.VITE_BACKEND_URL);
@@ -17,6 +17,10 @@ const Register = () => {
   // Handler function for form submission
 const handleRegister = async (e) => {
   e.preventDefault();
+  if(password !== confirmPassword){
+    alert("Passwords do not match !");
+    return;
+  }
   try {
     await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
       name,
@@ -105,6 +109,19 @@ const handleRegister = async (e) => {
                 className="form-control rounded-5"
                 value={password} // Controlled input value
                 onChange={(e) => setPassword(e.target.value)} // Update state on change
+                required // Field is required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="form-control rounded-5"
+                value={password} // Controlled input value
+                onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
                 required // Field is required
               />
             </div>
