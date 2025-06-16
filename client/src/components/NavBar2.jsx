@@ -116,7 +116,6 @@ function Navbar2 ({fetchBoards}) {
               style={{background: "transparent", border: "none", color: "white"}}
               >
                 <i className="bi bi-bell fs-4"></i>
-                Invitations ({invitations.length})
              
                 {invitations.length > 0 &&  (
                 <span
