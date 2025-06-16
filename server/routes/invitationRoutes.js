@@ -3,8 +3,8 @@ const router = express.Router();
 const invitationController = require('../controllers/invitationController');
 const authMiddleware = require('../middleware/authMiddleware.js');
 
-router.post('/:boardId/invite', authenticate, invitationController.sendInvitation);
-router.get('/my', authenticate, invitationController.getInvitations);
-router.post('/:invitationId/respond', authenticate, invitationController.respondInvitation);
+router.post('/:boardId/invite', authMiddleware, invitationController.sendInvitation);
+router.get('/my', authMiddleware, invitationController.getInvitations);
+router.post('/:invitationId/respond', authMiddleware, invitationController.respondInvitation);
 
 module.exports = router;
