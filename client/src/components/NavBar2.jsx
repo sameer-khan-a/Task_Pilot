@@ -13,10 +13,10 @@ function Navbar2 () {
   const fetchInvitations = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('/api/invitations/my', {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/`, {
         headers: {Authorization: `Bearer ${token}`},
       });
-      setInvitations(res.data);
+      setInvitations(res.data.invitations || []);
     } catch(err) {
       console.error("Error fetching invitations: ", err);
     }
@@ -26,7 +26,7 @@ function Navbar2 () {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        '/api/invitations/${invitationId}/respond',
+        `${import.meta.env.VITE_BACKEND_URL}/api/invitations/${invitationId}/respond`,
         {action},
         {
           headers: {Authorization: `Bearer %{token}`},
