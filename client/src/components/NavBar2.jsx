@@ -27,9 +27,9 @@ function Navbar2 () {
       const token = localStorage.getItem('token');
       await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/invitations/${invitationId}/respond`,
-        {action},
+        {response: action},
         {
-          headers: {Authorization: `Bearer %{token}`},
+          headers: {Authorization: `Bearer ${token}`},
         }
       );
       fetchInvitations();
@@ -55,7 +55,7 @@ function Navbar2 () {
     >
       <div className="container">
         {/* Brand name */}
-        <a className="navbar-brand" style={{color: 'rgb(200, 218, 219)'}} href="#">
+        <a className="navbar-brand" style={{color: 'rgb(200, 218, 219)'}} href="/">
           TaskPilot
         </a>
 
