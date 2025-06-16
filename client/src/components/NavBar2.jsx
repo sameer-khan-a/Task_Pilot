@@ -122,8 +122,8 @@ function Navbar2 () {
                         </strong></span>
                         <div className="d-flex justify-content-end mt-1">
 
-                        <button className="btn btn-sm btn-success me-2" onClick={() => respondToInvitation(inv.id, 'accept')}>Accept</button>
-                        <button className="btn btn-sm btn-danger" onClick={() => respondToInvitation(inv.id, 'reject')}>Reject</button>
+                        <button className="btn btn-sm btn-success me-2" onClick={() => respondToInvitation(inv.id, 'accepted')}>Accept</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => respondToInvitation(inv.id, 'rejected')}>Reject</button>
                         </div>
                     </li>
                   ))
