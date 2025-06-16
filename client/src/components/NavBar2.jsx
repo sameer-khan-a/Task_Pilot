@@ -106,22 +106,36 @@ function Navbar2 ({fetchBoards}) {
           </ul>
           
           <div className="d-flex align-items-center gap-3">
-            <div className="dropdown">
+            <div className="dropdown position-relative">
               <button
-              className="btn btn-outline-light dropdown-toggle"
+              className="btn position-relative"
               type="button"
               id="invitationDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              style={{background: "transparent", border: "none", color: "white"}}
               >
+                <i className="bi bi-bell fs-4"></i>
                 Invitations ({invitations.length})
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby = "invitationDropdown" style={{minWidth: '300px'}}>
-                {invitations.length===0 ? (
-                  <li className="dropdown-item text-muted">No Invitations</li>
-                ): (
-                  invitations.map(inv => (
-                    <li key={inv.id} className="dropdown-item d-flex flex-column">
+             
+                {invitations.length > 0 &&  (
+                <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style={{fontSize: '0.7rem'}}>
+                  {invitations.length}
+                </span> 
+                )}
+                </button>
+                  <ul
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="invitationDropdown"
+                  style={{minWidth: '300px'}}
+                  >
+                  {invitations.length=== 0 ? (
+                    <li className="dropdown-item text-muted">No Invitations</li>
+                  ): (
+                    invitations.map(inv => (
+                      <li key={inv.id} className="dropdown-item d-flex flex-column">
                       <span><strong>
                         {inv.Board.name}
                         </strong></span>
@@ -133,6 +147,7 @@ function Navbar2 ({fetchBoards}) {
                     </li>
                   ))
                 )}
+              
               </ul>
             </div>
           {/* Navbar right side text */}
