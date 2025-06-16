@@ -17,6 +17,17 @@ const Register = () => {
   // Handler function for form submission
 const handleRegister = async (e) => {
   e.preventDefault();
+  const nameRegex = /^[A-Za-z\s]{2,}$/;
+  const passwordRegex = /^(?=.*[-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  if(!nameRegex.test(name)){
+    alert('Name should contain only letters and be at least 2 characters long.');
+    return;
+  }
+  if(!passwordRegex.test(password)){
+    alert('Password must be at least 8 characters long and include uppercase, lowercase, number and special character.');
+    return;
+  }
+  
   if(password !== confirmPassword){
     alert("Passwords do not match !");
     return;
