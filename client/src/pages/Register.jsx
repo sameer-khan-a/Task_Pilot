@@ -18,7 +18,7 @@ const Register = () => {
 const handleRegister = async (e) => {
   e.preventDefault();
   const nameRegex = /^[A-Za-z\s]{2,}$/;
-  const passwordRegex = /^(?=.*[-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
   if(!nameRegex.test(name)){
     alert('Name should contain only letters and be at least 2 characters long.');
     return;
