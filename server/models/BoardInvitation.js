@@ -1,4 +1,4 @@
-const {DataTypes} = require('sequlize');
+const {DataTypes} = require('sequelize');
 const {sequelize} = require('../config/db');
 
 const BoardInvitation = sequelize.define('BoardInvitation', {
