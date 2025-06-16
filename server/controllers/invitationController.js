@@ -94,7 +94,7 @@ exports.respondInvitation = async (req, res) => {
                 role: 'member',
             });
         }
-        if(response === 'rejected') {
+        if(response === 'declined') {
             await BoardInvitation.destroy({where: {id: invitationId}});
         }
 
