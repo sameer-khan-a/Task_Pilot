@@ -175,11 +175,12 @@ const BoardSelector = () => {
 
     try {
       // Send invite via API
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/invite`, { email }, {
-        headers: {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${boardId}/invite`, { email }, 
+        { email },{headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      });
+      }
+      );
 
       // Trigger refresh of board members component by updating refresh key
       setMemberRefreshKeys(prev => ({

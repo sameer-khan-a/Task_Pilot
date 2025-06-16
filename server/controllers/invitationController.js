@@ -50,7 +50,7 @@ exports.getInvitations = async (req, res) => {
     try {
         const invitations = await BoardInvitation.findAll({
             where: {
-                inviteedUserId: req.user.id,
+                invitedUserId: req.user.id,
                 status: 'pending',
             },
             include: [
@@ -95,7 +95,7 @@ exports.respondInvitation = async (req, res) => {
             });
         }
 
-        res.status(200).json({message: 'Invitation ${response'});
+        res.status(200).json({message: `Invitation ${response}`});
     } catch(err){
         console.error('Respond Invitation Error: ', err);
         res.status(500).json({message: "Internal server error"});

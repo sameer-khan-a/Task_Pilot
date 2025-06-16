@@ -52,7 +52,7 @@ User.hasMany(Task, { foreignKey: 'userId' });
 
 BoardInvitation.belongsTo(User, {foreignKey: 'invitedUserId', as: 'invitedUser'});
 
-BoardInvitation.belongsTo(User, {foreignKey: 'invitedBy', as:'inviter'});
+BoardInvitation.belongsTo(User, {foreignKey: 'invitedBy', as:'Inviter'});
 
 BoardInvitation.belongsTo(Board, {foreignKey: 'boardId'});
 // Export all models for use elsewhere in the app
