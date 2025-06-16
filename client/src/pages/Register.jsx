@@ -120,7 +120,7 @@ const handleRegister = async (e) => {
                 type="password"
                 placeholder="Confirm Password"
                 className="form-control rounded-5"
-                value={password} // Controlled input value
+                value={confirmPassword} // Controlled input value
                 onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
                 required // Field is required
               />
