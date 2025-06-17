@@ -52,7 +52,6 @@ const BoardPage = () => {
   const handleUpdateTask = async (task) => {
     const newTitle = prompt('New title:', task.title);
     const newDesc = prompt('New description:', task.description);
-    const newStatus = prompt('New status (todo/inprogress/done):', task.status);
 
     if (newTitle && newStatus) {
       try {
