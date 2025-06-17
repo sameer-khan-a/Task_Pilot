@@ -244,7 +244,7 @@ const BoardSelector = () => {
             className="btn"
             style={{
               display: 'flex',
-              background: "#2c3e50",
+              background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
               color: 'white',
               width: '120px',
               borderRadius: '50px',
