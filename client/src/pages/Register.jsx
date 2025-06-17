@@ -124,7 +124,6 @@ const handleRegister = async (e) => {
                 onChange={(e) => setPassword(e.target.value)} // Update state on change
                 required // Field is required
               />
-            </div>
             <div className="form-check mt-2">
               <input
               classname="form-check-input"
@@ -135,6 +134,7 @@ const handleRegister = async (e) => {
               <label className="form-check-label" htmlFor="showPassword">
                 Show Password
               </label>
+            </div>
             </div>
             <div className="mb-4">
               <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
