@@ -73,7 +73,7 @@ const handleRegister = async (e) => {
           }}
         >
           {/* Form heading */}
-          <h3 className="mb-4 text-center" style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',}}>
+          <h3 className="mb-4 text-center" style={{color: "linear-gradient(to bottom right, #2c3e50, #4a6b8c)"}}>
             Register
           </h3>
 
