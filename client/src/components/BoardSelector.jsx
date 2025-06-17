@@ -280,7 +280,7 @@ const BoardSelector = () => {
                     className="shadow text-center w-100"
                     style={{
                       color: 'black',
-                      background: "#f4f1de",
+                      background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                       minWidth: '200px',// increased for wider appearance
                       minHeight: '300px',
                       padding: '20px 60px',
@@ -314,7 +314,7 @@ const BoardSelector = () => {
                           <button
                             className="btn btn-md rounded-5"
                             style={{
-                              background: "#2c3e50",
+                              background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                               color: 'white',
                             }}
                             onClick={() => setEditingBoardId(null)}
@@ -349,7 +349,7 @@ const BoardSelector = () => {
                           <button
                             className="btn btn-md rounded-5"
                             style={{
-                              backgroundColor: "#2c3e50",
+                              background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                               color: 'white',
                             }}
                             onClick={() => gotoBoard(board.id)}
@@ -362,7 +362,7 @@ const BoardSelector = () => {
                             <button
                               className="btn btn-md rounded-4"
                               style={{
-                                backgroundColor: "#2c3e50",
+                                background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                                 color: 'white',
                               }}
                               onClick={() => {
@@ -379,7 +379,7 @@ const BoardSelector = () => {
                             <button
                               className="btn btn-md rounded-4"
                               style={{
-                                backgroundColor: "#2c3e50",
+                                background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                                 color: 'white',
                               }}
                               onClick={() => handleDelete(board.id)}
@@ -390,7 +390,7 @@ const BoardSelector = () => {
                             <button
                               className="btn btn-md rounded-4"
                               style={{
-                                backgroundColor: "#2c3e50",
+                                background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                                 color: 'white',
                               }}
                               onClick={() => handleLeaveBoard(board.id)}
@@ -422,7 +422,7 @@ const BoardSelector = () => {
                             />
                             <button
                               className='btn btn-md rounded-4'
-                              style={{backgroundColor: "#2c3e50", color: 'white'}}
+                              style={{background: 'linear-gradient(to bottom, #3a5069, #1a242f)', color: 'white'}}
                               onClick={() => handleInvite(board.id)}
                             >
                               Invite
