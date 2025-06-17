@@ -50,7 +50,7 @@ function Navbar2 ({fetchBoards}) {
     <nav
       className="navbar navbar-expand-lg navbar-dark fixed-top shadow"
       style={{
-        backgroundColor: "#2c3e50",
+        background: 'linear-gradient(to bottom right, #2c3e50, #212f3d)',
         backgroundSize: 'cover',
         zIndex: 1000,
         paddingLeft: '1rem',
