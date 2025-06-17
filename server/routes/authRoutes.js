@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import controller functions for authentication
-const { register, login } = require('../controllers/authController');
+const { register, login, resetPassword } = require('../controllers/authController');
 
 // @route   POST /api/auth/register
 // @desc    Register a new user
@@ -17,5 +17,6 @@ router.post('/register', register);
 // @access  Public
 router.post('/login', login);
 
+router.post('/reset-password', resetPassword);
 // Export the router so it can be used in the main server file
 module.exports = router;

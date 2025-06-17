@@ -78,3 +78,20 @@ exports.getUserData = async (req, res) => {
         res.status(500).json({ msg: "Server error" });
     }
 };
+exports.resetPassword = async(req, res) => {
+    const {email, password} = req.body;
+    try {
+        const user = await User.findOne({where: {email}});
+        if(!user) {
+            return res.status(404).json({msg: "Email not found"});
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({msg: "Password updated successfully"});
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({msg: "Server error"});
+    }
+};

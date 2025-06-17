@@ -17,7 +17,11 @@ function Login() {
 
   // useNavigate hook to programmatically navigate without page reload
   const navigate = useNavigate();
-
+   
+  const [showPopup, setShowPopup] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [forgotMessage, setForgotMessage] = useState("");
   // Function called when login form is submitted
   const login = async (e) => {
   e.preventDefault(); // Prevent default form submission (page reload)
@@ -46,6 +50,19 @@ function Login() {
   }
 };
 
+const handlePasswordReset = async (e) => {
+  e.preventDefault();
+  setForgotMessage("");
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
+      email: forgotEmail,
+      password: newPassword,
+    });
+    setForgotMessage("Password reset successfully");
+  } catch(err){
+    setForgotMessage("Failed to reset. Email may not exist");
+  }
+}
 
   return (
     <>
@@ -132,8 +149,58 @@ function Login() {
               </button>
             </div>
           </form>
+          <p
+          className="text-center mt-3"
+          style={{cursor: "pointer", color: "#2c3e50", textDecoration: 'none'}}
+          onClick={() => setShowPopup(true)}>
+            Forgot Password?
+          </p>
         </div>
       </div>
+      {showPopup && (
+        <div
+        className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+        style={{backgroundColor: "rgba(0,0,0,0.6)", zIndex: 9999}}
+      >
+        <div className="card p-4 rounded-4" style={{width: "350px", background: "#fff"}}>
+          <h4 className="mb-3 text-center">Reset Password</h4>
+          <form onSubmit={(handlePasswordReset)}>
+            <div className="mb-3">
+              <label>Email</label>
+              <input
+              type="email"
+              className="form-control"
+              value={forgotEmail}
+              onChange={(e) => setForgotEmail(e.target.value)}
+              required
+              />
+              </div>
+              <div className="mb-3">
+                <label>New Password</label>
+                <input
+                type="password"
+                className="form-control"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required 
+                />
+
+            </div>
+            <button type="submit" className="btn btn-primary w-100 mb-2">
+              Reset
+            </button>
+            <button 
+            type="button"
+            className="btn btn-secondary w-100"
+            onClick={() => setShowPopup(false)}
+            >
+              Cancel
+            </button>
+            <p className="text-success mt-2">{forgotMessage}</p>
+          </form>
+        </div>
+      </div>
+      )}
 
       {/* Footer component */}
       <Footer />
