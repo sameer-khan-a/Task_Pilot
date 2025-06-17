@@ -139,7 +139,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                     {task.description || 'No Description to Show !'}
                                   </p>
                                   {/* Toggle "Read more"/"Show less" */}
-                                  {task.description && task.description.length > 65 && (
+                                  {task.description && task.description.length > 55 && (
                                     <button
                                       onClick={() => toggleExpanded(task.id)}
                                       style={{
