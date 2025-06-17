@@ -239,7 +239,7 @@ const BoardSelector = () => {
             value={newBoardName}
             onChange={(e) => setNewBoardName(e.target.value)}
             placeholder="New board name"
-            style={{maxWidth: '100px'}}
+            style={{maxWidth: '150px'}}
           />
           <button
             className="btn"
