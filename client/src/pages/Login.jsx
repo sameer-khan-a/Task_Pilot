@@ -88,7 +88,7 @@ function Login() {
             <div className="mb-3 ">
               <label className="form-label fw-bold" style={{color: 'black'}}>Password</label>
               <input
-                type="password"
+                type={showPassword? "text":"password"}
                 className="form-control rounded-5"
                 value={password}                     // Controlled input value
                 onChange={(e) => setPassword(e.target.value)} // Update state on change
