@@ -239,7 +239,7 @@ const BoardSelector = () => {
             value={newBoardName}
             onChange={(e) => setNewBoardName(e.target.value)}
             placeholder="New board name"
-            style={{maxWidth: '150px'}}
+            style={{maxWidth: '200px'}}
           />
           <button
             className="btn"
@@ -414,7 +414,7 @@ const BoardSelector = () => {
                         {isOwner && (
                           <div className='d-flex flex-column align-items-center mt-2'>
                             <input
-                              style={{width: '150%'}}
+                              style={{maxWidth: '200px'}}
                               type='email'
                               className="form-control mb-2 rounded-4"
                               placeholder="Add member"
