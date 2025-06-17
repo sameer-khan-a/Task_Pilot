@@ -143,7 +143,7 @@ const handleRegister = async (e) => {
                 <button
                   className="btn btn-md w-50 mx-auto rounded-5"
                   style={{
-                    backgroundColor: "#2c3e50",
+                    background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                      color: 'rgb(200, 218, 219)',
                   }}
                   type="submit" // Make sure it's a submit button
