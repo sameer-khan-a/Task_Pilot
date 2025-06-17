@@ -64,7 +64,7 @@ function Login() {
           }}
         >
           {/* Heading */}
-          <h2 className="mb-4 text-center" style={{ color: "linear-gradient(to bottom right, #2c3e50, #4a6b8c)'", }}>
+          <h2 className="mb-4 text-center" style={{ color: "#2c3e50" }}>
             Login
           </h2>
 
