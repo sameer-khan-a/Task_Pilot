@@ -124,6 +124,19 @@ const handleRegister = async (e) => {
                 onChange={(e) => setPassword(e.target.value)} // Update state on change
                 required // Field is required
               />
+            </div>
+            <div className="mb-4">
+              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
+                Confirm Password
+              </label>
+              <input
+                type={showPassword? "text":"password"}
+                placeholder="Confirm Password"
+                className="form-control rounded-5"
+                value={confirmPassword} // Controlled input value
+                onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
+                required // Field is required
+              />
             <div className="form-check mt-2">
               <input
               classname="form-check-input"
@@ -135,19 +148,6 @@ const handleRegister = async (e) => {
                 Show Password
               </label>
             </div>
-            </div>
-            <div className="mb-4">
-              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                className="form-control rounded-5"
-                value={confirmPassword} // Controlled input value
-                onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
-                required // Field is required
-              />
             </div>
 
             {/* Submit button, centered */}
