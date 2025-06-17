@@ -4,7 +4,7 @@ function Navbar1() {
     <nav
       className="navbar navbar-expand-lg navbar-dark fixed-top shadow"
       style={{
-        background: 'linear-gradient(to bottom right, #2c3e50, #212f3d)',
+         background: 'linear-gradient(to bottom right, #2c3e50, #34495e)',
         backgroundSize: 'cover',
         zIndex: 1000,
         paddingLeft: '1rem',
