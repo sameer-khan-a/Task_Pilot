@@ -159,8 +159,8 @@ const handlePasswordReset = async (e) => {
       </div>
       {showPopup && (
         <div
-        className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-        style={{ zIndex: 9999}}
+        className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center content-wrapper blur"
+        style={{  zIndex: 9999}}
       >
         <div className="card p-4 rounded-4" style={{width: "350px", background: "linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)"}}>
           <h4 className="mb-3 text-center" style={{color: "#2c3e50", }}>Reset Password</h4>
