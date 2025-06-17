@@ -82,9 +82,10 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
                 <>
                 <br />
                 <button
-                  className="btn btn-sm btn-danger"
+                  className="btn btn-sm"
                   onClick={() => removeMembers(member.id)}
                   style={{
+                    background: 'linear-gradient(to bottom right, #e74c3c, #c0392b)',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
