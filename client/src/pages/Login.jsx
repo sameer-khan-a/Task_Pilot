@@ -8,7 +8,7 @@ function Login() {
   // State variables to store email and password inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [showPassword, setShowPassword] = useState(false);
   // State for error messages to display if login fails
   const [error, setError] = useState("");
   
@@ -96,6 +96,17 @@ function Login() {
                 required                            // HTML5 form validation
                 autoComplete="current-password"    // Browser autofill hint
               />
+               <div className="form-check mt-2">
+              <input
+              classname="form-check-input"
+              type="checkbox"
+              id="showPassword"
+              onChange={() => setShowPassword(!showPassword)}
+              />
+              <label className="form-check-label mx-1" htmlFor="showPassword">
+                Show Password
+              </label>
+            </div>
             </div>
 
             {/* Display error message if login fails */}
