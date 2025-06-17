@@ -191,7 +191,7 @@ const handlePasswordReset = async (e) => {
             </button>
             <button 
             type="button"
-            style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c), color: "white"'}}
+            style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)', color: 'whtie'}}
             className="btn w-100"
             onClick={() => setShowPopup(false)}
             >
