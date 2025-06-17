@@ -115,7 +115,7 @@ function Navbar2 ({fetchBoards}) {
               aria-expanded="false"
               style={{background: "transparent", border: "none", color: "white"}}
               >
-                <i className="bi bi-bell fs-6"></i>
+                <i className="bi bi-bell fs-5"></i>
              
                 {invitations.length > 0 &&  (
                 <span
