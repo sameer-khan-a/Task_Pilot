@@ -131,7 +131,7 @@ const handleRegister = async (e) => {
               id="showPassword"
               onChange={() => setShowPassword(!showPassword)}
               />
-              <label className="form-check-label mx-3" htmlFor="showPassword">
+              <label className="form-check-label mx-1" htmlFor="showPassword">
                 Show Password
               </label>
             </div>
