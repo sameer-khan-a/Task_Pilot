@@ -90,7 +90,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
             type="submit"
             className="btn btn-md"
             style={{
-              background: "#2c3e50",
+              background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
               color: 'white',
               borderRadius: '50px'
             }}

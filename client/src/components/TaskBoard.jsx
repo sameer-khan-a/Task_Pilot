@@ -186,7 +186,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                     flex: '1 1 40%',
                                     minWidth: '100px',
                                     maxWidth: '100px',
-                                    background: '#2c3e50',
+                                    background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                     color: 'white',
                                     borderRadius: '40%',
                                   }}
@@ -204,7 +204,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                     flex: '1 1 40%',
                                     minWidth: '80px',
                                     maxWidth: '100px',
-                                    background: '#2c3e50',
+                                    background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                     color: 'white',
                                     borderRadius: '40%',
                                   }}
