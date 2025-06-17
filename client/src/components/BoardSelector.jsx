@@ -246,7 +246,7 @@ const BoardSelector = () => {
               display: 'flex',
               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
               color: 'white',
-              width: '120px',
+              maxWidth: '100px',
               borderRadius: '50px',
             }}
             onClick={handleCreateBoard}
