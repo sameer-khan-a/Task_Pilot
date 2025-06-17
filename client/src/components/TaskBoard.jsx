@@ -83,7 +83,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                               {...provided.dragHandleProps}
                               style={{
                                 ...dragStyle,
-                                background: '#f4f1de',
+                                background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                                 transition: 'transform 0.25s ease, opacity 0.25s ease',
                                 opacity: snapshot.isDragging ? 0.8 : 1,
                                 transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
