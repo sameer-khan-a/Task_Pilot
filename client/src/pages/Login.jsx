@@ -57,7 +57,7 @@ function Login() {
         <div
           className="card shadow p-4 m-5 w-100 rounded-5"
           style={{
-            background: "#f4f1de",
+            background: 'linear-gradient(to bottom, #FAFAFA, #F0E68C)',
             maxWidth: "500px",
             boxSizing: "border-box",
             width: "100%",
