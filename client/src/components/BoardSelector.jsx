@@ -304,7 +304,7 @@ const BoardSelector = () => {
                           <button
                             className="btn btn-md rounded-5"
                             style={{
-                              background: "#2c3e50",
+                              background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                               color: 'white',
                             }}
                             onClick={() => handleUpdate(board.id)}
