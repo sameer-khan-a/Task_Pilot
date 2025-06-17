@@ -10,6 +10,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   // useNavigate hook for redirecting user after registration
   const navigate = useNavigate();
   console.log(import.meta.env.VITE_BACKEND_URL);
@@ -48,6 +49,7 @@ const handleRegister = async (e) => {
 
 
   return (
+    
     <>
       <div
         id="reg"
@@ -115,13 +117,24 @@ const handleRegister = async (e) => {
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword? "text":"password"}
                 placeholder="Password"
                 className="form-control rounded-5"
                 value={password} // Controlled input value
                 onChange={(e) => setPassword(e.target.value)} // Update state on change
                 required // Field is required
               />
+            </div>
+            <div className="form-check mt-2">
+              <input
+              classname="form-check-input"
+              type="checkbox"
+              id="showPassword"
+              onChange={() => setShowPassword(!showPassword)}
+              />
+              <label className="form-check-label" htmlFor="showPassword">
+                Show Password
+              </label>
             </div>
             <div className="mb-4">
               <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
