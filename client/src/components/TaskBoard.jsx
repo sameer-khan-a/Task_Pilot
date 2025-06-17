@@ -60,7 +60,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                     color: 'white',
                   }}
                 >
-                  <h3 style={{ textAlign: 'center', fontWeight: 'normal' }}>{status.toUpperCase()}</h3>
+                  <h3 style={{ textAlign: 'center', fontWeight: 'normal' }}>{status === 'inprogress' ? 'LIVE' : status.toUpperCase()}</h3>
 
                   {/* Display message when no tasks are present */}
                   {columns[status].length === 0 ? (
