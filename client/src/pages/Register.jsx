@@ -112,7 +112,7 @@ const handleRegister = async (e) => {
             </div>
 
             {/* Password input */}
-            <div className="mb-4">
+            <div className="mb-3">
               <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
                 Password
               </label>
@@ -125,7 +125,7 @@ const handleRegister = async (e) => {
                 required // Field is required
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
                 Confirm Password
               </label>
