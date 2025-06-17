@@ -68,7 +68,7 @@ const handleRegister = async (e) => {
           className="card shadow p-4 m-4 rounded-5"
           style={{
             width: '110%',
-            background: 'linear-gradient(to bottom, #FAFAFA, #F0E68C)',
+            background: 'linear-gradient(to bottom,rgb(243, 178, 178), #F0E68C)',
             maxWidth: '700px',
           }}
         >
