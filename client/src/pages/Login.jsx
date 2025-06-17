@@ -196,7 +196,7 @@ const handlePasswordReset = async (e) => {
             >
               Cancel
             </button>
-            <p className="text-info mt-2">{forgotMessage}</p>
+            {alert(forgotMessage)}
           </form>
         </div>
       </div>
