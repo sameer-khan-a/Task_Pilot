@@ -235,7 +235,8 @@ const BoardSelector = () => {
 
           <input
             type="text"
-            className="form-control w-50 rounded-4 text-center"
+            className="form-control rounded-4 text-center"
+            style={{maxWidth: '100px'}}
             value={newBoardName}
             onChange={(e) => setNewBoardName(e.target.value)}
             placeholder="New board name"
@@ -246,7 +247,7 @@ const BoardSelector = () => {
               display: 'flex',
               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
               color: 'white',
-              maxWidth: '100px',
+              width: '120px',
               borderRadius: '50px',
             }}
             onClick={handleCreateBoard}
