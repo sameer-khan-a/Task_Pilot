@@ -160,10 +160,10 @@ const handlePasswordReset = async (e) => {
       {showPopup && (
         <div
         className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-        style={{backgroundColor: "rgba(0,0,0,0.6)", zIndex: 9999}}
+        style={{background: "linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)", zIndex: 9999}}
       >
         <div className="card p-4 rounded-4" style={{width: "350px", background: "#fff"}}>
-          <h4 className="mb-3 text-center">Reset Password</h4>
+          <h4 className="mb-3 text-center" style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)'}}>Reset Password</h4>
           <form onSubmit={(handlePasswordReset)}>
             <div className="mb-3">
               <label>Email</label>
@@ -186,12 +186,13 @@ const handlePasswordReset = async (e) => {
                 />
 
             </div>
-            <button type="submit" className="btn btn-primary w-100 mb-2">
+            <button type="submit" className="btn w-100 mb-2" style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)'}}>
               Reset
             </button>
             <button 
             type="button"
-            className="btn btn-secondary w-100"
+            style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)'}}
+            className="btn w-100"
             onClick={() => setShowPopup(false)}
             >
               Cancel
