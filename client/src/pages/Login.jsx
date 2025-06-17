@@ -160,10 +160,10 @@ const handlePasswordReset = async (e) => {
       {showPopup && (
         <div
         className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-        style={{background: "linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)", zIndex: 9999}}
+        style={{ zIndex: 9999}}
       >
         <div className="card p-4 rounded-4" style={{width: "350px", background: "#fff"}}>
-          <h4 className="mb-3 text-center" style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)'}}>Reset Password</h4>
+          <h4 className="mb-3 text-center" style={{color: "#2c3e50", background: "linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)"}}>Reset Password</h4>
           <form onSubmit={(handlePasswordReset)}>
             <div className="mb-3">
               <label>Email</label>
