@@ -1,107 +1,94 @@
-TaskMaster Pro - GitHub README
-Introduction
-A collaborative, full-stack task management application built with the MERN stack and PostgreSQL. Manage boards, share tasks, receive invitations, and reset passwords—all in a seamless, modern UI.
-Features
-•	🔐 User authentication (JWT-based)
-•	🧾 Create, update, delete tasks
-•	🧠 Task grouping by status (To Do / In Progress / Done)
-•	🪢 Drag-and-drop task management
-•	📋 Create and manage multiple boards
-•	👥 Share boards with other users via invitations
-•	🔔 Accept/reject board invites via navbar notifications
-•	🔒 Forgot password with local reset flow (popup UI)
-•	🎨 Responsive, Bootstrap-styled UI
-Tech Stack
-•	Frontend: React, Bootstrap 5, Axios
-•	Backend: Node.js, Express
-•	Database: PostgreSQL (via Sequelize)
-•	Authentication: JWT, bcryptjs
-Folder Structure
 
-.
-├── client               # React frontend
-│   ├── components       # Reusable UI components
-│   ├── pages            # Main views (Login, Dashboard, etc.)
-│   └── App.js           # App routing
-├── server
-│   ├── controllers      # Route handler logic
-│   ├── models           # Sequelize models
-│   ├── routes           # Express route definitions
-│   ├── middleware       # Auth middleware
-│   └── index.js         # Express app entry
-├── .env                 # Environment variables
-├── README.md
-└── ...
+# TaskMaster Pro 🧠✅
 
-Setup Instructions
+TaskMaster Pro is a collaborative task management app built with the MERN stack (MongoDB, Express.js, React, Node.js) and PostgreSQL for robust data management.
 
-1. Clone the repo
+## 🚀 Features
 
+- 📝 Create, update, and delete tasks
+- 📦 Organize tasks into boards and statuses
+- 👥 Invite team members to collaborate on boards
+- 🔐 Authentication with JWT & password hashing
+- 📬 Accept/Decline board invitations via in-app notifications
+- 🧩 Drag-and-drop task management
+- 🧠 Forgot Password with local password reset popup
+
+## 🖼️ Tech Stack
+
+**Frontend:** React, Bootstrap 5  
+**Backend:** Node.js, Express.js  
+**Database:** PostgreSQL  
+**Authentication:** JWT, bcrypt.js
+
+## 📂 Project Structure
+
+```
+/client         # React frontend
+/server         # Express backend
+/server/models  # Sequelize models
+```
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in `/server`:
+
+```
+PORT=5000
+DB_HOST=localhost
+DB_USER=your_db_user
+DB_PASS=your_db_pass
+DB_NAME=your_db_name
+JWT_SECRET=your_jwt_secret
+```
+
+## 🛠️ Setup
+
+1. Clone the repository:
+    ```bash
     git clone https://github.com/yourusername/taskmaster-pro.git
     cd taskmaster-pro
+    ```
 
-2. Setup Backend
+2. Install dependencies:
+    ```bash
+    cd client
+    npm install
+    cd ../server
+    npm install
+    ```
 
+3. Setup your PostgreSQL database and run migrations.
+
+4. Start the app:
+    ```bash
     cd server
-    npm install
-
-Create a .env file in the server folder with:
-    PORT=5000
-    JWT_SECRET=your_jwt_secret
-    DB_NAME=your_db
-    DB_USER=your_user
-    DB_PASS=your_password
-    DB_HOST=localhost
-
-Run migrations:
-    npx sequelize-cli db:migrate
-
-Start backend:
     npm start
-
-3. Setup Frontend
-
-    cd ../client
-    npm install
-
-Create .env in client:
-    VITE_BACKEND_URL=http://localhost:5000
-
-Start frontend:
+    # In another terminal
+    cd client
     npm run dev
+    ```
 
-Forgot Password (Local Flow)
+## 📦 API Endpoints
 
-1. Click Forgot Password on login.
-2. A popup appears with an email field.
-3. If the email exists, enter a new password.
-4. Password is updated and can be used to log in immediately.
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/user/me`
+- `POST /api/tasks`
+- `PUT /api/tasks/:id`
+- `DELETE /api/tasks/:id`
+- `POST /api/boards/invite`
+- `POST /api/boards/accept`
+- `POST /api/auth/forgot-password`
 
-API Endpoints
+## 📷 Screenshots
 
-POST   /api/auth/register        Register new user
-POST   /api/auth/login           Login & return JWT token
-GET    /api/user/me              Get current user info
-POST   /api/boards               Create a board
-GET    /api/boards               Get all boards (owned + shared)
-PATCH  /api/tasks/:id            Update a task
-DELETE /api/tasks/:id            Delete a task
-POST   /api/invite               Send board invitation
-PATCH  /api/invite/respond       Accept/decline invitation
-PATCH  /api/auth/reset-password  Reset user password
+_Dummy screenshots here_
 
-Deployment
+## 🤝 Contributing
 
-Frontend: Vercel / Netlify
-Backend: Render / Railway
-Database: Render PostgreSQL
-(Replace placeholder links once deployed.)
+Contributions welcome! Fork the repo and open a PR.
 
-Author
+## 📄 License
 
-Sameer Khan
-📧 sameerkhan2zaz@gmail.com
-🔗 https://linkedin.com/in/dummy
+MIT © 2025 Sameer A
 
-License
-This project is licensed under the MIT License.
