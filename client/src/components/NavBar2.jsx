@@ -108,7 +108,7 @@ function Navbar2 ({fetchBoards}) {
           <div className="d-flex align-items-center gap-3">
             <div className="dropdown position-relative">
               <button
-              className="btn position-relative"
+              className="btn btn-md position-relative"
               type="button"
               id="invitationDropdown"
               data-bs-toggle="dropdown"
