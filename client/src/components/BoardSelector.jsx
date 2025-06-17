@@ -235,7 +235,7 @@ const BoardSelector = () => {
 
           <input
             type="text"
-            className="form-control w-50 rounded-5 text-center"
+            className="form-control w-50 rounded-4 text-center"
             value={newBoardName}
             onChange={(e) => setNewBoardName(e.target.value)}
             placeholder="New board name"
@@ -296,13 +296,13 @@ const BoardSelector = () => {
                       // Edit mode: input and buttons to save or cancel changes
                       <>
                         <input
-                          className="form-control rounded-5"
+                          className="form-control rounded-4"
                           value={editedName}
                           onChange={(e) => setEditedName(e.target.value)}
                         />
                         <div className="d-flex gap-1">
                           <button
-                            className="btn btn-md rounded-5"
+                            className="btn btn-md rounded-4"
                             style={{
                               background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                               color: 'white',
@@ -312,7 +312,7 @@ const BoardSelector = () => {
                             Save
                           </button>
                           <button
-                            className="btn btn-md rounded-5"
+                            className="btn btn-md rounded-4"
                             style={{
                               background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                               color: 'white',
@@ -347,7 +347,7 @@ const BoardSelector = () => {
                         {/* Action buttons */}
                         <div className="d-flex gap-1">
                           <button
-                            className="btn btn-md rounded-5"
+                            className="btn btn-md rounded-4"
                             style={{
                               background: 'linear-gradient(to bottom, #3a5069, #1a242f)',
                               color: 'white',
@@ -415,7 +415,7 @@ const BoardSelector = () => {
                             <input
                               style={{width: '150%'}}
                               type='email'
-                              className="form-control mb-2 rounded-5"
+                              className="form-control mb-2 rounded-4"
                               placeholder="Add member"
                               value={inviteEmails[board.id] || ''}
                               onChange={(e)=> setInviteEmails({...inviteEmails, [board.id]: e.target.value})}
