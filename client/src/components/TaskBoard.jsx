@@ -23,9 +23,9 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {/* Container to hold all columns */}
- <div className="d-flex overflow-auto w-100 align-items-center justify-content-center" style={{ minHeight: '400px' }}>
+ <div className="d-flex overflow-auto w-100 align-items-center justify-content-center flex-wrap" style={{ minHeight: '400px' }}>
   <div
-    className="d-flex ms-5 ps-5 ms-sm-0 ps-sm-0 align-items-start justify-content-center"
+    className="d-flex align-items-start justify-content-center flex-wrap"
     style={{
       gap: '20px',
       padding: '10px',
@@ -33,7 +33,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
     }}
   >
           {/* Loop through each status to render its column */}
-          {['todo', 'inprogress', 'done'].map((status) => (
+          {['todo', 'inprogress', 'done', 'pinned', 'onhold'].map((status) => (
             <Droppable droppableId={status} key={status}>
               {(provided) => (
                 <div
@@ -45,8 +45,8 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     overflowX: 'auto',
-                    flex: '0 0 28%',
-                    padding: '20px',
+                    flex: '0 0 29%',
+                    padding: '20px 40px',
                     maxWidth: '360px',
                     background:
                       status === 'todo'
@@ -54,7 +54,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                         : status === 'inprogress'
                         ? 'linear-gradient(to bottom right, #4a6b8c, #3a5069)'
                         : 'linear-gradient(to bottom right, #34495e, #2c3e50)',
-                    minHeight: '320px',
+                    minHeight: '400px',
                     borderRadius: '20%',
                     boxSizing: 'border-box',
                     color: 'white',
@@ -92,7 +92,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                 flexWrap: 'wrap',
                                 minHeight: '270px',
                                 borderRadius: '10%',
-                                minWidth: '120px',
+                                minWidth: '110px',
                                 maxWidth: '90%',
                                 color: 'black',
                                 flexShrink: 1,
@@ -171,8 +171,8 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                   display: 'flex',
                                   justifyContent: 'center',
                                   padding: '4px',
+                                  gap: '5px',
                                   flexWrap: 'wrap',
-                                  gap: '10px',
                                   width: '100%',
                                 }}
                                 className="fixed-bottom"
@@ -182,35 +182,29 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                   type="button"
                                   onClick={() => onUpdateTask(task)}
                                   style={{
-                                    height: 'auto',
-                                    flex: '1 1 40%',
-                                    minWidth: '100px',
-                                    maxWidth: '100px',
+                                    
                                     background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                     color: 'white',
                                     borderRadius: '40%',
                                   }}
-                                  className="shadow border-dark-subtle"
+                                  className="btn btn-sm-sm btn-md shadow border-dark-subtle"
                                 >
                                   Edit
-                                </button>
+                                </button><br />
 
                                 {/* Delete Button */}
                                 <button
                                   type="button"
                                   onClick={() => onDeleteTask(task.id)}
                                   style={{
-                                    height: 'auto',
-                                    flex: '1 1 40%',
-                                    minWidth: '80px',
-                                    maxWidth: '100px',
+                                    
                                     background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                     color: 'white',
                                     borderRadius: '40%',
                                   }}
-                                  className="shadow border-dark-subtle"
+                                  className="btn btn-sm-sm btn-md shadow border-dark-subtle"
                                 >
-                                  Delete
+                                  Drop
                                 </button>
                               </div>
                             </div>
