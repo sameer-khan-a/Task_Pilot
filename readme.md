@@ -104,7 +104,7 @@ Here are some screenshots showcasing the features of the application:
 
 ## 🌐 Website Links
 
-- **Live Website**: [task-pilot-mu.vercel.app]
+- **Live Website**: [task-pilot-mu.vercel.app](task-pilot-mu.vercel.app)
 
 ## 🤝 Contributing
 
