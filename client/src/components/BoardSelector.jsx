@@ -28,11 +28,11 @@ const BoardSelector = () => {
   // State to trigger refresh for board members lists keyed by board id
   const [memberRefreshKeys, setMemberRefreshKeys] = useState({});
 
-  // Fetch boards and their owner emails from /api when component mounts
+  // Fetch boards and their owner emails from ${import.meta.env.VITE_BACKEND_URL}/api when component mounts
    const fetchBoards = async () => {
       try {
         // Get all boards for the user
-        const res = await axios.get(`/api/boards`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Auth token from localStorage
           },
@@ -44,7 +44,7 @@ const BoardSelector = () => {
         const boardsWithOwnerEmail = await Promise.all(
           boardsData.map(async (board) => {
             try {
-              const userRes = await axios.get(`/api/user/${board.createdBy}`, {
+              const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${board.createdBy}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -74,9 +74,9 @@ const BoardSelector = () => {
     if (!newBoardName) return; // Don't allow empty board names
 
     try {
-      // Create new board via /api
+      // Create new board via ${import.meta.env.VITE_BACKEND_URL}/api
       const res = await axios.post(
-        `/api/boards/create`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/boards/create`,
         { name: newBoardName },
         {
           headers: {
@@ -86,7 +86,7 @@ const BoardSelector = () => {
       );
 
       // Fetch owner's email for the new board
-      const userRes = await axios.get(`/api/user/${res.data.createdBy}`, {
+      const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${res.data.createdBy}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -104,9 +104,9 @@ const BoardSelector = () => {
   // Handler to update existing board name
   const handleUpdate = async (boardId) => {
     try {
-      // Update board name via /api
+      // Update board name via ${import.meta.env.VITE_BACKEND_URL}/api
       const res = await axios.put(
-        `/api/boards/${boardId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`,
         { name: editedName },
         {
           headers: {
@@ -133,8 +133,8 @@ const BoardSelector = () => {
     if (!window.confirm('Delete this board?')) return; // Confirm with user
 
     try {
-      // Delete board via /api
-      await axios.delete(`/api/boards/${boardId}`, {
+      // Delete board via ${import.meta.env.VITE_BACKEND_URL}/api
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -153,8 +153,8 @@ const BoardSelector = () => {
     if(!window.confirm('Leave this board?')) return; // Confirm with user
 
     try {
-      // Post to leave board /api
-      await axios.post(`/api/boards/${boardId}/leave`, {}, {
+      // Post to leave board ${import.meta.env.VITE_BACKEND_URL}/api
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -174,8 +174,8 @@ const BoardSelector = () => {
     if(!email) return; // Do nothing if email input is empty
 
     try {
-      // Send invite via /api
-      await axios.post(`/api/invitations/${boardId}/invite`, 
+      // Send invite via ${import.meta.env.VITE_BACKEND_URL}/api
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${boardId}/invite`, 
         { email },{headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
