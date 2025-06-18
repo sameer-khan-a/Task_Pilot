@@ -1,17 +1,20 @@
 
-# TaskMaster Pro 🧠✅
+# TaskPilot 🧠✅
 
-TaskMaster Pro is a collaborative task management app built with the MERN stack (MongoDB, Express.js, React, Node.js) and PostgreSQL for robust data management.
+TaskPilot Pro is a collaborative task management app built with the PERN stack (Postgres DB, Express.js, React, Node.js).
 
 ## 🚀 Features
 
-- 📝 Create, update, and delete tasks
-- 📦 Organize tasks into boards and statuses
-- 👥 Invite team members to collaborate on boards
-- 🔐 Authentication with JWT & password hashing
-- 📬 Accept/Decline board invitations via in-app notifications
-- 🧩 Drag-and-drop task management
-- 🧠 Forgot Password with local password reset popup
+- 📝 Create, update, and delete tasks  
+- 📦 Organize tasks into boards and statuses  
+- 👥 Invite team members to collaborate on boards  
+- 🔐 Authentication with JWT & password hashing  
+- 📬 Accept/Decline board invitations via in-app notifications  
+- 🧩 Drag-and-drop task management  
+- 🧠 Forgot Password with local password reset popup  
+- 📊 View and manage owned and shared boards  
+- 📌 Leave shared boards and manage board access control  
+
 
 ## 🖼️ Tech Stack
 
@@ -34,19 +37,20 @@ Create a `.env` file in `/server`:
 
 ```
 PORT=5000
-DB_HOST=localhost
-DB_USER=your_db_user
-DB_PASS=your_db_pass
-DB_NAME=your_db_name
-JWT_SECRET=your_jwt_secret
+DB_HOST = Your Host
+DB_POR T= Your Port
+DB_USER = Your Username
+DB_PASSWORD = Your Password
+DB_NAME = Your Database Name
+JWT_SECRET = Your Secrect Key
 ```
 
 ## 🛠️ Setup
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/taskmaster-pro.git
-    cd taskmaster-pro
+    git clone https://github.com/sameer-khan-a/Task_Pilot.git
+    cd TaskPilot
     ```
 
 2. Install dependencies:
@@ -62,7 +66,7 @@ JWT_SECRET=your_jwt_secret
 4. Start the app:
     ```bash
     cd server
-    npm start
+    npm run dev
     # In another terminal
     cd client
     npm run dev
@@ -82,7 +86,25 @@ JWT_SECRET=your_jwt_secret
 
 ## 📷 Screenshots
 
-_Dummy screenshots here_
+Here are some screenshots showcasing the features of the application:
+
+### 🏠 Home Page
+![Home Page](./public/images/Home.png)
+
+### 🗂️ Task Board
+![Task Board](./public/images/Task.png)
+
+### 👤 Login Screen
+![Login Screen](./public/images/Login.png)
+
+### 🔔 Invitations Popup
+![Invitations](./public/images/Invitations.png)
+
+---
+
+## 🌐 Website Links
+
+- **Live Website**: [task-pilot-mu.vercel.app]
 
 ## 🤝 Contributing
 
@@ -90,5 +112,5 @@ Contributions welcome! Fork the repo and open a PR.
 
 ## 📄 License
 
-MIT © 2025 Sameer A
+Designed and Developed by Sameer Khan A © 2025 
 
