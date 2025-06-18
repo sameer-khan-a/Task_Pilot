@@ -33,7 +33,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
     }}
   >
           {/* Loop through each status to render its column */}
-          {['todo', 'inprogress', 'done', 'pinned', 'onhold'].map((status) => (
+          {['todo', 'inprogress', 'done'].map((status) => (
             <Droppable droppableId={status} key={status}>
               {(provided) => (
                 <div
