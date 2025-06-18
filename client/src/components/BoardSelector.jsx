@@ -261,7 +261,7 @@ const BoardSelector = () => {
           Select a Board
         </h2>
 
-        <div className="row justify-content-center gx-5 gy-5 w-100">
+        <div className="row justify-content-center align-items-center gx-5 gy-5 w-100">
           {boards.length === 0 ? (
             // Show message if no boards available
             <h3 align="center" style={{ color: 'black' }}>
@@ -275,7 +275,7 @@ const BoardSelector = () => {
               return (
                 <div
                   key={board.id}
-                  className="col-10 col-md-6 col-lg-4 d-flex align-items-stretch justify-content-center "
+                  className="col-10 col-md-6 col-lg-4 d-flex align-items-center justify-content-center "
                 >
                   <div
                     className="shadow text-center w-100"
