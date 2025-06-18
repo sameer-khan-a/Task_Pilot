@@ -98,7 +98,7 @@ Here are some screenshots showcasing the features of the application:
 ![Login Screen](./client/public/Login.png)
 
 ### 🔔 Invitations Popup
-![Invitations](./client/public/Invitations.png)
+![Invitations](./client/public/InvitePopup.png)
 
 ---
 
