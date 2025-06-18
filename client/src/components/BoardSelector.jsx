@@ -283,7 +283,7 @@ const BoardSelector = () => {
                       color: 'black',
                       background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                       minWidth: '200px',// increased for wider appearance
-                      minHeight: '420px',
+                      minHeight: '440px',
                       padding: '20px 60px',
                       borderRadius: '50px',
                       display: 'flex',
