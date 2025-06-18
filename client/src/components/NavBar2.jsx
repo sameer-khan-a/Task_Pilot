@@ -151,7 +151,7 @@ style={{minWidth: '300px'}}
 // List all invitations with accept/reject buttons
 invitations.map(inv => (
 <li key={inv.id} className="dropdown-item d-flex flex-column">
-<span><strong>{inv.Board.name}</strong></span>
+<span><strong>Invitation to join {inv.Board.name} Board </strong> <br /><small>by {inv.Inviter.email}</small> </span>
 <div className="d-flex justify-content-end mt-1">
 <button
 className="btn btn-sm btn-success me-2"
