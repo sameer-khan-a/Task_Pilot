@@ -28,11 +28,11 @@ const BoardSelector = () => {
   // State to trigger refresh for board members lists keyed by board id
   const [memberRefreshKeys, setMemberRefreshKeys] = useState({});
 
-  // Fetch boards and their owner emails from API when component mounts
+  // Fetch boards and their owner emails from /api when component mounts
    const fetchBoards = async () => {
       try {
         // Get all boards for the user
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
+        const res = await axios.get(`/api/boards`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Auth token from localStorage
           },
@@ -44,7 +44,7 @@ const BoardSelector = () => {
         const boardsWithOwnerEmail = await Promise.all(
           boardsData.map(async (board) => {
             try {
-              const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${board.createdBy}`, {
+              const userRes = await axios.get(`/api/user/${board.createdBy}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -74,9 +74,9 @@ const BoardSelector = () => {
     if (!newBoardName) return; // Don't allow empty board names
 
     try {
-      // Create new board via API
+      // Create new board via /api
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/boards/create`,
+        `/api/boards/create`,
         { name: newBoardName },
         {
           headers: {
@@ -86,7 +86,7 @@ const BoardSelector = () => {
       );
 
       // Fetch owner's email for the new board
-      const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${res.data.createdBy}`, {
+      const userRes = await axios.get(`/api/user/${res.data.createdBy}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -104,9 +104,9 @@ const BoardSelector = () => {
   // Handler to update existing board name
   const handleUpdate = async (boardId) => {
     try {
-      // Update board name via API
+      // Update board name via /api
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`,
+        `/api/boards/${boardId}`,
         { name: editedName },
         {
           headers: {
@@ -133,8 +133,8 @@ const BoardSelector = () => {
     if (!window.confirm('Delete this board?')) return; // Confirm with user
 
     try {
-      // Delete board via API
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
+      // Delete board via /api
+      await axios.delete(`/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -153,8 +153,8 @@ const BoardSelector = () => {
     if(!window.confirm('Leave this board?')) return; // Confirm with user
 
     try {
-      // Post to leave board API
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
+      // Post to leave board /api
+      await axios.post(`/api/boards/${boardId}/leave`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -174,8 +174,8 @@ const BoardSelector = () => {
     if(!email) return; // Do nothing if email input is empty
 
     try {
-      // Send invite via API
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${boardId}/invite`, 
+      // Send invite via /api
+      await axios.post(`/api/invitations/${boardId}/invite`, 
         { email },{headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -228,7 +228,7 @@ const BoardSelector = () => {
         }}
       >
         {/* Section to create new board */}
-        <div className="col-12 d-flex gap-3 mt-5 flex-column flex-wrap align-items-center justify-content-center">
+        <div className="col-12 d-flex gap-3 mt-5 flex-column  align-items-center justify-content-center">
           <h1 className="text-center" style={{ color: '#2c3e50' }}>
             Manage your Boards
           </h1>
@@ -261,7 +261,15 @@ const BoardSelector = () => {
           Select a Board
         </h2>
 
-        <div className="row justify-content-center align-items-start gx-5 gy-5 w-100">
+        <div className="row justify-content-center align-items-start w-100 gy-3 " style={{
+                    gap: boards.length === 2
+                        ? '90px'
+                        : boards.length === 3
+                        ? '40px'
+                        : boards.length === 4
+                        ? '0px'
+                        : '0px'
+                      }}>
           {boards.length === 0 ? (
             // Show message if no boards available
             <h3 align="center" style={{ color: 'black' }}>
@@ -275,16 +283,18 @@ const BoardSelector = () => {
               return (
                 <div
                   key={board.id}
-                  className="col-10 col-md-6 col-lg-4 d-flex justify-content-center "
+                  className="col-12 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center "
+                  
                 >
                   <div
-                    className="shadow text-center w-100"
+                    className="shadow text-center"
                     style={{
                       color: 'black',
                       background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
-                      minWidth: '200px',// increased for wider appearance
-                      minHeight: '440px',
-                      padding: '20px 60px',
+                      minWidth: '210px',// increased for wider appearance
+                      maxWidth: '230px',
+                      minHeight: '525px',
+                      padding: '20px 40px',
                       borderRadius: '50px',
                       display: 'flex',
                       flexDirection: 'column',
@@ -348,7 +358,7 @@ const BoardSelector = () => {
                         {/* Action buttons */}
                         <div className="d-flex gap-1">
                           <button
-                            className="btn btn-md rounded-4"
+                            className="btn btn-sm rounded-4"
                             style={{
                               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                               color: 'white',
@@ -361,7 +371,7 @@ const BoardSelector = () => {
                           {/* Show Edit button only for owners */}
                           {isOwner ? (
                             <button
-                              className="btn btn-md rounded-4"
+                              className="btn btn-sm rounded-4"
                               style={{
                                 background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                 color: 'white',
@@ -378,7 +388,7 @@ const BoardSelector = () => {
                           {/* Delete button for owners, Leave button for members */}
                           {isOwner ? (
                             <button
-                              className="btn btn-md rounded-4"
+                              className="btn btn-sm rounded-4"
                               style={{
                                 background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                 color: 'white',
@@ -389,7 +399,7 @@ const BoardSelector = () => {
                             </button>
                           ) : (
                             <button
-                              className="btn btn-md rounded-4"
+                              className="btn btn-sm rounded-4"
                               style={{
                                 background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                 color: 'white',
@@ -414,7 +424,7 @@ const BoardSelector = () => {
                         {isOwner && (
                           <div className='d-flex flex-column align-items-center mt-2'>
                             <input
-                              style={{maxWidth: '200px'}}
+                              style={{width: '150px'}}
                               type='email'
                               className="form-control mb-2 rounded-4"
                               placeholder="Add member"
