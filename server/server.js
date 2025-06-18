@@ -1,15 +1,11 @@
 // Load environment variables from the .env file into process.env
 require('dotenv').config();
 
-// Import all Sequelize models (to register with sequelize instance)
+// Import all Sequelize models (this registers the models with the Sequelize instance)
 require('./models');
 
 // Import core modules
 const express = require('express');
-
-
-
-
 
 // Import database connection functions and Sequelize instance
 const { connectDB } = require('./config/db');
@@ -20,11 +16,12 @@ const boardRoutes = require('./routes/boardRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const boardMemberRoutes = require('./routes/boardMemberRoutes');
 const invitationRoutes = require('./routes/invitationRoutes');
-// Connect to the database (could be MongoDB or any other DB based on config)
+
+// Connect to the database
 connectDB();
 
 // Sync Sequelize models with the database
-// `alter: true` updates existing tables to match models without dropping data
+// `alter: true` updates tables to match the current model definitions without dropping them
 sequelize.sync({ alter: true })
   .then(() => {
     console.log('📦 All Tables synced');
@@ -36,37 +33,25 @@ sequelize.sync({ alter: true })
 // Initialize the Express app
 const app = express();
 
-// Enable CORS to allow cross-origin requests from frontend or other clients
+// Enable CORS (Cross-Origin Resource Sharing) to allow frontend apps from different origins to communicate
 const cors = require("cors");
-
 app.use(cors({
   origin: "*",
   credentials: true,
 }));
 
-
-// Middleware to parse incoming requests with JSON payloads
+// Middleware to parse JSON bodies in incoming requests
 app.use(express.json());
 
-app.use('/api/invitations', invitationRoutes);
-// Setup API routes with their respective route handlers
+// Mount API route handlers
+app.use('/api/invitations', invitationRoutes); // Routes for handling board invitations
+app.use('/api/auth', require('./routes/authRoutes')); // Routes for authentication (login, register, etc.)
+app.use('/api/user', require('./routes/userRoutes')); // Routes for user profile and user data
+app.use('/api/boards', boardRoutes); // Routes for board CRUD operations
+app.use('/api/tasks', taskRoutes); // Routes for task CRUD operations
+app.use('/api/boardMembers', boardMemberRoutes); // Routes for managing board members
 
-// Routes for authentication like login, register, etc.
-app.use('/api/auth', require('./routes/authRoutes'));
-
-// Routes related to user profile and user data
-app.use('/api/user', require('./routes/userRoutes'));
-
-// Routes for board related CRUD operations
-app.use('/api/boards', boardRoutes);
-
-// Routes for task related CRUD operations
-app.use('/api/tasks', taskRoutes);
-
-// Routes for managing board members (adding, removing, listing members)
-app.use('/api/boardMembers', boardMemberRoutes);
-
-// Start the server and listen on the port specified in environment or 5000 by default
+// Start the server on the specified port (default is 5000 if not in .env)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

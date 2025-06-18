@@ -1,60 +1,84 @@
+// Import Sequelize models
 const User = require('./User');
 const Board = require('./Board');
 const Task = require('./Task');
 const BoardMember = require('./BoardMember');
 const BoardInvitation = require('./BoardInvitation');
+
+// ---------------------- User ↔ Board (Many-to-Many via BoardMember) ----------------------
+
 // Define many-to-many relationship between Users and Boards through BoardMember join table
-// This sets up which boards a user is a member of (sharedBoards)
+// This allows access to boards a user is part of (as a member, not creator)
 User.belongsToMany(Board, {
   through: BoardMember,
-  foreignKey: 'userId',      // The foreign key in BoardMember pointing to User
-  otherKey: 'boardId',       // The other foreign key pointing to Board
-  as: 'sharedBoards',        // Alias for accessing boards a user belongs to
+  foreignKey: 'userId',       // Foreign key in BoardMember pointing to User
+  otherKey: 'boardId',        // Other key in BoardMember pointing to Board
+  as: 'sharedBoards',         // Alias for user's shared boards
 });
 
 // Define inverse many-to-many relationship from Board to Users (members)
 Board.belongsToMany(User, {
   through: BoardMember,
-  foreignKey: 'boardId',     // The foreign key in BoardMember pointing to Board
-  otherKey: 'userId',        // The other foreign key pointing to User
-  as: 'members',             // Alias for accessing users who belong to the board
+  foreignKey: 'boardId',      // Foreign key in BoardMember pointing to Board
+  otherKey: 'userId',         // Other key in BoardMember pointing to User
+  as: 'members',              // Alias for board members
 });
 
-// Setup BoardMember belonging to User with cascade delete if user is deleted
+// ---------------------- BoardMember Relationships ----------------------
+
+// BoardMember entry belongs to a specific User
 BoardMember.belongsTo(User, {
   foreignKey: 'userId',
-  onDelete: 'CASCADE',       // If User is deleted, remove corresponding BoardMembers
+  onDelete: 'CASCADE',        // If user is deleted, their board memberships are removed
 });
 
-// Setup BoardMember belonging to Board with cascade delete if board is deleted
+// BoardMember entry belongs to a specific Board
 BoardMember.belongsTo(Board, {
   foreignKey: 'boardId',
-  onDelete: 'CASCADE',       // If Board is deleted, remove corresponding BoardMembers
+  onDelete: 'CASCADE',        // If board is deleted, its memberships are removed
 });
 
-// User has many BoardMember entries (boards they belong to)
+// A User can have many BoardMember entries (boards they are part of)
 User.hasMany(BoardMember, { foreignKey: 'userId' });
 
-// Board has many BoardMember entries (members it contains)
+// A Board can have many BoardMember entries (users who are members)
 Board.hasMany(BoardMember, { foreignKey: 'boardId' });
 
-// Task belongs to a Board (each task is associated with one board)
+// ---------------------- Board ↔ Task (One-to-Many) ----------------------
+
+// Each Task belongs to one Board
 Task.belongsTo(Board, { foreignKey: 'boardId' });
 
-// Board can have many Tasks
+// Each Board can have many Tasks
 Board.hasMany(Task, { foreignKey: 'boardId' });
 
-// Task belongs to a User (the creator or assignee of the task)
+// ---------------------- User ↔ Task (One-to-Many) ----------------------
+
+// Each Task is created by or assigned to a User
 Task.belongsTo(User, { foreignKey: 'userId' });
 
-// User can have many Tasks assigned or created by them
+// Each User can have many Tasks
 User.hasMany(Task, { foreignKey: 'userId' });
 
-BoardInvitation.belongsTo(User, {foreignKey: 'invitedUserId', as: 'invitedUser'});
+// ---------------------- BoardInvitation Relationships ----------------------
 
-BoardInvitation.belongsTo(User, {foreignKey: 'invitedBy', as:'Inviter'});
+// Each invitation points to the invited user
+BoardInvitation.belongsTo(User, {
+  foreignKey: 'invitedUserId',
+  as: 'invitedUser'           // Alias to access user who was invited
+});
 
-BoardInvitation.belongsTo(Board, {foreignKey: 'boardId', onDelete: 'CASCADE'});
-// Export all models for use elsewhere in the app
+// Each invitation also points to the inviter (creator of the invitation)
+BoardInvitation.belongsTo(User, {
+  foreignKey: 'invitedBy',
+  as: 'Inviter'               // Alias to access user who sent the invitation
+});
+
+// Each invitation is linked to a specific board
+BoardInvitation.belongsTo(Board, {
+  foreignKey: 'boardId',
+  onDelete: 'CASCADE'         // If board is deleted, invitations are also removed
+});
+
+// ---------------------- Export all models ----------------------
 module.exports = { User, Board, Task, BoardMember, BoardInvitation };
-

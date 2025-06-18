@@ -5,51 +5,61 @@ import Navbar1 from '../components/Navbar1';
 import Footer from '../components/Footer';
 
 const Register = () => {
-  // State variables for form inputs: name, email, password
+  // Form input states
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  // useNavigate hook for redirecting user after registration
+
+  // Hook to navigate to another route
   const navigate = useNavigate();
-  console.log(import.meta.env.VITE_BACKEND_URL);
 
-  // Handler function for form submission
-const handleRegister = async (e) => {
-  e.preventDefault();
-  const nameRegex = /^[A-Za-z\s]{2,}$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-  if(!nameRegex.test(name)){
-    alert('Name should contain only letters and be at least 2 characters long.');
-    return;
-  }
-  if(!passwordRegex.test(password)){
-    alert('Password must be at least 8 characters long and include uppercase, lowercase, number and special character.');
-    return;
-  }
-  
-  if(password !== confirmPassword){
-    alert("Passwords do not match !");
-    return;
-  }
-  try {
-    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
-      name,
-      email,
-      password,
-    });
+  // Handle registration form submission
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-    navigate('/login');
-  } catch (err) {
-    console.error('Registration error: ', err);
-    alert('User Registration Failed !!!');
-  }
-};
+    // Validation: Name format
+    const nameRegex = /^[A-Za-z\s]{2,}$/;
 
+    // Validation: Password strength
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+    // Validate name
+    if (!nameRegex.test(name)) {
+      alert('Name should contain only letters and be at least 2 characters long.');
+      return;
+    }
+
+    // Validate password
+    if (!passwordRegex.test(password)) {
+      alert('Password must be at least 8 characters long and include uppercase, lowercase, number and special character.');
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match !");
+      return;
+    }
+
+    try {
+      // Send registration data to backend
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+        name,
+        email,
+        password,
+      });
+
+      // Navigate to login page on success
+      navigate('/login');
+    } catch (err) {
+      console.error('Registration error: ', err);
+      alert('User Registration Failed !!!');
+    }
+  };
 
   return (
-    
     <>
       <div
         id="reg"
@@ -62,10 +72,10 @@ const handleRegister = async (e) => {
           gap: '100px',
         }}
       >
-        {/* Navigation bar component */}
+        {/* Top navigation bar */}
         <Navbar1 />
 
-        {/* Card container for the registration form */}
+        {/* Registration form card */}
         <div
           className="card shadow p-4 m-4 rounded-5"
           style={{
@@ -74,92 +84,96 @@ const handleRegister = async (e) => {
             maxWidth: '700px',
           }}
         >
-          {/* Form heading */}
-          <h3 className="mb-4 text-center" style={{color: "#2c3e50"}}>
+          {/* Form title */}
+          <h3 className="mb-4 text-center" style={{ color: "#2c3e50" }}>
             Register
           </h3>
 
-          {/* Registration form */}
+          {/* Form starts */}
           <form onSubmit={handleRegister}>
-            {/* Name input */}
+            {/* Name field */}
             <div className="mb-3 rounded-5">
-              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
+              <label className="form-label" style={{ color: 'black', fontWeight: 'bold' }}>
                 Name
               </label>
               <input
                 type="text"
                 placeholder="Name"
                 className="form-control rounded-5"
-                value={name} // Controlled input value
-                onChange={(e) => setName(e.target.value)} // Update state on change
-                required // Field is required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
 
-            {/* Email input */}
+            {/* Email field */}
             <div className="mb-3">
-              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
+              <label className="form-label" style={{ color: 'black', fontWeight: 'bold' }}>
                 Email
               </label>
               <input
                 type="email"
                 placeholder="Email"
                 className="form-control rounded-5"
-                value={email} // Controlled input value
-                onChange={(e) => setEmail(e.target.value)} // Update state on change
-                required // Field is required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
-            {/* Password input */}
+            {/* Password field */}
             <div className="mb-3">
-              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
+              <label className="form-label" style={{ color: 'black', fontWeight: 'bold' }}>
                 Password
               </label>
               <input
-                type={showPassword? "text":"password"}
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className="form-control rounded-5"
-                value={password} // Controlled input value
-                onChange={(e) => setPassword(e.target.value)} // Update state on change
-                required // Field is required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
+
+            {/* Confirm Password field */}
             <div className="mb-3">
-              <label className="form-label" style={{color: 'black', fontWeight: 'bold'}}>
+              <label className="form-label" style={{ color: 'black', fontWeight: 'bold' }}>
                 Confirm Password
               </label>
               <input
-                type={showPassword? "text":"password"}
+                type={showPassword ? "text" : "password"}
                 placeholder="Confirm Password"
                 className="form-control rounded-5"
-                value={confirmPassword} // Controlled input value
-                onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
-                required // Field is required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
-            <div className="form-check mt-2">
-              <input
-              classname="form-check-input"
-              type="checkbox"
-              id="showPassword"
-              onChange={() => setShowPassword(!showPassword)}
-              />
-              <label className="form-check-label mx-1" htmlFor="showPassword">
-                Show Password
-              </label>
-            </div>
+
+              {/* Show/hide password toggle */}
+              <div className="form-check mt-2">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="showPassword"
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                <label className="form-check-label mx-1" htmlFor="showPassword">
+                  Show Password
+                </label>
+              </div>
             </div>
 
-            {/* Submit button, centered */}
+            {/* Register button */}
             <center>
               <div className="d-grid">
                 <button
                   className="btn btn-md w-50 mx-auto rounded-5"
                   style={{
                     background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
-                     color: 'rgb(200, 218, 219)',
+                    color: 'rgb(200, 218, 219)',
                   }}
-                  type="submit" // Make sure it's a submit button
+                  type="submit"
                 >
                   Register
                 </button>
@@ -168,7 +182,7 @@ const handleRegister = async (e) => {
           </form>
         </div>
 
-        {/* Footer component */}
+        {/* Footer */}
         <Footer />
       </div>
     </>

@@ -17,6 +17,10 @@ router.post('/register', register);
 // @access  Public
 router.post('/login', login);
 
+// @route   POST /api/auth/reset-password
+// @desc    Reset user password (send reset link or update password)
+// @access  Public (unless you want to protect it later)
 router.post('/reset-password', resetPassword);
+
 // Export the router so it can be used in the main server file
 module.exports = router;

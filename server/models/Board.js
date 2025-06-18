@@ -2,9 +2,10 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-// Define the Board model with fields: name, description, and userId
+// Define the Board model with fields: name, description, and createdBy (user ID)
 const Board = sequelize.define('Board', {
-  // Name of the board - required
+  
+  // Name of the board - required field
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -16,15 +17,15 @@ const Board = sequelize.define('Board', {
     allowNull: true,
   },
 
+  // ID of the user who created/owns the board
   createdBy: {
     type: DataTypes.INTEGER,
-    allowNull: false, 
-    defaultValue: 0,
+    allowNull: false,
+    defaultValue: 0, // Placeholder or fallback, ideally should be set explicitly
   }
-  // Foreign key reference to the user who owns the board
 
-},
-{
+}, {
+  // Automatically adds createdAt and updatedAt timestamps
   timestamps: true,
 });
 

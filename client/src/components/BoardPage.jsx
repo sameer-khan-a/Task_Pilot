@@ -131,7 +131,7 @@ const BoardPage = () => {
       {/* Top navigation bar */}
       <Navbar2 />
 
-      <div className="row" >
+      <div className="row" style={{background: 'linear-gradient(to bottom right,#8cb8f5, #8ef6d2)'}} >
         <div className="col-12 mb-3 d-flex flex-column align-items-center">
           {/* Form to create a new task */}
           <CreateTaskForm boardId={boardId} onTaskCreated={handleTaskCreated} />
