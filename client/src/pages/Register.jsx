@@ -134,23 +134,6 @@ const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-            </div>
-
-            {/* Confirm Password field */}
-            <div className="mb-3">
-              <label className="form-label" style={{ color: 'black', fontWeight: 'bold' }}>
-                Confirm Password
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirm Password"
-                className="form-control rounded-5"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-
-              {/* Show/hide password toggle */}
               <div className="form-check mt-2">
                 <input
                   className="form-check-input"
@@ -162,6 +145,23 @@ const Register = () => {
                   Show Password
                 </label>
               </div>
+            </div>
+
+            {/* Confirm Password field */}
+            <div className="mb-3">
+              <label className="form-label" style={{ color: 'black', fontWeight: 'bold' }}>
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="form-control rounded-5"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+
+              {/* Show/hide password toggle */}
             </div>
 
             {/* Register button */}
