@@ -275,7 +275,7 @@ const BoardSelector = () => {
               return (
                 <div
                   key={board.id}
-                  className="col-10 col-md-6 col-lg-4 d-flex align-items-start justify-content-center "
+                  className="col-10 col-md-6 col-lg-4 d-flex align-items-center justify-content-center "
                 >
                   <div
                     className="shadow text-center w-100"
