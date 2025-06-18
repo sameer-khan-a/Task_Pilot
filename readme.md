@@ -89,16 +89,16 @@ JWT_SECRET = Your Secrect Key
 Here are some screenshots showcasing the features of the application:
 
 ### 🏠 Home Page
-![Home Page](./public/Home.png)
+![Home Page](./client/public/Home.png)
 
 ### 🗂️ Task Board
-![Task Board](./public/Task.png)
+![Task Board](./client/public/Task.png)
 
 ### 👤 Login Screen
-![Login Screen](./public/Login.png)
+![Login Screen](./client/public/Login.png)
 
 ### 🔔 Invitations Popup
-![Invitations](./public/Invitations.png)
+![Invitations](./client/public/Invitations.png)
 
 ---
 
