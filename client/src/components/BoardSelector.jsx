@@ -275,7 +275,7 @@ const BoardSelector = () => {
               return (
                 <div
                   key={board.id}
-                  className="col-10 col-md-6 col-lg-4 d-flex align-items-center justify-content-center "
+                  className="col-10 col-md-6 col-lg-4 d-flex align-items-start justify-content-center "
                 >
                   <div
                     className="shadow text-center w-100"
@@ -283,7 +283,7 @@ const BoardSelector = () => {
                       color: 'black',
                       background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                       minWidth: '200px',// increased for wider appearance
-                      minHeight: '300px',
+                      minHeight: '350px',
                       padding: '20px 60px',
                       borderRadius: '50px',
                       display: 'flex',
