@@ -75,12 +75,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                   flex: '0 0 29%',
                   padding: '20px 40px',
                   maxWidth: '360px',
-                  background:
-                  status === 'todo'
-                  ? 'linear-gradient(to bottom right, #658BAF, #4a6b8c)'
-                  : status === 'inprogress'
-                  ? 'linear-gradient(to bottom right, #4a6b8c, #3a5069)'
-                  : 'linear-gradient(to bottom right, #34495e, #2c3e50)',
+                  background: 'linear-gradient(to bottom right, #34495e, #2c3e50)',
                   minHeight: '400px',
                   borderRadius: '20%',
                   boxSizing: 'border-box',
