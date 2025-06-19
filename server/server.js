@@ -27,7 +27,7 @@ sequelize.sync({ alter: true })
     console.log('📦 All Tables synced');
   })
   .catch(err => {
-    console.error('❌ Failed to sync Database: ', err);
+    console.error('❌ Failed to sync Databases: ', err);
   });
 
 // Initialize the Express app

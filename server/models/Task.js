@@ -29,14 +29,14 @@ const Task = sequelize.define('Task', {
     allowNull: false,  // Must be associated with a board
   },
   dueDate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false
   },
   // Foreign key linking the task to a user (optional)
   // Could be the creator or assignee of the task
   userId: {
     type: DataTypes.INTEGER,
-    allowNull: true,   // Can be null if unassigned
+    allowNull: false  // Can be null if unassigned
   }
 });
 
