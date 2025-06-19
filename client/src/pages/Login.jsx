@@ -44,8 +44,7 @@ function Login() {
       // Redirect to homepage
       navigate("/");
     } catch (err) {
-      setError("Login failed. Please check your email and password.");
-      alert('User Login Failed');
+      setError("Invalid Email or Password");
     } finally {
       setLoading(false); // Stop loading state
     }
@@ -55,6 +54,7 @@ function Login() {
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     setForgotMessage("");
+    setLoading(true);
 
     try {
       // Send reset password request to backend
@@ -69,6 +69,9 @@ function Login() {
       // Show failure message
       setForgotMessage("Failed to reset. Email may not exist");
     }
+    finally {
+      setLoading(false); // Stop loading state
+    }
   };
 
   return (
@@ -79,7 +82,7 @@ function Login() {
       {/* Login form container */}
       <div className="container d-flex flex-column align-items-center justify-content-center py-5 px-3 rounded-5">
         <div
-          className="card shadow p-4 m-5 w-100 rounded-5"
+          className="card shadow p-3 m-5 w-100 rounded-5"
           style={{
             background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
             maxWidth: "500px",
@@ -136,11 +139,14 @@ function Login() {
             </div>
 
             {/* Show login error if any */}
+            <center>
+
             {error && (
-              <div className="alert alert-danger" role="alert">
+              <div className="alert alert-danger rounded-5 w-100" role="alert" >
                 {error}
               </div>
             )}
+            </center>
 
             {/* Login button */}
             <div className="d-grid">
@@ -151,9 +157,8 @@ function Login() {
                   background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                   color: 'rgb(200, 218, 219)'
                 }}
-                disabled={loading}
               >
-                {loading ? "Logging in..." : "Login"}
+                {loading?<img src="https://ima.alfatango.org/images/loader.gif" height="22px" width="40px" alt="" />:'Login'}
               </button>
             </div>
           </form>
@@ -176,7 +181,7 @@ function Login() {
           style={{ backgroundColor: "rgba(0,0,0,0.6)", zIndex: 9999 }}
         >
           <div
-            className="card p-4 rounded-4"
+            className="card p-4 rounded-5"
             style={{
               width: "350px",
               background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'
@@ -189,7 +194,7 @@ function Login() {
                 <label>Email</label>
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control rounded-5"
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
                   required
@@ -200,41 +205,66 @@ function Login() {
               <div className="mb-3">
                 <label>New Password</label>
                 <input
-                  type="password"
-                  className="form-control"
+                  type={showPassword?'text':'password'}
+                  className="form-control rounded-5"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                />
+                  />
+                 <div className="form-check mt-2">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="showPassword"
+                  onChange={() => setShowPassword(!showPassword)}
+                  />
+                <label className="form-check-label mx-1" htmlFor="showPassword">
+                  Show Password
+                </label>
+              </div>
               </div>
 
               {/* Reset password submit button */}
+              <center>
+                  { forgotMessage &&(
+                                   <center>
+                  
+                    
+                    <div className="alert alert-danger rounded-5 mt-3" role="alert" style={{maxHeight: '80px', minWidth: '200px', maxWidth: '230px'}}>
+                                  {forgotMessage}
+                                </div>
+                                   </center>
+                                  )
+                  }
+                              
+
               <button
                 type="submit"
-                className="btn w-100 mb-2"
+                className="btn btn-md w-50 mb-2 rounded-5"
                 style={{
                   background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                   color: 'white'
                 }}
-              >
-                Reset
+                >
+                     {loading?<img src="https://ima.alfatango.org/images/loader.gif" height="22px" width="40px" alt="" />:'Reset'}
               </button>
+              <br />
 
               {/* Cancel button to close popup */}
               <button
                 type="button"
-                className="btn w-100"
+                className="btn btn-md w-50 rounded-5"
                 onClick={() => setShowPopup(false)}
                 style={{
                   background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                   color: 'white'
                 }}
-              >
+                >
                 Cancel
               </button>
+                </center>
 
               {/* Message after password reset attempt */}
-              <p className="text-muted mt-2">{forgotMessage}</p>
             </form>
           </div>
         </div>

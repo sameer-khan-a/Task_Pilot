@@ -5,12 +5,18 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
   // State to hold task title input
   const [title, setTitle] = useState('');
 
+  const [creating, setCreating] = useState(false);
+
   // State to hold task description input
   const [description, setDescription] = useState('');
+
+  const [message, setMessage] = useState("");
 
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submit behavior (page reload)
+    setCreating(true);
+    setMessage("");
     try {
       // POST request to create a new task
       const res = await axios.post(
@@ -34,10 +40,14 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
       // Reset form fields after successful creation
       setTitle('');
       setDescription('');
+      
     } catch (err) {
       // Log any errors that occur during task creation
       console.log('error creating task : ' + err);
-      alert("Error Creating Task !!!")
+      setMessage("Error Creating Task !!!");
+    }
+    finally{
+      setCreating(false);
     }
   };
 
@@ -88,15 +98,35 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
           {/* Submit button */}
           <button
             type="submit"
+            disabled={creating}
             className="btn btn-md"
             style={{
               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
               color: 'white',
               borderRadius: '50px'
+              
             }}
           >
-            Create Task
+           Create Task
           </button>
+                 <center>
+
+           {message && (
+        <div
+        className="alert alert-warning alert-dismissible fade show mt-2 w-100 rounded-5"
+        role="alert"
+        >
+    {message}
+    <button
+    type="button"
+    className="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    onClick={() => setMessage('')}
+    ></button>
+    </div>
+    )}
+            </center>
         </div>
       </form>
     </>

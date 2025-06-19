@@ -140,9 +140,9 @@ style={{top: '10px', left: '40px', fontSize: '0.7rem'}}
 
 {/* Dropdown list showing invitation messages */}
 <ul
-className="dropdown-menu dropdown-menu-start"
+className="dropdown-menu dropdown-menu-start "
 aria-labelledby="invitationDropdown"
-style={{minWidth: '300px'}}
+style={{minWidth: '300px', background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'}}
 >
 {/* Show message if no invitations */}
 {invitations.length === 0 ? (
@@ -152,7 +152,7 @@ style={{minWidth: '300px'}}
 invitations.map(inv => (
 <li key={inv.id} className="dropdown-item d-flex flex-column">
 <span><strong>Invitation to join {inv.Board.name} Board </strong> <br /><small>by {inv.Inviter.email}</small> </span>
-<div className="d-flex justify-content-end mt-1">
+<div className="d-flex justify-content-start mt-1">
 <button
 className="btn btn-sm btn-success me-2"
 onClick={() => respondToInvitation(inv.id, 'accepted')}

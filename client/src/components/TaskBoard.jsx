@@ -3,9 +3,10 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { groupTasksByStatus } from '../utils/utils';
 import moment from 'moment';
 
-const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
+const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) => {
   // Group tasks into columns by status (todo, inprogress, done)
   const columns = groupTasksByStatus(tasks);
+  
 
   // Handles task drop logic
   const onDragEnd = (result) => {
@@ -14,13 +15,26 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
     onDragUpdate(draggableId, destination.droppableId);
   };
 
+  
+
   // State to track which task description is expanded
-  const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [expandedCharsByTask, setExpandedCharsByTask] = useState({});
 
   // Toggle task description expansion
-  const toggleExpanded = (id) => setExpandedTaskId((prev) => (prev === id ? null : id));
+  const toggleExpanded = (taskId, totalChars) => {setExpandedCharsByTask((prev) => 
+    {
+      const current = prev[taskId] || 55;
+      const next = current +140;
+      return {
+        ...prev,
+        [taskId]: current >= totalChars ? 55 : next,
+      }
+    });
+      
+  };
 
   return (
+      
     <DragDropContext onDragEnd={onDragEnd}>
       {/* Container to hold all columns */}
  <div className="d-flex overflow-auto w-100 align-items-center justify-content-center flex-wrap" style={{ minHeight: '400px' }}>
@@ -31,34 +45,35 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
       padding: '10px',
       minHeight: '100%',
     }}
-  >
+    >
           {/* Loop through each status to render its column */}
           {['todo', 'inprogress', 'done'].map((status) => (
             <Droppable droppableId={status} key={status}>
+              
               {(provided) => (
                 <div
-                  className="shadow border-4 border-dark-subtle"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    overflowX: 'auto',
-                    flex: '0 0 29%',
-                    padding: '20px 40px',
-                    maxWidth: '360px',
-                    background:
-                      status === 'todo'
-                        ? 'linear-gradient(to bottom right, #658BAF, #4a6b8c)'
-                        : status === 'inprogress'
-                        ? 'linear-gradient(to bottom right, #4a6b8c, #3a5069)'
-                        : 'linear-gradient(to bottom right, #34495e, #2c3e50)',
-                    minHeight: '400px',
-                    borderRadius: '20%',
-                    boxSizing: 'border-box',
-                    color: 'white',
-                  }}
+                className="shadow border-4 border-dark-subtle"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  overflowX: 'auto',
+                  flex: '0 0 29%',
+                  padding: '20px 40px',
+                  maxWidth: '360px',
+                  background:
+                  status === 'todo'
+                  ? 'linear-gradient(to bottom right, #658BAF, #4a6b8c)'
+                  : status === 'inprogress'
+                  ? 'linear-gradient(to bottom right, #4a6b8c, #3a5069)'
+                  : 'linear-gradient(to bottom right, #34495e, #2c3e50)',
+                  minHeight: '400px',
+                  borderRadius: '20%',
+                  boxSizing: 'border-box',
+                  color: 'white',
+                }}
                 >
                   <h3 style={{ textAlign: 'center', fontWeight: 'normal' }}>{status === 'inprogress' ? 'LIVE' : status.toUpperCase()}</h3>
 
@@ -74,34 +89,34 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                         {(provided, snapshot) => {
                           const dragStyle = provided.draggableProps.style || {};
                           const transform = dragStyle.transform || '';
-
+                          
                           return (
                             <div
-                              className="mb-3"
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              style={{
-                                ...dragStyle,
-                                background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
-                                transition: 'transform 0.25s ease, opacity 0.25s ease',
-                                opacity: snapshot.isDragging ? 0.8 : 1,
-                                transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
-                                padding: '10px',
-                                paddingBottom: '95px',
-                                flexWrap: 'wrap',
-                                minHeight: '270px',
-                                borderRadius: '10%',
-                                minWidth: '110px',
-                                maxWidth: '90%',
-                                color: 'black',
-                                flexShrink: 1,
-                                wordBreak: 'break-word',
-                                boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
-                                willChange: 'transform, opacity',
-                                marginBottom: '20px',
+                            className="mb-3"
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{
+                              ...dragStyle,
+                              background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
+                              transition: 'transform 0.25s ease, opacity 0.25s ease',
+                              opacity: snapshot.isDragging ? 0.8 : 1,
+                              transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
+                              padding: '10px',
+                              paddingBottom: '95px',
+                              flexWrap: 'wrap',
+                              minHeight: '255px',
+                              borderRadius: '10%',
+                              minWidth: '110px',
+                              maxWidth: '90%',
+                              color: 'black',
+                              flexShrink: 1,
+                              wordBreak: 'break-word',
+                              boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+                              willChange: 'transform, opacity',
+                              marginBottom: '20px',
                               }}
-                            >
+                              >
                               {/* Task Content */}
                               <div
                                 style={{
@@ -110,7 +125,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                   alignItems: 'center',
                                   flexDirection: 'column',
                                 }}
-                              >
+                                >
                                 {/* Task Title */}
                                 <div style={{ marginBottom: '6px', textAlign: 'center' }}>
                                   <b style={{ display: 'block', marginBottom: '2px' }}>Title</b>
@@ -125,34 +140,28 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                       margin: 0,
                                       wordBreak: 'break-word',
                                       overflowWrap: 'break-word',
-                                      ...(expandedTaskId === task.id
-                                        ?{}:{
-                                          display: '-webkit-box',
-                                          WebkitLineClamp: expandedTaskId === task.id ? 'none' : 2,
-                                          WebkitBoxOrient: 'vertical',
-                                          overflow: 'hidden',
-                                        }
-                                      ),
+                                      
+                                      
                                       textAlign: 'center',
                                     }}
-                                  >
-                                    {task.description || 'No Description to Show !'}
+                                    >
+                                    {(task.description || 'No Description to Show !').slice(0, expandedCharsByTask[task.id] || 55)}
                                   </p>
                                   {/* Toggle "Read more"/"Show less" */}
                                   {task.description && task.description.length > 55 && (
                                     <button
-                                      onClick={() => toggleExpanded(task.id)}
-                                      style={{
-                                        marginTop: '4px',
-                                        background: 'transparent',
-                                        color: '#007bff',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        fontSize: '0.875rem',
-                                        padding: 0,
-                                      }}
+                                    onClick={() => toggleExpanded(task.id, task.description.length)}
+                                    style={{
+                                      marginTop: '4px',
+                                      background: 'transparent',
+                                      color: '#007bff',
+                                      border: 'none',
+                                      cursor: 'pointer',
+                                      fontSize: '0.875rem',
+                                      padding: 0,
+                                    }}
                                     >
-                                      {expandedTaskId === task.id ? 'Show less' : 'Read more'}
+                                      {(expandedCharsByTask[task.id] || 55) >= task.description.length ? 'Show less' : 'Read more'}
                                     </button>
                                   )}
                                 </div>
@@ -167,6 +176,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
 
                               {/* Task Buttons */}
                               <div
+                                
                                 style={{
                                   display: 'flex',
                                   justifyContent: 'center',
@@ -176,9 +186,10 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                   width: '100%',
                                 }}
                                 className="fixed-bottom"
-                              >
+                                >
                                 {/* Edit Button */}
                                 <button
+                                disabled={loading}
                                   type="button"
                                   onClick={() => onUpdateTask(task)}
                                   style={{
@@ -188,12 +199,13 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                     borderRadius: '40%',
                                   }}
                                   className="btn btn-sm-sm btn-md shadow border-dark-subtle"
-                                >
+                                  >
                                   Edit
                                 </button><br />
 
                                 {/* Delete Button */}
                                 <button
+                                disabled={loading}
                                   type="button"
                                   onClick={() => onDeleteTask(task.id)}
                                   style={{
@@ -203,7 +215,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                                     borderRadius: '40%',
                                   }}
                                   className="btn btn-sm-sm btn-md shadow border-dark-subtle"
-                                >
+                                  >
                                   Drop
                                 </button>
                               </div>
@@ -218,10 +230,13 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask }) => {
                   {provided.placeholder}
                 </div>
               )}
+          
             </Droppable>
+
           ))}
         </div>
       </div>
+        
     </DragDropContext>
   );
 };

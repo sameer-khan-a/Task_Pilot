@@ -10,9 +10,10 @@ const BoardPage = () => {
   const [boardName, setBoardName] = useState('');
   const { boardId } = useParams();
   const [tasks, setTasks] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   // Fetch all tasks for the specific board
   const fetchTasks = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${boardId}`, {
         headers: {
@@ -31,10 +32,14 @@ const BoardPage = () => {
       console.error('Error fetching tasks: ', err);
       alert("Error Loading tasks !!!");
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   // Fetch the board's metadata (e.g. name)
   const fetchBoardDetails = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
@@ -46,13 +51,16 @@ const BoardPage = () => {
       console.error('Error fetching board details', err);
       alert("Error loading board details !!!")
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   // Handle task update after getting new values from prompt
   const handleUpdateTask = async (task) => {
+    setLoading(true);
     const newTitle = prompt('New title:', task.title);
     const newDesc = prompt('New description:', task.description);
-
     if (newTitle) {
       try {
         const res = await axios.put(
@@ -66,12 +74,15 @@ const BoardPage = () => {
         console.error('Update error: ', err);
         alert("Error updating task !!!")
       }
+      finally{
+        setLoading(false);
+      }
     }
   };
 
   // Delete task after confirmation
   const handleDeleteTask = async (taskId) => {
-    if (!window.confirm('Are you sure?')) return;
+    setLoading(true);
     try {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -80,6 +91,9 @@ const BoardPage = () => {
     } catch (err) {
       console.error('Delete error: ', err);
       alert("Error deleting task");
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -93,6 +107,7 @@ const BoardPage = () => {
 
   // Handle drag-and-drop updates to status
   const handleDragUpdate = async (taskId, newStatus) => {
+    setLoading(true);
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`,
@@ -106,16 +121,24 @@ const BoardPage = () => {
       console.error('Drag update error:', err);
       alert("Can't Perform action !!!")
     }
+    finally{
+
+      setLoading(false);
+    }
   };
 
   // Push new task to the tasks state
   const handleTaskCreated = (newTask) => {
+    setLoading(true);
     try{
 
       setTasks([...tasks, newTask]);
     }
     catch(err){
       alert("Error adding task !!!")
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -137,32 +160,34 @@ const BoardPage = () => {
           <CreateTaskForm boardId={boardId} onTaskCreated={handleTaskCreated} />
         </div>
 
-        <div className="col-12 d-flex flex-column flex-wrap align-items-end justify-content-end">
+        <div className="col-12 d-flex flex-column flex-wrap ">
           {/* Board name header */}
-          <h2 className="w-100 mb-2 text-center" style={{ color: '#2c3e50' }}>
-            {boardName} Board
+          <h2 className="w-100 mb-4 text-center" style={{ color: '#2c3e50' }}>
+            {boardName} 
           </h2>
-
           {/* TaskBoard (with drag and drop) */}
           <div
             style={{
               display: 'flex',
-              flexWrap: 'nowrap',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
+              justifyContent: 'center',
+              alignItems: 'center',
               gap: '20px',
               overflowX: 'auto',
-              width: '100%',
+              width: '100vw',
             }}
-          >
+            >
+            {loading?<h1><img src="https://ima.alfatango.org/images/loader.gif" className="w-100" alt="" /></h1>:
             <TaskBoard
               tasks={tasks}
               onDragUpdate={handleDragUpdate}
               onDeleteTask={handleDeleteTask}
               onUpdateTask={handleUpdateTask}
+              loading={loading}
             />
+          }
           </div>
         </div>
+          
       </div>
 
       {/* Page footer */}

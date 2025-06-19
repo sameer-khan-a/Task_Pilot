@@ -22,6 +22,11 @@ const BoardSelector = () => {
   // State to hold invite emails keyed by board id
   const [inviteEmails, setInviteEmails] = useState({});  
 
+  const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState("");
+
+  const [message, setMessage] = useState("");
   // React Router navigation hook to programmatically navigate between routes
   const navigate = useNavigate();
 
@@ -30,6 +35,7 @@ const BoardSelector = () => {
 
   // Fetch boards and their owner emails from ${import.meta.env.VITE_BACKEND_URL}/api when component mounts
    const fetchBoards = async () => {
+      setLoading(true);
       try {
         // Get all boards for the user
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
@@ -56,12 +62,15 @@ const BoardSelector = () => {
             }
           })
         );
-
+        
         // Set boards with owner email into state
         setBoards(boardsWithOwnerEmail);
       } catch (err) {
         console.error('Error fetching boards', err);
         alert("Error loading boards !!!");
+      }
+      finally{
+        setLoading(false);
       }
     };
 
@@ -71,8 +80,9 @@ const BoardSelector = () => {
 
   // Handler to create a new board
   const handleCreateBoard = async () => {
-    if (!newBoardName) return; // Don't allow empty board names
-
+    if (!newBoardName) return; 
+    setError("");// Don't allow empty board names
+    setLoading(true);
     try {
       // Create new board via ${import.meta.env.VITE_BACKEND_URL}/api
       const res = await axios.post(
@@ -97,12 +107,17 @@ const BoardSelector = () => {
       setNewBoardName(''); // Clear input after creation
     } catch (err) {
       console.error('Error creating Board !!!', err);
-      alert("Board Creation Failed !!!");
+      setError("Error Creating Board !!! Try Again");
+
+    }
+    finally{
+      setLoading(false);
     }
   };
 
   // Handler to update existing board name
   const handleUpdate = async (boardId) => {
+    setLoading(true);
     try {
       // Update board name via ${import.meta.env.VITE_BACKEND_URL}/api
       const res = await axios.put(
@@ -126,12 +141,15 @@ const BoardSelector = () => {
       console.error('Error Updating Board', err);
       alert("Board Updation Failed !!!")
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   // Handler to delete a board after user confirmation
   const handleDelete = async (boardId) => {
-    if (!window.confirm('Delete this board?')) return; // Confirm with user
-
+    
+    setLoading(true);
     try {
       // Delete board via ${import.meta.env.VITE_BACKEND_URL}/api
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
@@ -146,12 +164,13 @@ const BoardSelector = () => {
       console.error('Error deleting board', err);
       alert("Board deletion Failed !!!");
     }
+    finally{setLoading(false)};
   };
 
   // Handler to leave a shared board after confirmation
   const handleLeaveBoard = async (boardId) => {
-    if(!window.confirm('Leave this board?')) return; // Confirm with user
-
+    
+    setLoading(true);
     try {
       // Post to leave board ${import.meta.env.VITE_BACKEND_URL}/api
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
@@ -166,10 +185,14 @@ const BoardSelector = () => {
       console.error('Error leaving board', err);
       alert("Cannot Leave Board !!!");
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   // Handler to invite a member to a board
   const handleInvite = async(boardId) => {
+    setLoading(true);
     const email = inviteEmails[boardId];
     if(!email) return; // Do nothing if email input is empty
 
@@ -190,29 +213,54 @@ const BoardSelector = () => {
 
       // Clear invite input field for this board
       setInviteEmails({...inviteEmails, [boardId]: ''});
-      alert('Invitation sent!');
+      setMessage("Invitation Sent");
     } catch(err){
       console.error('Invite error: ', err);
       alert('Failed to invite user !!!');
+    } finally {
+      setLoading(false);
     }
   }
 
   // Navigate user to the selected board's detail page
   const gotoBoard = (boardId) => {
+    setLoading(true);
     try {
       navigate(`/boards/${boardId}`);
-    }
+    }  
     catch(err){
       alert(err);
-    }
-  };
-
+    }  
+    finally {
+      setLoading(false);
+    }  
+  };  
+  
   // Decode current user ID from JWT token in localStorage
   const currentUserId = JSON.parse(atob(localStorage.getItem('token').split('.')[1])).id;
-
+  
   return (
     <div className="container py-5">
       <Navbar2 fetchBoards={fetchBoards}/>
+      <center>
+
+      {message && (
+        <div
+        className="alert alert-warning alert-dismissible fade show mt-2 w-25 rounded-5"
+        role="alert"
+        >
+    {message}
+    <button
+    type="button"
+    className="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    onClick={() => setMessage('')}
+    ></button>
+    </div>
+    )}
+    
+    </center>
 
       <div
         className="container"
@@ -226,9 +274,9 @@ const BoardSelector = () => {
           alignItems: 'center',
           gap: '20px',
         }}
-      >
+        >
         {/* Section to create new board */}
-        <div className="col-12 d-flex gap-3 mt-5 flex-column  align-items-center justify-content-center">
+        <div className="col-12 d-flex gap-3  flex-column  align-items-center justify-content-center">
           <h1 className="text-center" style={{ color: '#2c3e50' }}>
             Manage your Boards
           </h1>
@@ -243,17 +291,28 @@ const BoardSelector = () => {
           />
           <button
             className="btn"
+            disabled={loading}
             style={{
               display: 'flex',
               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
               color: 'white',
               width: '120px',
+              
               borderRadius: '50px',
-            }}
+            }}  
             onClick={handleCreateBoard}
           >
             Create Board
+
           </button>
+           <center>
+
+            {error && (
+              <div className="alert alert-danger rounded-5 mt-2 w-100" role="alert" >
+                {error}
+              </div>      
+            )}
+            </center>
         </div>
 
         {/* Section listing all existing boards */}
@@ -276,6 +335,8 @@ const BoardSelector = () => {
               No boards to show !!!
             </h3>
           ) : (
+                            loading?<img src="https://ima.alfatango.org/images/loader.gif" className="w-50" alt="" />:
+
             // Map through boards and display each one
             boards.map((board) => {
               // Check if current user owns the board
@@ -293,7 +354,7 @@ const BoardSelector = () => {
                       background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                       minWidth: '210px',// increased for wider appearance
                       maxWidth: '230px',
-                      minHeight: '525px',
+                      minHeight: '450px',
                       padding: '20px 40px',
                       borderRadius: '50px',
                       display: 'flex',
@@ -314,23 +375,27 @@ const BoardSelector = () => {
                         <div className="d-flex gap-1">
                           <button
                             className="btn btn-md rounded-4"
+                            disabled={loading}
                             style={{
                               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                               color: 'white',
+                              
                             }}
                             onClick={() => handleUpdate(board.id)}
                           >
-                            Save
+                                           Save
                           </button>
                           <button
                             className="btn btn-md rounded-4"
+                            disabled={loading}
                             style={{
                               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                               color: 'white',
+                              
                             }}
                             onClick={() => setEditingBoardId(null)}
                           >
-                            Cancel
+                                            Cancel
                           </button>
                         </div>
                       </>
@@ -359,19 +424,22 @@ const BoardSelector = () => {
                         <div className="d-flex gap-1">
                           <button
                             className="btn btn-sm rounded-4"
+                            disabled={loading}
                             style={{
                               background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                               color: 'white',
                             }}
                             onClick={() => gotoBoard(board.id)}
                           >
-                            Open
+                                            Open
                           </button>
 
                           {/* Show Edit button only for owners */}
                           {isOwner ? (
                             <button
                               className="btn btn-sm rounded-4"
+                              
+                              disabled={loading}
                               style={{
                                 background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                 color: 'white',
@@ -379,9 +447,10 @@ const BoardSelector = () => {
                               onClick={() => {
                                 setEditingBoardId(board.id);
                                 setEditedName(board.name);
+                                
                               }}
                             >
-                              Edit
+                                              Edit
                             </button>
                           ) : <p></p>}
 
@@ -389,24 +458,26 @@ const BoardSelector = () => {
                           {isOwner ? (
                             <button
                               className="btn btn-sm rounded-4"
+                              disabled={loading}
                               style={{
                                 background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                 color: 'white',
                               }}
                               onClick={() => handleDelete(board.id)}
                             >
-                              Delete
+                                              Delete
                             </button>
                           ) : (
                             <button
                               className="btn btn-sm rounded-4"
+                              disabled={loading}
                               style={{
                                 background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                 color: 'white',
                               }}
                               onClick={() => handleLeaveBoard(board.id)}
                             >
-                              Leave
+                                              Leave
                             </button>
                           )}
                         </div>
@@ -433,10 +504,11 @@ const BoardSelector = () => {
                             />
                             <button
                               className='btn btn-md rounded-4'
+disabled={loading}
                               style={{background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)', color: 'white'}}
                               onClick={() => handleInvite(board.id)}
                             >
-                              Invite
+                                        Invite
                             </button>
                           </div>
                         )}
@@ -447,6 +519,7 @@ const BoardSelector = () => {
               );
             })
           )}
+                           
         </div>
       </div>
       <Footer />

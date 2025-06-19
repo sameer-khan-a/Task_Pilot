@@ -6,7 +6,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   const [members, setMembers] = useState([]);
   const [showAll, setShowAll] = useState(false); // Controls 'See more' toggle
 
-  // Fetch members from the API
+  // Fetch members from the ${import.meta.env.VITE_BACKEND_URL}/api
   const fetchMembers = async () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}`, {
@@ -62,7 +62,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   });
 
   // Slice members to show either all or just first 2
-  const displayedMembers = showAll ? finalMembersToShow : finalMembersToShow.slice(0, 2);
+  const displayedMembers = showAll ? finalMembersToShow : finalMembersToShow.slice(0, 3);
 
   return (
     <div className="text-center">
