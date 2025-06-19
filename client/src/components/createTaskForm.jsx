@@ -99,7 +99,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
 
           <input
             type="date"
-            className="form-control form-control-color w-100 rounded-5"
+            className="form-control-color w-100 rounded-5"
             placeholder="Due Date"
             value={dueDate}
             onChange={(e) => {
