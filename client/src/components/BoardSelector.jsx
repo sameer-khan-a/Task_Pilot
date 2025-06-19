@@ -224,16 +224,13 @@ const BoardSelector = () => {
 
   // Navigate user to the selected board's detail page
   const gotoBoard = (boardId) => {
-    setLoading(true);
     try {
       navigate(`/boards/${boardId}`);
     }  
     catch(err){
       alert(err);
     }  
-    finally {
-      setLoading(false);
-    }  
+ 
   };  
   
   // Decode current user ID from JWT token in localStorage
