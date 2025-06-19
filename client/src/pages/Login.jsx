@@ -158,7 +158,7 @@ function Login() {
                   color: 'rgb(200, 218, 219)'
                 }}
               >
-                {loading?<img src="https://ima.alfatango.org/images/loader.gif" height="22px" width="40px" alt="" />:'Login'}
+                {loading?<img src="https://ima.alfatango.org/images/loader.gif" className="w-100" alt="" />:'Login'}
               </button>
             </div>
           </form>
