@@ -151,6 +151,7 @@ function Login() {
             {/* Login button */}
             <div className="d-grid">
               <button
+                disabled={loading}
                 type="submit"
                 className="btn btn-md w-50 mx-auto rounded-5"
                 style={{
@@ -158,7 +159,7 @@ function Login() {
                   color: 'rgb(200, 218, 219)'
                 }}
               >
-                {loading?<img src="https://ima.alfatango.org/images/loader.gif" className="w-100" alt="" />:'Login'}
+                {loading?'Logging in':'Login'}
               </button>
             </div>
           </form>

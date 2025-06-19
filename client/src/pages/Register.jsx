@@ -11,14 +11,15 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   // Hook to navigate to another route
   const navigate = useNavigate();
 
   // Handle registration form submission
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     // Validation: Name format
     const nameRegex = /^[A-Za-z\s]{2,}$/;
 
@@ -55,7 +56,10 @@ const Register = () => {
       navigate('/login');
     } catch (err) {
       console.error('Registration error: ', err);
-      alert('User Registration Failed !!!');
+      setError("User Registration Failed !!! Try Again.")
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -163,20 +167,29 @@ const Register = () => {
 
               {/* Show/hide password toggle */}
             </div>
-
             {/* Register button */}
             <center>
               <div className="d-grid">
                 <button
-                  className="btn btn-md w-50 mx-auto rounded-5"
+                  disabled={loading}
+                  className="btn register btn-md w-50 mx-auto rounded-5"
                   style={{
                     background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                     color: 'rgb(200, 218, 219)',
                   }}
                   type="submit"
-                >
-                  Register
+                  >
+                  {loading?'Registering':'Register'}
+
                 </button>
+                    <center>
+       
+                   {error && (
+                     <div className="alert alert-danger rounded-5 mt-2" role="alert" style={{ minWidth: '200px', maxWidth: '230px'}}>
+                       {error}
+                     </div>
+                   )}
+                   </center>
               </div>
             </center>
           </form>
