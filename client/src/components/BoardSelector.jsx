@@ -213,7 +213,7 @@ const BoardSelector = () => {
 
       // Clear invite input field for this board
       setInviteEmails({...inviteEmails, [boardId]: ''});
-      setMessage("Invitation Sent");
+      alert("Invitation Sent");
     } catch(err){
       console.error('Invite error: ', err);
       alert('Failed to invite user !!!');
@@ -242,25 +242,7 @@ const BoardSelector = () => {
   return (
     <div className="container py-5">
       <Navbar2 fetchBoards={fetchBoards}/>
-      <center>
-
-      {message && (
-        <div
-        className="alert alert-warning alert-dismissible fade show mt-2 w-50 rounded-5"
-        role="alert"
-        >
-    {message}
-    <button
-    type="button"
-    className="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-    onClick={() => setMessage('')}
-    ></button>
-    </div>
-    )}
-    
-    </center>
+      
 
       <div
         className="container"
