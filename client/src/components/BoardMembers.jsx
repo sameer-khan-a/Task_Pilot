@@ -104,7 +104,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
       </ul>
 
       {/* Show toggle if there are more than 2 members */}
-      {finalMembersToShow.length > 2 && (
+      {finalMembersToShow.length > 3 && (
         <button
           onClick={() => setShowAll(!showAll)}
           style={{
