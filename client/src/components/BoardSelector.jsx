@@ -246,7 +246,7 @@ const BoardSelector = () => {
 
       {message && (
         <div
-        className="alert alert-warning alert-dismissible fade show mt-2 w-25 rounded-5"
+        className="alert alert-warning alert-dismissible fade show mt-2 w-50 rounded-5"
         role="alert"
         >
     {message}
