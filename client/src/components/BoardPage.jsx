@@ -176,7 +176,7 @@ const BoardPage = () => {
               width: '100vw',
             }}
             >
-            {loading?<h1><img src="https://ima.alfatango.org/images/loader.gif" className="w-100" alt="" /></h1>:
+            
             <TaskBoard
               tasks={tasks}
               onDragUpdate={handleDragUpdate}
@@ -184,7 +184,7 @@ const BoardPage = () => {
               onUpdateTask={handleUpdateTask}
               loading={loading}
             />
-          }
+          
           </div>
         </div>
           

@@ -76,7 +76,7 @@ const BoardSelector = () => {
 
   useEffect(() => {
     fetchBoards();
-  }, [1]);
+  }, []);
 
   // Handler to create a new board
   const handleCreateBoard = async () => {
