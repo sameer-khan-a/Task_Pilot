@@ -16,7 +16,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
   };
 
   const getDueDateColor = (dueDate) => {
-    if(!dueDate) return '#f0f0f0';
+    if(!dueDate) return 'linear-gradient(to bottom, rgb(244, 190, 190), #F0E68C)';
 
     const today = new Date();
     const due = new Date(dueDate);
@@ -24,9 +24,9 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
     today.setHours(0,0,0,0);
     due.setHours(0, 0, 0, 0);
 
-    if(due<today) return '#ff6b6b'; 
-    if(due.getTime() === today.getTime()) return "#ffa500"; 
-    return '#90ee90';
+    if(due<today) return 'linear-gradient(to bottom, rgb(194, 110, 110),rgb(203, 38, 38))'; 
+    if(due.getTime() === today.getTime()) return "linear-gradient(to bottom, rgb(113, 154, 181),rgb(25, 124, 174))"; 
+    return 'linear-gradient(to bottom, rgb(104, 183, 126),rgb(39, 170, 76))';
   }
 
   // State to track which task description is expanded
@@ -110,8 +110,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                             {...provided.dragHandleProps}
                             style={{
                               ...dragStyle,
-                              borderLeft: `6px solid ${getDueDateColor(task.dueDate)}`,
-                              background: 'linear-gradient(to bottom, rgb(244, 190, 190), #F0E68C',
+                              background: getDueDateColor(task.dueDate),
                               transition: 'transform 0.25s ease, opacity 0.25s ease',
                               opacity: snapshot.isDragging ? 0.8 : 1,
                               transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
@@ -179,7 +178,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                   )}
                                 </div>
                                     <div style={{ marginBottom: '6px', textAlign: 'center' }}>
-                                      <b style={{ display: 'block', marginBottom: '2px' }}>Title</b>
+                                      <b style={{ display: 'block', marginBottom: '2px' }}>dueDate</b>
                                       <p style={{ margin: 0, wordBreak: 'break-word' }}>{task.dueDate}</p>
                                     </div>
 
