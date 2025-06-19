@@ -76,7 +76,7 @@ const BoardSelector = () => {
 
   useEffect(() => {
     fetchBoards();
-  }, []);
+  }, [1]);
 
   // Handler to create a new board
   const handleCreateBoard = async () => {
@@ -314,7 +314,7 @@ const BoardSelector = () => {
               No boards to show !!!
             </h3>
           ) : (
-                            loading?<img src="https://ima.alfatango.org/images/loader.gif" className="w-50" alt="" />:
+            
 
             // Map through boards and display each one
             boards.map((board) => {
