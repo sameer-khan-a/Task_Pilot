@@ -15,7 +15,19 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
     onDragUpdate(draggableId, destination.droppableId);
   };
 
-  
+  const getDueDateColor = (dueDate) => {
+    if(!dueDate) return '#f0f0f0';
+
+    const today = new Date();
+    const due = new Date(dueDate);
+
+    today.setHours(0,0,0,0);
+    due.setHours(0, 0, 0, 0);
+
+    if(due<today) return '#ff6b6b'; 
+    if(due.getTime() === today.getTime()) return "#ffa500"; 
+    return '#90ee90';
+  }
 
   // State to track which task description is expanded
   const [expandedCharsByTask, setExpandedCharsByTask] = useState({});
@@ -98,7 +110,8 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                             {...provided.dragHandleProps}
                             style={{
                               ...dragStyle,
-                              background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
+                              borderLeft: `6px solid ${getDueDateColor(task.dueDate)}`,
+                              background: 'linear-gradient(to bottom, rgb(244, 190, 190), #F0E68C',
                               transition: 'transform 0.25s ease, opacity 0.25s ease',
                               opacity: snapshot.isDragging ? 0.8 : 1,
                               transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
@@ -165,6 +178,10 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                     </button>
                                   )}
                                 </div>
+                                    <div style={{ marginBottom: '6px', textAlign: 'center' }}>
+                                      <b style={{ display: 'block', marginBottom: '2px' }}>Title</b>
+                                      <p style={{ margin: 0, wordBreak: 'break-word' }}>{task.dueDate}</p>
+                                    </div>
 
                                 {/* Task Creation Time */}
                                 <div style={{ marginBottom: '8px', textAlign: 'center' }}>
