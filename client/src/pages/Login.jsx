@@ -227,16 +227,21 @@ function Login() {
 
               {/* Reset password submit button */}
               <center>
-                  { forgotMessage &&(
-                                   <center>
-                  
-                    
-                    <div className="alert alert-danger rounded-5 mt-3" role="alert" style={{maxHeight: '80px', minWidth: '200px', maxWidth: '230px'}}>
-                                  {forgotMessage}
-                                </div>
-                                   </center>
-                                  )
-                  }
+                    {forgotMessage && (
+        <div
+        className="alert alert-warning alert-dismissible fade show mt-2 w-100 rounded-5"
+        role="alert"
+        >
+    {forgotMessage}
+    <button
+    type="button"
+    className="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    onClick={() => setForgotMessage('')}
+    ></button>
+    </div>
+    )}
                               
 
               <button
