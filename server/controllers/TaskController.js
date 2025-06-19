@@ -39,7 +39,7 @@ exports.getTasks = async (req, res) => {
 
 // Controller to update an existing task by taskId
 exports.updateTask = async (req, res) => {
-  const { title, description, status } = req.body;
+  const { title, description, status, dueDate } = req.body;
 
   try {
     // Find the task by primary key (taskId)
