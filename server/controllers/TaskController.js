@@ -4,13 +4,13 @@ const {hasBoardAccess}  = require('../utils/permissions');
 
 // Controller to create a new task
 exports.createTask = async (req, res) => {
-  const { title, description, status, boardId } = req.body;
+  const { title, description, status, boardId, dueDate } = req.body;
 
   try {
     const access = await hasBoardAccess(req.user.id, boardId);
     if(!access) return res.status(403).json({msg: "Access denied to this board"});
     // Create a new task record in the database
-    const task = await Task.create({ title, description, status, boardId });
+    const task = await Task.create({ title, description, status, boardId, dueDate });
 
     // Respond with the created task and HTTP status 201 (Created)
     res.status(201).json(task);
@@ -54,6 +54,7 @@ exports.updateTask = async (req, res) => {
     task.title = title || task.title;
     task.description = description || task.description;
     task.status = status || task.status;
+    task.dueDate = dueDate || task.dueDate;
 
     // Save the updated task to the database
     await task.save();

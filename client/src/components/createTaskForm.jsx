@@ -9,6 +9,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
 
   // State to hold task description input
   const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
   const [message, setMessage] = useState("");
 
@@ -26,6 +27,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
           description, // Task description from state
           status: 'todo', // Default status for new tasks
           boardId, // The board this task belongs to, passed as prop
+          dueDate
         },
         {
           headers: {
@@ -95,6 +97,16 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
             }}
           />
 
+          <input
+            type="date"
+            className="form-control w-100 rounded-5"
+            placeholder="Due Date"
+            value={dueDate}
+            onChange={(e) => {
+              setDueDate(e.target.value);
+            }}
+            required // Title is required field
+          />
           {/* Submit button */}
           <button
             type="submit"
