@@ -155,7 +155,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                     {(task.description || 'No Description to Show !').slice(0, expandedCharsByTask[task.id] || 55)}
                                   </p>
                                   {/* Toggle "Read more"/"Show less" */}
-                                  {task.description && task.description.length > 55 && (
+                                  {task.description && task.description.length > 50 && (
                                     <button
                                     onClick={() => toggleExpanded(task.id, task.description.length)}
                                     style={{
