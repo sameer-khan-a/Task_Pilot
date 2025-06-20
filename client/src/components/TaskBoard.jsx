@@ -168,7 +168,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                       padding: 0,
                                     }}
                                     >
-                                      {(expandedCharsByTask[task.id] || 55) >= task.description.length ? 'Show less' : 'Read more'}
+                                      {(expandedCharsByTask[task.id] || 50) >= task.description.length ? 'Show less' : 'Read more'}
                                     </button>
                                   )}
                                 </div>
