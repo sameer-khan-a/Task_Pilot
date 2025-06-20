@@ -28,7 +28,7 @@ console.error("Error fetching invitations: ", err); // Log error
 const fetchTaskNotifications = async () => {
     try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/notifications', {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, {
             headers: {Authorization: `Bearer ${token}`},
         });
         console.log(res.data);
