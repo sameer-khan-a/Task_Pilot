@@ -333,7 +333,7 @@ const BoardSelector = () => {
                       background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                       minWidth: '210px',// increased for wider appearance
                       maxWidth: '230px',
-                      minHeight: '480px',
+                      minHeight: '500px',
                       padding: '20px 40px',
                       borderRadius: '50px',
                       display: 'flex',
