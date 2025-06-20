@@ -66,7 +66,7 @@ const BoardPage = () => {
       try {
         const res = await axios.put(
           `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${task.id}`,
-          { title: newTitle, description: newDesc },
+          { title: newTitle, description: newDesc, dueDate: newDate },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
         // Replace updated task in list
