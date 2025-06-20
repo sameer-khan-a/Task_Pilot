@@ -43,7 +43,7 @@ const markNotificationAsRead = async (notificationId) => {
         await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${notificationId}/read`, null,  {
             headers: {Authorization: `Bearer ${token}`},
         });
-
+        fetchTaskNotifications();
         setNotifications(prev => 
             prev.map(n=> n.id === notificationId ? {...n, read: true}: n)
         );
