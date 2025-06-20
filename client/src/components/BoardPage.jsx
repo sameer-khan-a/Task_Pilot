@@ -61,6 +61,7 @@ const BoardPage = () => {
     setLoading(true);
     const newTitle = prompt('New title:', task.title);
     const newDesc = prompt('New description:', task.description);
+    const newDate = prompt('New Due Date:', task.dueDate);
     if (newTitle) {
       try {
         const res = await axios.put(
