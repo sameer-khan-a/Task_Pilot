@@ -35,11 +35,11 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
   // Toggle task description expansion
   const toggleExpanded = (taskId, totalChars) => {setExpandedCharsByTask((prev) => 
     {
-      const current = prev[taskId] || 55;
+      const current = prev[taskId] || 50;
       const next = current +140;
       return {
         ...prev,
-        [taskId]: current >= totalChars ? 55 : next,
+        [taskId]: current >= totalChars ? 50 : next,
       }
     });
       
