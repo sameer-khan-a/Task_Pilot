@@ -74,7 +74,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                   overflowX: 'auto',
                   flex: '0 0 29%',
                   padding: '20px 40px',
-                  maxWidth: '360px',
+                  maxWidth: '330px',
                   background: 'linear-gradient(to bottom right, #34495e, #2c3e50)',
                   minHeight: '430px',
                   borderRadius: '20%',
