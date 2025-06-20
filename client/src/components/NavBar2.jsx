@@ -221,7 +221,7 @@ Reject
             <span>{n.message}
                 {!n.read && <span className="badge bg-warning text-dark ms-2">New</span>}
             </span>
-            {!n.read && (
+            <br />{!n.read && (
                 <button
                 className="btn btn-sm btn-outline-secondary ms-2"
                 onClick={() => markNotificationAsRead(n.id)}
