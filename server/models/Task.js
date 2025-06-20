@@ -36,7 +36,7 @@ const Task = sequelize.define('Task', {
   // Could be the creator or assignee of the task
   userId: {
     type: DataTypes.INTEGER,
-    allowNull: true // Can be null if unassigned
+    allowNull: false // Can be null if unassigned
   }
 });
 

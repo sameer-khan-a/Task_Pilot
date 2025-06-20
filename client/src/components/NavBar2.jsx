@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import {io} from "socket.io-client";
 function Navbar2 ({fetchBoards}) {
 // State to store pending board invitations
 const [invitations, setInvitations] = useState([]);
-
+const [notifications, setNotifications] = useState([]);
 // Function to handle user logout
 const handleLogout = () => {
 // Remove auth token from localStorage to log out user
@@ -17,7 +17,7 @@ window.location.href = '/login';
 const fetchInvitations = async () => {
 try {
 const token = localStorage.getItem('token'); // Get auth token
-const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/my`, {
+const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/invitations/my`, {
 headers: {Authorization: `Bearer ${token}`},
 });
 setInvitations(res.data); // Store invitations in state
@@ -25,14 +25,39 @@ setInvitations(res.data); // Store invitations in state
 console.error("Error fetching invitations: ", err); // Log error
 }
 };
+const fetchTaskNotifications = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('${import.meta.env.VITE_API_BASE_URL}/api/notifications', {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+        console.log(res.data);
+        setNotifications(res.data);
+    } catch(err){
+        console.error("Error fetching task notifications: ", err);
+    }
+};
+const markNotificationAsRead = async (notificationId) => {
+    try {
+        const token = localStorage.getItem('token');
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/${notificationId}/read`, null,  {
+            headers: {Authorization: `Bearer ${token}`},
+        });
 
+        setNotifications(prev => 
+            prev.map(n=> n.id === notificationId ? {...n, read: true}: n)
+        );
+    } catch(err){
+        console.error("Failed to mark notification as read: ", err);
+    }
+};
 // Function to accept or decline an invitation
 const respondToInvitation = async (invitationId, action) => {
 try {
 const token = localStorage.getItem('token'); // Get auth token
 // Send response (accepted/declined) to backend
 await axios.post(
-`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${invitationId}/respond`,
+`${import.meta.env.VITE_API_BASE_URL}/api/invitations/${invitationId}/respond`,
 {response: action},
 {
 headers: {Authorization: `Bearer ${token}`},
@@ -53,6 +78,22 @@ console.error(`Error on ${action}:`, err); // Log error
 // Fetch invitations when component mounts
 useEffect(() => {
 fetchInvitations();
+fetchTaskNotifications();
+const token = localStorage.getItem('token');
+const userId = JSON.parse(atob(token.split('.')[1])).id;
+const socket = io("https://task-pilot-1.onrender.com");
+socket.emit("join", {userId});
+
+socket.on("notification:new", (newNotification) => {
+    setNotifications(prev => [newNotification, ...prev]);
+});
+socket.on("notification:delete", ({ taskId }) => {
+    setNotifications(prev =>
+      prev.filter(n => n.taskId !== taskId)
+    );
+  });
+
+return () => socket.disconnect();
 }, []);
 
 return (
@@ -128,12 +169,12 @@ style={{background: "transparent", border: "none", color: "white"}}
 <i className="bi bi-bell fs-5"></i>
 
 {/* Red badge showing number of pending invitations */}
-{invitations.length > 0 && (
+{(invitations.length + notifications.length) > 0 && (
 <span
 className="position-absolute translate-middle badge rounded-pill bg-danger"
 style={{top: '10px', left: '40px', fontSize: '0.7rem'}}
 >
-{invitations.length}
+{invitations.length + notifications.length}
 </span>
 )}
 </button>
@@ -144,6 +185,7 @@ className="dropdown-menu dropdown-menu-start "
 aria-labelledby="invitationDropdown"
 style={{minWidth: '300px', background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'}}
 >
+<li className="dropdown-header fw-bold">Invitation alerts</li>
 {/* Show message if no invitations */}
 {invitations.length === 0 ? (
 <li className="dropdown-item text-muted">No Invitations</li>
@@ -168,6 +210,28 @@ Reject
 </div>
 </li>
 ))
+)}
+<li><hr className="dropdown-divider" /></li>
+<li className="dropdown-header fw-bold">Task alerts</li>
+{notifications.length === 0 ? (
+    <li className="dropdown-item text-muted">No Task Notifications</li>
+): (
+    notifications.map(n => (
+        <li key={`noti-${n.id}`} className={`dropdown-item ${n.read? 'text-muted': ''}`}>
+            <span>{n.message}
+                {!n.read && <span className="badge bg-warning text-dark ms-2">New</span>}
+            </span>
+            {!n.read && (
+                <button
+                className="btn btn-sm btn-outline-secondary ms-2"
+                onClick={() => markNotificationAsRead(n.id)}
+                >
+                    Mark as read
+                </button>
+            )}
+            
+        </li>
+    ))
 )}
 </ul>
 </div>

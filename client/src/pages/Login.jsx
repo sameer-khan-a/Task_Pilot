@@ -10,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
   // State for displaying login errors
   const [error, setError] = useState("");
 
@@ -33,7 +34,7 @@ function Login() {
 
     try {
       // Send login request to backend
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -54,11 +55,15 @@ function Login() {
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     setForgotMessage("");
+    if (!passwordRegex.test(newPassword)) {
+      alert('Password must be at least 8 characters long and include uppercase, lowercase, number and special character.');
+      return;
+    }
     setLoading(true);
 
     try {
       // Send reset password request to backend
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/reset-password`, {
         email: forgotEmail,
         password: newPassword,
       });

@@ -1,17 +1,19 @@
 // Import the Task model
 const Task = require('../models/Task');
+const Notification = require('../models/Notification');
 const {hasBoardAccess}  = require('../utils/permissions');
-
+const {checkDueDateNotifications} = require('../dueDateNotifier');
 // Controller to create a new task
 exports.createTask = async (req, res) => {
-  const { title, description, status, boardId, dueDate } = req.body;
-
+  const { title, description, status, boardId, dueDate} = req.body;
+  const userId = req.user.id;
   try {
     const access = await hasBoardAccess(req.user.id, boardId);
     if(!access) return res.status(403).json({msg: "Access denied to this board"});
     // Create a new task record in the database
-    const task = await Task.create({ title, description, status, boardId, dueDate });
-
+    const task = await Task.create({ title, description, status, boardId, dueDate, userId });
+    
+    await checkDueDateNotifications();
     // Respond with the created task and HTTP status 201 (Created)
     res.status(201).json(task);
   } catch (err) {
@@ -28,7 +30,7 @@ exports.getTasks = async (req, res) => {
     if(!access) return res.status(403).json({msg: "Access denied to this board's tasks"});
     // Find all tasks where boardId matches the route parameter
     const tasks = await Task.findAll({ where: { boardId } });
-
+    
     // Respond with the list of tasks and HTTP status 200 (OK)
     res.status(200).json(tasks);
   } catch (err) {
@@ -40,14 +42,14 @@ exports.getTasks = async (req, res) => {
 // Controller to update an existing task by taskId
 exports.updateTask = async (req, res) => {
   const { title, description, status, dueDate } = req.body;
-
+  
   try {
     // Find the task by primary key (taskId)
     const task = await Task.findByPk(req.params.taskId);
-
+    
     // If task doesn't exist, return 404
     if (!task) return res.status(404).json({ msg: "Task does not exist" });
-
+    
     const access = await hasBoardAccess(req.user.id, task.boardId);
     if(!access) return res.status(403).json({msg: "Access denied to this board's task"});
     // Update fields only if they are provided, otherwise keep existing values
@@ -55,10 +57,10 @@ exports.updateTask = async (req, res) => {
     task.description = description || task.description;
     task.status = status || task.status;
     task.dueDate = dueDate || task.dueDate;
-
+    
     // Save the updated task to the database
     await task.save();
-
+    
     // Respond with the updated task and HTTP status 200 (OK)
     res.status(200).json(task);
   } catch (err) {
@@ -72,14 +74,18 @@ exports.deleteTask = async (req, res) => {
   try {
     // Find the task by primary key (taskId)
     const task = await Task.findByPk(req.params.taskId);
-
+    
     // If task not found, return 404
     if (!task) return res.status(404).json({ msg: "Task not found !!!" });
-
+    
     const access = await hasBoardAccess(req.user.id, task.boardId);
     if(!access) return res.status(403).json({msg: "Access denied to this board's task"});
     // Delete the task from the database
     await task.destroy();
+    await Notification.destroy({where: {taskId: task.id}});
+      if (global.io) {
+      global.io.to(`user-${task.userId}`).emit('notification:delete', { taskId: task.id });
+    }
 
     // Respond with success message and HTTP status 200 (OK)
     res.status(200).json({ msg: "Task deleted successfully" });

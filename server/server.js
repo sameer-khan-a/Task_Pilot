@@ -6,7 +6,8 @@ require('./models');
 
 // Import core modules
 const express = require('express');
-
+const http = require('http');
+const {Server} = require('socket.io');
 // Import database connection functions and Sequelize instance
 const { connectDB } = require('./config/db');
 const { sequelize } = require('./config/db');
@@ -16,6 +17,7 @@ const boardRoutes = require('./routes/boardRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const boardMemberRoutes = require('./routes/boardMemberRoutes');
 const invitationRoutes = require('./routes/invitationRoutes');
+const notificationRoutes = require('./routes/notificationRoutes')
 
 // Connect to the database
 connectDB();
@@ -23,16 +25,37 @@ connectDB();
 // Sync Sequelize models with the database
 // `alter: true` updates tables to match the current model definitions without dropping them
 sequelize.sync({ alter: true })
-  .then(() => {
-    console.log('📦 All Tables synced');
-  })
-  .catch(err => {
-    console.error('❌ Failed to sync Databases: ', err);
-  });
+.then(() => {
+  console.log('📦 All Tables synced');
+})
+.catch(err => {
+  console.error('❌ Failed to sync Databases: ', err);
+});
 
 // Initialize the Express app
 const app = express();
+const server = http.createServer(app);
 
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+})
+global.io = io;
+
+io.on('connection', (socket) => {
+  console.log('🟢 New socket connected: ', socket.id);
+  socket.on('join', ({userId}) => {
+    if(userId){
+      socket.join(`user-${userId}`);
+      console.log(`User ${userId} joined room user-${userId}`);
+    }
+  })
+  socket.on('disconnect', () => {
+    console.log('🔴 Socket disconnected: ', socket.id);
+  })
+})
 // Enable CORS (Cross-Origin Resource Sharing) to allow frontend apps from different origins to communicate
 const cors = require("cors");
 app.use(cors({
@@ -45,14 +68,16 @@ app.use(express.json());
 
 // Mount API route handlers
 app.use('/api/invitations', invitationRoutes); // Routes for handling board invitations
+app.use('/api/notifications', notificationRoutes); // Routes for handling board invitations
 app.use('/api/auth', require('./routes/authRoutes')); // Routes for authentication (login, register, etc.)
 app.use('/api/user', require('./routes/userRoutes')); // Routes for user profile and user data
 app.use('/api/boards', boardRoutes); // Routes for board CRUD operations
 app.use('/api/tasks', taskRoutes); // Routes for task CRUD operations
 app.use('/api/boardMembers', boardMemberRoutes); // Routes for managing board members
 
+require('./dueDateNotifier');
 // Start the server on the specified port (default is 5000 if not in .env)
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });

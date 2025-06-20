@@ -4,7 +4,7 @@ const Board = require('./Board');
 const Task = require('./Task');
 const BoardMember = require('./BoardMember');
 const BoardInvitation = require('./BoardInvitation');
-
+const Notification = require('./Notification');
 // ---------------------- User ↔ Board (Many-to-Many via BoardMember) ----------------------
 
 // Define many-to-many relationship between Users and Boards through BoardMember join table
@@ -79,6 +79,14 @@ BoardInvitation.belongsTo(Board, {
   foreignKey: 'boardId',
   onDelete: 'CASCADE'         // If board is deleted, invitations are also removed
 });
-
+Notification.belongsTo(Task, {
+  foreignKey: 'taskId',
+  onDelete: 'CASCADE',
+});
+Task.hasMany(Notification, {
+  foreignKey: 'taskId',
+  onDelete: 'CASCADE',
+})
+Notification.belongsTo(User, {foreignKey: 'userId'});
 // ---------------------- Export all models ----------------------
-module.exports = { User, Board, Task, BoardMember, BoardInvitation };
+module.exports = { User, Board, Task, BoardMember, BoardInvitation, Notification };
