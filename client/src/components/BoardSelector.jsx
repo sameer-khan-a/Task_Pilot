@@ -33,12 +33,12 @@ const BoardSelector = () => {
   // State to trigger refresh for board members lists keyed by board id
   const [memberRefreshKeys, setMemberRefreshKeys] = useState({});
 
-  // Fetch boards and their owner emails from ${import.meta.env.VITE_API_BASE_URL}/api when component mounts
+  // Fetch boards and their owner emails from ${import.meta.env.VITE_BACKEND_URL}/api when component mounts
    const fetchBoards = async () => {
       setLoading(true);
       try {
         // Get all boards for the user
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/boards`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Auth token from localStorage
           },
@@ -50,7 +50,7 @@ const BoardSelector = () => {
         const boardsWithOwnerEmail = await Promise.all(
           boardsData.map(async (board) => {
             try {
-              const userRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${board.createdBy}`, {
+              const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${board.createdBy}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -84,9 +84,9 @@ const BoardSelector = () => {
     setError("");// Don't allow empty board names
     setLoading(true);
     try {
-      // Create new board via ${import.meta.env.VITE_API_BASE_URL}/api
+      // Create new board via ${import.meta.env.VITE_BACKEND_URL}/api
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/boards/create`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/boards/create`,
         { name: newBoardName },
         {
           headers: {
@@ -96,7 +96,7 @@ const BoardSelector = () => {
       );
 
       // Fetch owner's email for the new board
-      const userRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${res.data.createdBy}`, {
+      const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${res.data.createdBy}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -119,9 +119,9 @@ const BoardSelector = () => {
   const handleUpdate = async (boardId) => {
     setLoading(true);
     try {
-      // Update board name via ${import.meta.env.VITE_API_BASE_URL}/api
+      // Update board name via ${import.meta.env.VITE_BACKEND_URL}/api
       const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/boards/${boardId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`,
         { name: editedName },
         {
           headers: {
@@ -151,8 +151,8 @@ const BoardSelector = () => {
     
     setLoading(true);
     try {
-      // Delete board via ${import.meta.env.VITE_API_BASE_URL}/api
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/boards/${boardId}`, {
+      // Delete board via ${import.meta.env.VITE_BACKEND_URL}/api
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -172,8 +172,8 @@ const BoardSelector = () => {
     
     setLoading(true);
     try {
-      // Post to leave board ${import.meta.env.VITE_API_BASE_URL}/api
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/boards/${boardId}/leave`, {}, {
+      // Post to leave board ${import.meta.env.VITE_BACKEND_URL}/api
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -197,8 +197,8 @@ const BoardSelector = () => {
     if(!email) return; // Do nothing if email input is empty
 
     try {
-      // Send invite via ${import.meta.env.VITE_API_BASE_URL}/api
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/invitations/${boardId}/invite`, 
+      // Send invite via ${import.meta.env.VITE_BACKEND_URL}/api
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${boardId}/invite`, 
         { email },{headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

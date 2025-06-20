@@ -15,7 +15,7 @@ const BoardPage = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_API_BASE_URL}/api/tasks/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}${import.meta.env.VITE_BACKEND_URL}/api/tasks/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -41,7 +41,7 @@ const BoardPage = () => {
   const fetchBoardDetails = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/boards/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -65,7 +65,7 @@ const BoardPage = () => {
     if (newTitle) {
       try {
         const res = await axios.put(
-          `${import.meta.env.VITE_API_BASE_URL}/api/tasks/${task.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${task.id}`,
           { title: newTitle, description: newDesc, dueDate: newDate },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
@@ -85,7 +85,7 @@ const BoardPage = () => {
   const handleDeleteTask = async (taskId) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/tasks/${taskId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setTasks(tasks.filter((t) => t.id !== taskId)); // Remove deleted task from list
@@ -111,7 +111,7 @@ const BoardPage = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/tasks/${taskId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

@@ -17,7 +17,7 @@ window.location.href = '/login';
 const fetchInvitations = async () => {
 try {
 const token = localStorage.getItem('token'); // Get auth token
-const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/invitations/my`, {
+const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/my`, {
 headers: {Authorization: `Bearer ${token}`},
 });
 setInvitations(res.data); // Store invitations in state
@@ -28,7 +28,7 @@ console.error("Error fetching invitations: ", err); // Log error
 const fetchTaskNotifications = async () => {
     try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('${import.meta.env.VITE_API_BASE_URL}/api/notifications', {
+        const res = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/notifications', {
             headers: {Authorization: `Bearer ${token}`},
         });
         console.log(res.data);
@@ -40,7 +40,7 @@ const fetchTaskNotifications = async () => {
 const markNotificationAsRead = async (notificationId) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/${notificationId}/read`, null,  {
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${notificationId}/read`, null,  {
             headers: {Authorization: `Bearer ${token}`},
         });
 
@@ -57,7 +57,7 @@ try {
 const token = localStorage.getItem('token'); // Get auth token
 // Send response (accepted/declined) to backend
 await axios.post(
-`${import.meta.env.VITE_API_BASE_URL}/api/invitations/${invitationId}/respond`,
+`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${invitationId}/respond`,
 {response: action},
 {
 headers: {Authorization: `Bearer ${token}`},
