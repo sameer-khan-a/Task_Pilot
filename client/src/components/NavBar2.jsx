@@ -46,7 +46,6 @@ const markNotificationAsRead = async (notificationId) => {
         setNotifications(prev => 
             prev.map(n=> n.id === notificationId ? {...n, read: true}: n)
         );
-        fetchTaskNotifications();
     } catch(err){
         console.error("Failed to mark notification as read: ", err);
     }
@@ -217,11 +216,11 @@ Reject
     <li className="dropdown-item text-muted">No Task Notifications</li>
 ): (
     notifications.map(n => (
-        <li key={`noti-${n.id}`} className={`dropdown-item ${n.read? 'text-muted': ''}`}>
+        <li key={`noti-${n.id}`} className={`dropdown-item ${n.isRead? 'text-muted': ''}`}>
             <span>{n.message}
-                {!n.read && <span className="badge bg-warning text-dark ms-2">New</span>}
+                {!n.isRead && <span className="badge bg-warning text-dark ms-2">New</span>}
             </span>
-            <br />{!n.read && (
+            <br />{!n.isRead && (
                 <button
                 className="btn btn-sm btn-outline-secondary ms-2"
                 onClick={() => markNotificationAsRead(n.id)}
