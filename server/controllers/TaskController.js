@@ -19,10 +19,10 @@ exports.createTask = async (req, res) => {
     const daysLeft = due.diff(today, 'days');
 
      let message = ``;
-            if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
-            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
-            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
-            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
+             if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
+            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;
+            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today. \n from "${board.title}" board`;
+            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue. \n from "${board.title}" board`;
             if (message) {
                 
                 const newNotification = await Notification.create({
@@ -92,10 +92,10 @@ exports.updateTask = async (req, res) => {
       const daysLeft = due.diff(today, 'days');
 
       let message = "";
-      if (daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
-      else if (daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
-      else if (daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
-      else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
+        if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
+            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;
+            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today. \n from "${board.title}" board`;
+            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue. \n from "${board.title}" board`;
 
       const existingNotification = await Notification.findOne({
         where: { taskId: task.id },
