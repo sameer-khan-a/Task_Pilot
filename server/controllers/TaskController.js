@@ -5,6 +5,7 @@ const Board = require('../models/Board');
 const moment = require('moment');
 const {hasBoardAccess}  = require('../utils/permissions');
 const {checkDueDateNotifications} = require('../dueDateNotifier');
+const { BoardMember } = require('../models');
 // Controller to create a new task
 exports.createTask = async (req, res) => {
   const { title, description, status, boardId, dueDate} = req.body;
@@ -27,16 +28,19 @@ exports.createTask = async (req, res) => {
             else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.\n from "${board.name}" board`;
             else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue.\n from "${board.name}" board`;
             if (message) {
-                
-                const newNotification = await Notification.create({
-                        userId: task.userId,
-                        taskId: task.id,
-                        boardId: task.boardId || null,
-                        message
-                    });
-                      if(global.io) {
-                        global.io.to(`user-${task.userId}`).emit('notification:new', newNotification);
-                    }
+                const members = await BoardMember.getMembers(task.boardId);
+                for(const member of members){
+
+                  const newNotification = await Notification.create({
+                    userId: member.id,
+                    taskId: task.id,
+                    boardId: task.boardId || null,
+                    message
+                  });
+                  if(global.io) {
+                    global.io.to(`user-${member.id}`).emit('notification:new', newNotification);
+                }
+                }
             }
     
     await checkDueDateNotifications();
@@ -72,7 +76,7 @@ exports.updateTask = async (req, res) => {
 
   try {
     
-
+    
     const task = await Task.findByPk(req.params.taskId);
     if (!task) return res.status(404).json({ msg: "Task does not exist" });
 
@@ -96,31 +100,34 @@ exports.updateTask = async (req, res) => {
                  task.boardId
             )
       let message = "";
+      
         if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".\n from "${board.name}" board.`;
             else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow.\n from "${board.name}" board`;
             else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.\n from "${board.name}" board`;
             else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue.\n from "${board.name}" board`;
 
-      const existingNotification = await Notification.findOne({
-        where: { taskId: task.id },
+                const members = await BoardMember.getMembers(task.boardId);
+                for(const member of members){
+      const existing = await Notification.findOne({
+        where: { taskId: task.id, userId: member.id },
       });
 
       if (message) {
-        if (!existingNotification) {
+        if (!existing) {
           const newNotification = await Notification.create({
-            userId: task.userId,
+            userId: member.id,
             taskId: task.id,
             boardId: task.boardId || null,
             message
           });
           if (global.io) {
-            global.io.to(`user-${task.userId}`).emit('notification:new', newNotification);
+            global.io.to(`user-${member.id}`).emit('notification:new', newNotification);
           }
         } else {
           existingNotification.message = message;
           await existingNotification.save();
           if (global.io) {
-            global.io.to(`user-${task.userId}`).emit('notification:update', existingNotification);
+            global.io.to(`user-${member.d}`).emit('notification:update', existingNotification);
           }
         }
       } else {
@@ -129,12 +136,12 @@ exports.updateTask = async (req, res) => {
             where: { userId: task.userId, taskId: task.id }
           });
           if (global.io) {
-            global.io.to(`user-${task.userId}`).emit('notification:delete', { taskId: task.id });
+            global.io.to(`user-${member.id}`).emit('notification:delete', { taskId: task.id });
           }
         }
       }
     }
-
+  }
     await task.save();
     res.status(200).json(task);
   } catch (err) {
