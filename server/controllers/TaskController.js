@@ -31,7 +31,7 @@ exports.createTask = async (req, res) => {
 
     if (message) {
       const members = await BoardMember.findAll({ where: { boardId } });
-
+      console.log(members);
       for (const m of members) {
         const newNotification = await Notification.create({
           userId: m.userId,
@@ -99,7 +99,7 @@ exports.updateTask = async (req, res) => {
       else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue.\nFrom "${board.name}" board`;
 
       const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
-
+      console.log(members);
       for (const m of members) {
         const existingNotification = await Notification.findOne({
           where: { taskId: task.id, userId: m.userId }
