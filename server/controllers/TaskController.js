@@ -30,18 +30,25 @@ exports.createTask = async (req, res) => {
     else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue.\nFrom "${board.name}" board`;
 
     if (message) {
-      const members = await BoardMember.findAll({ where: { boardId } });
+      const board = await Board.findByPk(boardId);
+const members = await BoardMember.findAll({ where: { boardId } });
+
+// Create an array of all user IDs (members + owner)
+const allUserIds = members.map(m => m.userId);
+if (!allUserIds.includes(board.createdBy)) {
+  allUserIds.push(board.createdBy);
+}
       console.log(members);
-      for (const m of members) {
+      for (const userId of allUserIds) {
         const newNotification = await Notification.create({
-          userId: m.userId,
+          userId: userId,
           taskId: task.id,
           boardId,
           message
         });
 
         if (global.io) {
-          global.io.to(`user-${m.userId}`).emit('notification:new', newNotification);
+          global.io.to(`user-${userId}`).emit('notification:new', newNotification);
         }
       }
     }
@@ -98,32 +105,40 @@ exports.updateTask = async (req, res) => {
       else if (daysLeft === 0) message = `📌 Task "${task.title}" is due today.\nFrom "${board.name}" board`;
       else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue.\nFrom "${board.name}" board`;
 
-      const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
+       
+const members = await BoardMember.findAll({ where: { boardId } });
+
+// Create an array of all user IDs (members + owner)
+const allUserIds = members.map(m => m.userId);
+if (!allUserIds.includes(board.createdBy)) {
+  allUserIds.push(board.createdBy);
+}
+
       console.log(members);
-      for (const m of members) {
+      for (const userId of allUserIds) {
         const existingNotification = await Notification.findOne({
-          where: { taskId: task.id, userId: m.userId }
+          where: { taskId: task.id, userId: userId }
         });
 
         if (message) {
           if (!existingNotification) {
             const newNotification = await Notification.create({
-              userId: m.userId,
+              userId: userId,
               taskId: task.id,
               boardId: task.boardId,
               message
             });
 
-            if (global.io) global.io.to(`user-${m.userId}`).emit('notification:new', newNotification);
+            if (global.io) global.io.to(`user-${userId}`).emit('notification:new', newNotification);
           } else {
             existingNotification.message = message;
             await existingNotification.save();
-            if (global.io) global.io.to(`user-${m.userId}`).emit('notification:update', existingNotification);
+            if (global.io) global.io.to(`user-${userId}`).emit('notification:update', existingNotification);
           }
         } else {
           if (existingNotification) {
             await existingNotification.destroy();
-            if (global.io) global.io.to(`user-${m.userId}`).emit('notification:delete', { taskId: task.id });
+            if (global.io) global.io.to(`user-${userId}`).emit('notification:delete', { taskId: task.id });
           }
         }
       }

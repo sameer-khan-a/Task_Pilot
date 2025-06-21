@@ -25,52 +25,55 @@ const checkDueDateNotifications = async () => {
       else if (daysLeft === 0) message = `📌 Task "${task.title}" is due today.\nFrom "${board.name}" board.`;
       else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue.\nFrom "${board.name}" board.`;
 
-      const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
+    const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
 
-      for (const m of members) {
-        const userId = m.userId;
 
-        const existing = await Notification.findOne({
-          where: {
-            userId,
-            taskId: task.id
-          }
-        });
+// Combine members + board owner
+const allUserIds = members.map(m => m.userId);
+if (board && !allUserIds.includes(board.createdBy)) {
+  allUserIds.push(board.createdBy);
+}
 
-        if (message) {
-          if (!existing) {
-            const newNotification = await Notification.create({
-              userId,
-              taskId: task.id,
-              boardId: task.boardId || null,
-              message
-            });
-            if (global.io) {
-              global.io.to(`user-${userId}`).emit('notification:new', newNotification);
-            }
-          } else if (existing.message !== message) {
-            existing.message = message;
-            await existing.save();
-            if (global.io) {
-              global.io.to(`user-${userId}`).emit('notification:update', existing.toJSON());
-            }
-          }
-        } else {
-          if (existing) {
-            await Notification.destroy({
-              where: {
-                userId,
-                taskId: task.id
-              }
-            });
-            if (global.io) {
-              global.io.to(`user-${userId}`).emit('notification:delete', { taskId: task.id });
-            }
-          }
-        }
+for (const userId of allUserIds) {
+  const existing = await Notification.findOne({
+    where: {
+      userId,
+      taskId: task.id
+    }
+  });
+
+  if (message) {
+    if (!existing) {
+      const newNotification = await Notification.create({
+        userId,
+        taskId: task.id,
+        boardId: task.boardId || null,
+        message
+      });
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:new', newNotification);
+      }
+    } else if (existing.message !== message) {
+      existing.message = message;
+      await existing.save();
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:update', existing.toJSON());
       }
     }
-
+  } else {
+    if (existing) {
+      await Notification.destroy({
+        where: {
+          userId,
+          taskId: task.id
+        }
+      });
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:delete', { taskId: task.id });
+      }
+    }
+  }
+}}
     console.log(`✅ Due date notification check completed. Found ${tasks.length} tasks.`);
   } catch (error) {
     console.error('❌ Error in due date notifier:', error);
