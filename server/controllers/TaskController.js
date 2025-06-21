@@ -76,11 +76,38 @@ exports.updateTask = async (req, res) => {
     const access = await hasBoardAccess(req.user.id, task.boardId);
     if(!access) return res.status(403).json({msg: "Access denied to this board's task"});
     // Update fields only if they are provided, otherwise keep existing values
+    const previousDueDate = task.dueDate;
     task.title = title || task.title;
     task.description = description || task.description;
     task.status = status || task.status;
     task.dueDate = dueDate || task.dueDate;
-    
+    if(dueDate && dueDate !== previousDueDate){
+
+      const moment = require('moment');
+      const {Notification} = require('../models');
+      const today = moment().startOf('day');
+      const due = moment(task.dueDate).startOf('day');
+      const daysLeft = due.diff(today, 'days');
+      
+      let message = ``;
+            if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
+            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
+            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
+            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
+            if (message) {
+              
+              const existingNotification = await Notification.findOne({
+                        where: {taskId: task.id},
+                      });
+                      if(existingNotification){
+                        existingNotification.message = message;
+                        await existingNotification.save();
+                        if(global.io) {
+                          global.io.to(`user-${task.userId}`).emit('notification:update', existingNotification);
+                        }
+                      }
+                    }
+                    }
     // Save the updated task to the database
     await task.save();
     
