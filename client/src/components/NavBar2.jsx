@@ -81,7 +81,7 @@ const userId = JSON.parse(atob(token.split('.')[1])).id;
 const socket = io("https://task-pilot-1.onrender.com");
 if(token && userId){
 
-    socket.emit("join", {userId});
+    socket.emit("join", `user-${userId}`);
 }
 
 socket.on("notification:new", (newNotification) => {
