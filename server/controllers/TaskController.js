@@ -12,6 +12,29 @@ exports.createTask = async (req, res) => {
     if(!access) return res.status(403).json({msg: "Access denied to this board"});
     // Create a new task record in the database
     const task = await Task.create({ title, description, status, boardId, dueDate, userId });
+    const moment = require('moment');
+    const {Notification} = require('../models');
+    const today = moment().startOf('day');
+    const due = moment(task.dueDate).startOf('day');
+    const daysLeft = due.diff(today, 'days');
+
+     let message = ``;
+            if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
+            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
+            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
+            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
+            if (message) {
+                
+                const newNotification = await Notification.create({
+                        userId: task.userId,
+                        taskId: task.id,
+                        boardId: task.boardId || null,
+                        message
+                    });
+                      if(global.io) {
+                        global.io.to(`user-${task.userId}`).emit('notification:new', newNotification);
+                    }
+            }
     
     await checkDueDateNotifications();
     // Respond with the created task and HTTP status 201 (Created)
