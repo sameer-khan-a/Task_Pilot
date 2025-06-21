@@ -46,10 +46,10 @@ global.io = io;
 
 io.on('connection', (socket) => {
   console.log('🟢 New socket connected: ', socket.id);
-  socket.on('join', ({userId}) => {
-    if(userId){
-      socket.join(`user-${userId}`);
-      console.log(`User ${userId} joined room user-${userId}`);
+  socket.on('join', (roomName) => {
+    if(roomName){
+      socket.join(roomName);
+      console.log(`Socket ${socket.id} joined room user-${roomName}`);
     }
   })
   socket.on('disconnect', () => {
