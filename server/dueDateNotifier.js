@@ -26,8 +26,7 @@ const checkDueDateNotifications = async () => {
                 const existing = await Notification.findOne({
                     where: {
                         userId: task.userId,
-                        taskId: task.id,
-                        message
+                        taskId: task.id
                     }
                 });
                 if(!existing){
