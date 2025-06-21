@@ -2,6 +2,7 @@
 const Task = require('../models/Task');
 const Notification = require('../models/Notification');
 const Board = require('../models/Board');
+const moment = require('moment');
 const {hasBoardAccess}  = require('../utils/permissions');
 const {checkDueDateNotifications} = require('../dueDateNotifier');
 // Controller to create a new task
@@ -13,15 +14,13 @@ exports.createTask = async (req, res) => {
     if(!access) return res.status(403).json({msg: "Access denied to this board"});
     // Create a new task record in the database
     const task = await Task.create({ title, description, status, boardId, dueDate, userId });
-    const moment = require('moment');
-    const {Notification} = require('../models');
+    
     const today = moment().startOf('day');
     const due = moment(task.dueDate).startOf('day');
     const daysLeft = due.diff(today, 'days');
-     const board = await Board.findOne({
-                where: {
-                boardId: task.boardId
-            }})
+     const board = await Board.findByPk(
+                 task.boardId
+            )
      let message = ``;
              if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
             else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;
@@ -72,8 +71,7 @@ exports.updateTask = async (req, res) => {
   const { title, description, status, dueDate } = req.body;
 
   try {
-    const moment = require('moment');
-    const { Notification } = require('../models');
+    
 
     const task = await Task.findByPk(req.params.taskId);
     if (!task) return res.status(404).json({ msg: "Task does not exist" });
@@ -94,10 +92,9 @@ exports.updateTask = async (req, res) => {
       const today = moment().startOf('day');
       const due = moment(task.dueDate).startOf('day');
       const daysLeft = due.diff(today, 'days');
-     const board = await Board.findOne({
-                where: {
-                boardId: task.boardId
-            }})
+     const board = await Board.findByPk(
+                 task.boardId
+            )
       let message = "";
         if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
             else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;

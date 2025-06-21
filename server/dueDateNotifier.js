@@ -18,10 +18,9 @@ const checkDueDateNotifications = async () => {
         for(const task of tasks) {
             const daysLeft = moment(task.dueDate).startOf('day').diff(today, 'days');
             let message = ``;
-            const board = await Board.findOne({
-                where: {
-                boardId: task.boardId
-            }})
+             const board = await Board.findByPk(
+                 task.boardId
+            )
             if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
             else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;
             else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today. \n from "${board.title}" board`;
