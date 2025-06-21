@@ -106,7 +106,7 @@ exports.updateTask = async (req, res) => {
       else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue.\nFrom "${board.name}" board`;
 
        
-const members = await BoardMember.findAll({ where: { boardId } });
+const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
 
 // Create an array of all user IDs (members + owner)
 const allUserIds = members.map(m => m.userId);
