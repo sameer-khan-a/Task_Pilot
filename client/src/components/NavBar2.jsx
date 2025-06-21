@@ -224,9 +224,12 @@ Reject
 {notifications.length === 0 ? (
     <li className="dropdown-item text-muted">No Task Notifications</li>
 ): (
-    notifications.map(n => (
-        <li key={`noti-${n.id}`} className={`dropdown-item ${n.isRead? 'text-muted': ''}`}>
-            const [firstLine, secondLine] = n.message.split("\n");
+    notifications.map(n => {
+
+        const [firstLine, secondLine] = n.message.split("\n");
+        return (
+
+            <li key={`noti-${n.id}`} className={`dropdown-item ${n.isRead? 'text-muted': ''}`}>
             <span>{firstLine}
                 {!n.isRead && <span className="badge bg-warning text-dark ms-2">New</span>}
             </span>
@@ -242,8 +245,10 @@ Reject
             )}
             
         </li>
-    ))
 )}
+    ))
+}
+
 </ul>
 </div>
 
