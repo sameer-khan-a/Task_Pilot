@@ -42,8 +42,17 @@ const checkDueDateNotifications = async () => {
                         global.io.to(`user-${task.userId}`).emit('notification:new', newNotification);
                     }
                 }
+                else if(existing.message !== message){
+                    existing.message = message;
+                    await existing.save();
+                    if(global.io) {
+                        global.io.to(`user-${task.userId}`).emit('notification:update', existing);
+                    }
+                }
+
+                }
             }
-        }
+        
         console.log(`found ${tasks.length} tasks`);
         console.log('✅ Due date notification check completed.');
     } catch(error) {
