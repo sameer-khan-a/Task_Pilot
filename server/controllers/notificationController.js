@@ -6,7 +6,16 @@ exports.getNotifications = async (req, res) => {
             where: {userId: req.user.id},
             order: [['createdAt', 'DESC']]
         });
-        res.json(notifications);
+        const now = new Date();
+        const enhancedNotifications = notifications.map(n=> {
+            const isRead = n.readAt && (now - new Date(n.readAt)) < 24 * 60 * 60 * 1000;
+            return {
+                ...n.toJSON(),
+                isRead,
+            }
+        });
+
+        res.json(enhancedNotifications);
     } catch(error){
         console.error("Error fetching notifications: ", error);
         res.status(500).json({message: 'Internal server error'});
@@ -25,7 +34,7 @@ exports.markAsRead = async (req, res) => {
             return res.status(404).json({message: 'Notification not found'});
         }
 
-        notification.isRead = true;
+        notification.readAt = new Date();
         await notification.save();
 
         res.json({message: "Notification marked as read"});
