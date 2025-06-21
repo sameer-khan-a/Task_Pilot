@@ -226,9 +226,12 @@ Reject
 ): (
     notifications.map(n => (
         <li key={`noti-${n.id}`} className={`dropdown-item ${n.isRead? 'text-muted': ''}`}>
-            <span style={{whiteSpace: 'pre-line'}}>{n.message}
+            const [firstLine, secondLine] = n.message.split("\n");
+            <span>{firstLine}
                 {!n.isRead && <span className="badge bg-warning text-dark ms-2">New</span>}
             </span>
+            <br />
+            <span className="small text-muted">secondLine</span>
             <br />{!n.isRead && (
                 <button
                 className="btn btn-sm btn-outline-secondary ms-2"
