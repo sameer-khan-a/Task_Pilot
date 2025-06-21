@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {io} from "socket.io-client";
+import { useRef } from "react";
 function Navbar2 ({fetchBoards}) {
 // State to store pending board invitations
+const socketRef = useRef(null);
 const [invitations, setInvitations] = useState([]);
 const [notifications, setNotifications] = useState([]);
 // Function to handle user logout
@@ -74,16 +76,17 @@ console.error(`Error on ${action}:`, err); // Log error
 
 // Fetch invitations when component mounts
 useEffect(() => {
-fetchInvitations();
-fetchTaskNotifications();
 const token = localStorage.getItem('token');
+if(!token) return;
+
 const userId = JSON.parse(atob(token.split('.')[1])).id;
-const socket = io("https://task-pilot-1.onrender.com");
-if(token && userId){
-
-    socket.emit("join", `user-${userId}`);
-}
-
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+    transports: ['websocket'],
+    withCredentials: true,
+});
+socketRef.current = socket;
+socket.emit('join', `user-${userId}`);
+    
 socket.on("notification:new", (newNotification) => {
     console.log("Recieved new notification" + newNotification);
     setNotifications(prev => [newNotification, ...prev]);
