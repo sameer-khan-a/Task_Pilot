@@ -28,7 +28,7 @@ const checkDueDateNotifications = async () => {
       const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
 
       for (const m of members) {
-        const userId = m.id;
+        const userId = m.userId;
 
         const existing = await Notification.findOne({
           where: {

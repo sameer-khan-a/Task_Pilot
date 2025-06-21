@@ -34,14 +34,14 @@ exports.createTask = async (req, res) => {
 
       for (const m of members) {
         const newNotification = await Notification.create({
-          userId: m.id,
+          userId: m.userId,
           taskId: task.id,
           boardId,
           message
         });
 
         if (global.io) {
-          global.io.to(`user-${m.id}`).emit('notification:new', newNotification);
+          global.io.to(`user-${m.userId}`).emit('notification:new', newNotification);
         }
       }
     }
@@ -102,28 +102,28 @@ exports.updateTask = async (req, res) => {
 
       for (const m of members) {
         const existingNotification = await Notification.findOne({
-          where: { taskId: task.id, userId: m.id }
+          where: { taskId: task.id, userId: m.userId }
         });
 
         if (message) {
           if (!existingNotification) {
             const newNotification = await Notification.create({
-              userId: m.id,
+              userId: m.userId,
               taskId: task.id,
               boardId: task.boardId,
               message
             });
 
-            if (global.io) global.io.to(`user-${m.id}`).emit('notification:new', newNotification);
+            if (global.io) global.io.to(`user-${m.userId}`).emit('notification:new', newNotification);
           } else {
             existingNotification.message = message;
             await existingNotification.save();
-            if (global.io) global.io.to(`user-${m.id}`).emit('notification:update', existingNotification);
+            if (global.io) global.io.to(`user-${m.userId}`).emit('notification:update', existingNotification);
           }
         } else {
           if (existingNotification) {
             await existingNotification.destroy();
-            if (global.io) global.io.to(`user-${m.id}`).emit('notification:delete', { taskId: task.id });
+            if (global.io) global.io.to(`user-${m.userId}`).emit('notification:delete', { taskId: task.id });
           }
         }
       }
@@ -152,7 +152,7 @@ exports.deleteTask = async (req, res) => {
     const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
     for (const m of members) {
       if (global.io) {
-        global.io.to(`user-${m.id}`).emit('notification:delete', { taskId: task.id });
+        global.io.to(`user-${m.userId}`).emit('notification:delete', { taskId: task.id });
       }
     }
 
