@@ -82,6 +82,7 @@ const socket = io("https://task-pilot-1.onrender.com");
 socket.emit("join", {userId});
 
 socket.on("notification:new", (newNotification) => {
+    console.log("Recieved new notification" + newNotification);
     setNotifications(prev => [newNotification, ...prev]);
 });
 socket.on("notification:delete", ({ taskId }) => {
@@ -90,7 +91,7 @@ socket.on("notification:delete", ({ taskId }) => {
     );
   });
 socket.on("notification:update", (updatedNotification) => {
-    console.log("Received updated notification");
+    console.log("Received updated notification" + updatedNotification);
     setNotifications(prev => 
         prev.map(n=>
             n.id === updatedNotification.id ? updatedNotification : n
