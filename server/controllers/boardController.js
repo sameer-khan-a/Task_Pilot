@@ -1,5 +1,5 @@
 // Import necessary models and utilities
-const { BoardMember, User } = require('../models');
+const { BoardMember, User, BoardInvitation, Notification } = require('../models');
 const Board = require('../models/Board');
 const { Op } = require('sequelize');
 const { checkBoardAccess } = require('../utils/permissions');
@@ -167,6 +167,8 @@ exports.deleteBoard = async (req, res) => {
     // Delete all associated tasks
     await Task.destroy({ where: { boardId: board.id } });
     await BoardMember.destroy({where: {boardId: board.id}});
+    await Notification.destroy({where: {boardId: board.id}});  
+    await BoardInvitation.destroy({where: {boardId: board.id}});  
     // Delete the board itself
     await board.destroy();
     res.status(200).json({ msg: "Board deleted successfully !!!" });

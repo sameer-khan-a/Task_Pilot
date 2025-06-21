@@ -89,7 +89,13 @@ socket.on("notification:delete", ({ taskId }) => {
       prev.filter(n => n.taskId !== taskId)
     );
   });
-
+socket.on("notification:update", (updatedNotification) => {
+    setNotifications(prev => 
+        prev.map(n=>
+            n.id === updatedNotification.id ? updatedNotification : n
+        )
+    )
+})
 return () => socket.disconnect();
 }, []);
 
