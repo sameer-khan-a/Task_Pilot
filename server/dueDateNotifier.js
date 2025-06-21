@@ -44,6 +44,7 @@ const checkDueDateNotifications = async () => {
                 else if(existing.message !== message){
                     existing.message = message;
                     await existing.save();
+                    console.log("updated message: ", message);
                     if(global.io) {
                         global.io.to(`user-${task.userId}`).emit('notification:update', existing.toJSON());
                     }
