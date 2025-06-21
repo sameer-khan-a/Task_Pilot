@@ -79,7 +79,10 @@ fetchTaskNotifications();
 const token = localStorage.getItem('token');
 const userId = JSON.parse(atob(token.split('.')[1])).id;
 const socket = io("https://task-pilot-1.onrender.com");
-socket.emit("join", {userId});
+if(token && userId){
+
+    socket.emit("join", {userId});
+}
 
 socket.on("notification:new", (newNotification) => {
     console.log("Recieved new notification" + newNotification);
