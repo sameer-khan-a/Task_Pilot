@@ -234,7 +234,7 @@ Reject
                 {!n.isRead && <span className="badge bg-warning text-dark ms-2">New</span>}
             </span>
             <br />
-            <span className="small text-muted">secondLine</span>
+            <span className="small text-muted">-{secondLine}</span>
             <br />{!n.isRead && (
                 <button
                 className="btn btn-sm btn-outline-secondary ms-2"
