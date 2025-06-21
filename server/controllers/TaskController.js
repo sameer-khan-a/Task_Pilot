@@ -1,6 +1,7 @@
 // Import the Task model
 const Task = require('../models/Task');
 const Notification = require('../models/Notification');
+const Board = require('../models/Board');
 const {hasBoardAccess}  = require('../utils/permissions');
 const {checkDueDateNotifications} = require('../dueDateNotifier');
 // Controller to create a new task
@@ -17,7 +18,10 @@ exports.createTask = async (req, res) => {
     const today = moment().startOf('day');
     const due = moment(task.dueDate).startOf('day');
     const daysLeft = due.diff(today, 'days');
-
+     const board = await Board.findOne({
+                where: {
+                boardId: task.boardId
+            }})
      let message = ``;
              if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
             else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;
@@ -90,7 +94,10 @@ exports.updateTask = async (req, res) => {
       const today = moment().startOf('day');
       const due = moment(task.dueDate).startOf('day');
       const daysLeft = due.diff(today, 'days');
-
+     const board = await Board.findOne({
+                where: {
+                boardId: task.boardId
+            }})
       let message = "";
         if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
             else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;

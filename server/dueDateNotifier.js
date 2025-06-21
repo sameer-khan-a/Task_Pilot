@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const moment = require('moment');
-const {Task, Notification} = require('./models');
+const {Task, Notification, Board} = require('./models');
 const {Op} = require('sequelize');
 
 const checkDueDateNotifications = async () => {
