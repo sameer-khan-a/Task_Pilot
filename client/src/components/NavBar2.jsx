@@ -226,7 +226,7 @@ Reject
 ): (
     notifications.map(n => (
         <li key={`noti-${n.id}`} className={`dropdown-item ${n.isRead? 'text-muted': ''}`}>
-            <span>{n.message}
+            <span style={{whiteSpace: 'pre-line'}}>{n.message}
                 {!n.isRead && <span className="badge bg-warning text-dark ms-2">New</span>}
             </span>
             <br />{!n.isRead && (
