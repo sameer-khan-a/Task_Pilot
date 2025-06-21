@@ -50,7 +50,17 @@ const checkDueDateNotifications = async () => {
                 }
 
                 }
+                else{
+                    if (existing) {
+                    await Notification.destroy({
+                        where: {
+                            userId: task.userId,
+                            taskId: task.id
+                        }
+                    });
+                }
             }
+        }
         
         console.log(`found ${tasks.length} tasks`);
         console.log('✅ Due date notification check completed.');
