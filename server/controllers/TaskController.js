@@ -81,34 +81,44 @@ exports.updateTask = async (req, res) => {
     task.description = description || task.description;
     task.status = status || task.status;
     task.dueDate = dueDate || task.dueDate;
-    if(dueDate && dueDate !== previousDueDate){
+   if (dueDate && moment(dueDate).isSame(previousDueDate) === false) {
+  const moment = require('moment');
+  const { Notification } = require('../models');
+  const today = moment().startOf('day');
+  const due = moment(task.dueDate).startOf('day');
+  const daysLeft = due.diff(today, 'days');
 
-      const moment = require('moment');
-      const {Notification} = require('../models');
-      const today = moment().startOf('day');
-      const due = moment(task.dueDate).startOf('day');
-      const daysLeft = due.diff(today, 'days');
-      
-      let message = ``;
-            if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
-            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
-            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
-            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
-            if (message) {
-              
-              const existingNotification = await Notification.findOne({
-                        where: {taskId: task.id},
-                      });
-                      if(existingNotification){
-                        existingNotification.message = message;
-                        await existingNotification.save();
-                        if(global.io) {
-                          global.io.to(`user-${task.userId}`).emit('notification:update', existingNotification);
-                        }
-                      }
-                    }
-                    }
-    // Save the updated task to the database
+  let message = ``;
+  if (daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
+  else if (daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
+  else if (daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
+  else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
+
+  if (message) {
+    let existingNotification = await Notification.findOne({
+      where: { taskId: task.id },
+    });
+
+    if (!existingNotification) {
+      existingNotification = await Notification.create({
+        userId: task.userId,
+        taskId: task.id,
+        boardId: task.boardId || null,
+        message
+      });
+      if (global.io) {
+        global.io.to(`user-${task.userId}`).emit('notification:new', existingNotification);
+      }
+    } else {
+      existingNotification.message = message;
+      await existingNotification.save();
+      if (global.io) {
+        global.io.to(`user-${task.userId}`).emit('notification:update', existingNotification);
+      }
+    }
+  }
+}
+  // Save the updated task to the database
     await task.save();
     
     // Respond with the updated task and HTTP status 200 (OK)
