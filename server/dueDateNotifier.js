@@ -13,7 +13,7 @@ const checkDueDateNotifications = async () => {
                 [Op.lte]: moment(today).add(2, 'days').toDate()
             }
         }
-        c
+        
     });
         for(const task of tasks) {
             const daysLeft = moment(task.dueDate).startOf('day').diff(today, 'days');
