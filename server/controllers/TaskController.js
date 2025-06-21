@@ -81,9 +81,9 @@ exports.updateTask = async (req, res) => {
     task.description = description || task.description;
     task.status = status || task.status;
     task.dueDate = dueDate || task.dueDate;
+    const moment = require('moment');
+    const { Notification } = require('../models');
    if (dueDate && moment(dueDate).isSame(previousDueDate) === false) {
-  const moment = require('moment');
-  const { Notification } = require('../models');
   const today = moment().startOf('day');
   const due = moment(task.dueDate).startOf('day');
   const daysLeft = due.diff(today, 'days');
