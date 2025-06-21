@@ -21,10 +21,10 @@ const checkDueDateNotifications = async () => {
              const board = await Board.findByPk(
                  task.boardId
             )
-            if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}". \n from "${board.title}" board".`;
-            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow. \n from "${board.title}" board`;
-            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today. \n from "${board.title}" board`;
-            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue. \n from "${board.title}" board`;
+            if(daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".\n from "${board.name}" board.`;
+            else if(daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow.\n from "${board.name}" board`;
+            else if(daysLeft === 0) message = `📌 Task "${task.title}" is due today.\n from "${board.name}" board`;
+            else if(daysLeft < 0) message = `❗Task "${task.title}" is overdue.\n from "${board.name}" board`;
             
             if (message) {
                 const existing = await Notification.findOne({
