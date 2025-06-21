@@ -104,6 +104,8 @@ socket.on("notification:update", (updatedNotification) => {
         )
     )
 })
+fetchInvitations();
+fetchTaskNotifications();
 return () => socket.disconnect();
 }, []);
 
