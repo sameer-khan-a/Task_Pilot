@@ -90,6 +90,7 @@ socket.on("notification:delete", ({ taskId }) => {
     );
   });
 socket.on("notification:update", (updatedNotification) => {
+    console.log("Received updated notification");
     setNotifications(prev => 
         prev.map(n=>
             n.id === updatedNotification.id ? updatedNotification : n
