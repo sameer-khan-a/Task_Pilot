@@ -63,71 +63,82 @@ exports.getTasks = async (req, res) => {
 };
 
 // Controller to update an existing task by taskId
+// Controller to update an existing task by taskId
 exports.updateTask = async (req, res) => {
   const { title, description, status, dueDate } = req.body;
-  
+
   try {
-    // Find the task by primary key (taskId)
+    const moment = require('moment');
+    const { Notification } = require('../models');
+
     const task = await Task.findByPk(req.params.taskId);
-    
-    // If task doesn't exist, return 404
     if (!task) return res.status(404).json({ msg: "Task does not exist" });
-    
+
     const access = await hasBoardAccess(req.user.id, task.boardId);
-    if(!access) return res.status(403).json({msg: "Access denied to this board's task"});
-    // Update fields only if they are provided, otherwise keep existing values
+    if (!access) return res.status(403).json({ msg: "Access denied to this board's task" });
+
     const previousDueDate = task.dueDate;
+
+    // Update task fields
     task.title = title || task.title;
     task.description = description || task.description;
     task.status = status || task.status;
     task.dueDate = dueDate || task.dueDate;
-    const moment = require('moment');
-    const { Notification } = require('../models');
-   if (dueDate && moment(dueDate).isSame(previousDueDate) === false) {
-  const today = moment().startOf('day');
-  const due = moment(task.dueDate).startOf('day');
-  const daysLeft = due.diff(today, 'days');
 
-  let message = ``;
-  if (daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
-  else if (daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
-  else if (daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
-  else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
+    // Handle due date notification
+    if (dueDate && !moment(dueDate).isSame(moment(previousDueDate))) {
+      const today = moment().startOf('day');
+      const due = moment(task.dueDate).startOf('day');
+      const daysLeft = due.diff(today, 'days');
 
-  if (message) {
-    let existingNotification = await Notification.findOne({
-      where: { taskId: task.id },
-    });
+      let message = "";
+      if (daysLeft === 2) message = `⏳ Only 2 days left for task "${task.title}".`;
+      else if (daysLeft === 1) message = `⚠️ Task "${task.title}" is due tomorrow`;
+      else if (daysLeft === 0) message = `📌 Task "${task.title}" is due today.`;
+      else if (daysLeft < 0) message = `❗Task "${task.title}" is overdue`;
 
-    if (!existingNotification) {
-      existingNotification = await Notification.create({
-        userId: task.userId,
-        taskId: task.id,
-        boardId: task.boardId || null,
-        message
+      const existingNotification = await Notification.findOne({
+        where: { taskId: task.id },
       });
-      if (global.io) {
-        global.io.to(`user-${task.userId}`).emit('notification:new', existingNotification);
-      }
-    } else {
-      existingNotification.message = message;
-      await existingNotification.save();
-      if (global.io) {
-        global.io.to(`user-${task.userId}`).emit('notification:update', existingNotification);
+
+      if (message) {
+        if (!existingNotification) {
+          const newNotification = await Notification.create({
+            userId: task.userId,
+            taskId: task.id,
+            boardId: task.boardId || null,
+            message
+          });
+          if (global.io) {
+            global.io.to(`user-${task.userId}`).emit('notification:new', newNotification);
+          }
+        } else {
+          existingNotification.message = message;
+          await existingNotification.save();
+          if (global.io) {
+            global.io.to(`user-${task.userId}`).emit('notification:update', existingNotification);
+          }
+        }
+      } else {
+        if (existingNotification) {
+          await Notification.destroy({
+            where: { userId: task.userId, taskId: task.id }
+          });
+          if (global.io) {
+            global.io.to(`user-${task.userId}`).emit('notification:delete', { taskId: task.id });
+          }
+        }
       }
     }
-  }
-}
-  // Save the updated task to the database
+
     await task.save();
-    
-    // Respond with the updated task and HTTP status 200 (OK)
     res.status(200).json(task);
   } catch (err) {
-    // Handle errors during task update
+    console.error("Error updating task:", err);
     res.status(500).json({ msg: "Error updating task", error: err.message });
   }
 };
+
 
 // Controller to delete a task by taskId
 exports.deleteTask = async (req, res) => {
