@@ -163,14 +163,21 @@ exports.deleteTask = async (req, res) => {
 
     await task.destroy();
     await Notification.destroy({ where: { taskId: task.id } });
-
     const members = await BoardMember.findAll({ where: { boardId: task.boardId } });
-    for (const m of members) {
+
+// Create an array of all user IDs (members + owner)
+const board = await Board.findByPk(task.boardId);
+const allUserIds = members.map(m => m.userId);
+if (!allUserIds.includes(board.createdBy)) {
+  allUserIds.push(board.createdBy);
+}
+
+      
+    for (const userId of allUserIds) {
       if (global.io) {
-        global.io.to(`user-${m.userId}`).emit('notification:delete', { taskId: task.id });
+        global.io.to(`user-${userId}`).emit('notification:delete', { taskId: task.id });
       }
     }
-
     res.status(200).json({ msg: "Task deleted successfully" });
   } catch (err) {
     res.status(500).json({ msg: "Error deleting task !!!", error: err.message });
