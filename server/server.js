@@ -35,32 +35,13 @@ sequelize.sync({alter: true })
 // Initialize the Express app
 const app = express();
 const server = http.createServer(app);
-const cors = require("cors");
 
-const allowedOrigins = [
-  'https://task-pilot-909p6lc7p-sameer-khan-as-projects-6af58ee7.vercel.app', // Vercel frontend
-  'http://localhost:5173', // local dev (Vite)
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin like mobile apps or curl
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
-    methods: ['GET', 'POST'],
-    credentials: true,
+    origin: '*',
+    methods: ['GET', 'POST']
   }
-});
+})
 global.io = io;
 
 io.on('connection', (socket) => {
@@ -75,6 +56,12 @@ io.on('connection', (socket) => {
     console.log('🔴 Socket disconnected: ', socket.id);
   })
 })
+// Enable CORS (Cross-Origin Resource Sharing) to allow frontend apps from different origins to communicate
+const cors = require("cors");
+app.use(cors({
+  origin: "*",
+  credentials: true,
+}));
 
 // Middleware to parse JSON bodies in incoming requests
 app.use(express.json());
