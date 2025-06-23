@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {io} from "socket.io-client";
 import { useRef } from "react";
-import notificationSound from './Notification.mp3';
 function Navbar2 ({fetchBoards}) {
 // State to store pending board invitations
 const socketRef = useRef(null);
@@ -17,7 +16,7 @@ window.location.href = '/login';
 };
 const soundRef = useRef(null);
 useEffect(() => {
-    soundRef.current = new Audio(notificationSound);
+    soundRef.current = new Audio('./Notification.mp3');
 })
 // Fetch all pending invitations for the logged-in user
 const fetchInvitations = async () => {
