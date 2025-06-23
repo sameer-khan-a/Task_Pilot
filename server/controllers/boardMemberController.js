@@ -56,7 +56,10 @@ exports.removeMember = async (req, res) => {
 
         // If no rows deleted, user wasn't a member
         if (!deleted) return res.status(404).json({ msg: 'Member not found in board' });
-
+        if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:boardLeft', {boardId});
+        global.io.to(`user-${userId}`).emit('notification:refresh');
+      }
         // Success response
         res.status(200).json({ msg: 'Member removed successfully' });
 
