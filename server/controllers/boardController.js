@@ -158,31 +158,35 @@ exports.deleteBoard = async (req, res) => {
   try {
     // Check if user has access
     const board = await checkBoardAccess(req.params.boardId, req.user.id);
-    const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
-
-// Create an array of all user IDs (members + owner)
-const allUserIds = members.map(m => m.userId);
-if(!allUserIds.includes(board.cratedBy)){
-  allUserIds.push(board.createdBy);
-}
     if (!board) return res.status(404).json({ msg: "Access Denied" });
 
     // Only the owner can delete the board
     if (board.createdBy !== req.user.id)
       return res.status(403).json({ msg: 'Only owner can delete the board' });
 
-    // Delete all associated tasks
+    // Get all members BEFORE deleting them
+    const members = await BoardMember.findAll({ where: { boardId: board.id } });
+    const allUserIds = members.map(m => m.userId);
+    if (!allUserIds.includes(board.createdBy)) {
+      allUserIds.push(board.createdBy);
+    }
+
+    // Clean up associated entities
     await Task.destroy({ where: { boardId: board.id } });
-    await BoardMember.destroy({where: {boardId: board.id}});
-    await Notification.destroy({where: {boardId: board.id}});  
-    await BoardInvitation.destroy({where: {boardId: board.id}});  
+    await BoardMember.destroy({ where: { boardId: board.id } });
+    await Notification.destroy({ where: { boardId: board.id } });
+    await BoardInvitation.destroy({ where: { boardId: board.id } });
+
     // Delete the board itself
     await board.destroy();
-    for(const userId of allUserIds){
-       if (global.io) {
-          global.io.to(`user-${userId}`).emit('notification:refresh');
-        }
+
+    // Emit refresh to all users who had access
+    for (const userId of allUserIds) {
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:refresh');
+      }
     }
+
     res.status(200).json({ msg: "Board deleted successfully !!!" });
   } catch (err) {
     res.status(500).json({ msg: "Error deleting board", error: err.message });
@@ -194,13 +198,7 @@ exports.leaveBoard = async (req, res) => {
   try {
     const userId = req.user.id;
     const boardId = req.params.boardId;
-        const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
 
-// Create an array of all user IDs (members + owner)
-const allUserIds = members.map(m => m.userId);
-if(!allUserIds.includes(board.cratedBy)){
-  allUserIds.push(board.createdBy);
-}
     // Find board
     const board = await Board.findByPk(boardId);
     if (!board) {
@@ -220,13 +218,28 @@ if(!allUserIds.includes(board.cratedBy)){
       return res.status(404).json({ msg: 'You are not a member of this board' });
     }
 
-    
-    for(const userId of allUserIds){
+    // Remove user from the board first
+    await membership.destroy();
+
+    // Then get the updated list of members
+    const members = await BoardMember.findAll({ where: { boardId } });
+    const allUserIds = members.map(m => m.userId);
+    if (!allUserIds.includes(board.createdBy)) {
+      allUserIds.push(board.createdBy);
+    }
+
+    // Emit notification refresh to others
+    for (const id of allUserIds) {
       if (global.io) {
-        global.io.to(`user-${userId}`).emit('notification:refresh');
+        global.io.to(`user-${id}`).emit('notification:refresh');
       }
     }
-    await membership.destroy();
+
+    // Emit refresh to the person who left as well
+    if (global.io) {
+      global.io.to(`user-${userId}`).emit('notification:refresh');
+    }
+
     res.status(200).json({ msg: 'Left board successfully' });
   } catch (err) {
     console.error('Leave Board error', err);
