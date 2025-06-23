@@ -227,6 +227,7 @@ exports.leaveBoard = async (req, res) => {
       boardId: boardId
 
     }})
+    
     // Then get the updated list of members
     const members = await BoardMember.findAll({ where: { boardId: board.id } });
     const allUserIds = members.map(m => m.userId);
@@ -236,14 +237,17 @@ exports.leaveBoard = async (req, res) => {
   
     
     // Emit notification refresh to others
-   for (const id of allUserIds) {
+    for (const id of allUserIds) {
       if (global.io) {
         global.io.to(`user-${id}`).emit('notification:boardLeft', {boardId});
       }
     }
+        for (const userId of allUserIds) {
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:refresh');
+      }
+    }
 
-    
-    
     
     res.status(200).json({ msg: 'Left board successfully' });
   } catch (err) {
