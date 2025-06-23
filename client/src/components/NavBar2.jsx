@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {io} from "socket.io-client";
 import { useRef } from "react";
+import notificationSound from '/sounds/Notification.mp3';
 function Navbar2 ({fetchBoards}) {
 // State to store pending board invitations
 const socketRef = useRef(null);
@@ -14,7 +15,10 @@ localStorage.removeItem('token');
 // Redirect to login page
 window.location.href = '/login';
 };
-
+const soundRef = useRef(null);
+useEffect(() => {
+    soundRef.current = new Audio(notificationSound);
+})
 // Fetch all pending invitations for the logged-in user
 const fetchInvitations = async () => {
 try {
@@ -90,22 +94,32 @@ socket.emit('join', `user-${userId}`);
 socket.on("notification:new", (newNotification) => {
     console.log("Recieved new notification" + newNotification);
     setNotifications(prev => [newNotification, ...prev]);
+    if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
 });
 socket.on("notification:delete", ({ taskId }) => {
     setNotifications(prev =>
       prev.filter(n => n.taskId !== taskId)
     );
+        if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
   });
 socket.on("notification:refresh", () => {
       console.log("Received notification: refresh");
       fetchTaskNotifications();
-    
+          if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
   });
   socket.on("notification:boardLeft", ({boardId}) => {
     console.log("Board left triggerd");
     setNotifications(prev => prev.filter(n=> n.boardId !== boardId));
     fetchBoards();
-
+        if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
   })
 socket.on("notification:update", (updatedNotification) => {
     console.log("Received updated notification" + updatedNotification);
@@ -114,6 +128,9 @@ socket.on("notification:update", (updatedNotification) => {
             n.id === updatedNotification.id ? updatedNotification : n
         )
     )
+        if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
 })
 fetchInvitations();
 fetchTaskNotifications();
