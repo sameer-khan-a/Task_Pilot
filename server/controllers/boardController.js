@@ -222,7 +222,11 @@ exports.leaveBoard = async (req, res) => {
 
     // Remove user from the board first
     await membership.destroy();
-    
+    await Notification.destroy({where: {
+      userId: userId,
+      boardId: boardId
+
+    }})
     // Then get the updated list of members
     const members = await BoardMember.findAll({ where: { boardId: board.id } });
     const allUserIds = members.map(m => m.userId);
@@ -237,6 +241,7 @@ exports.leaveBoard = async (req, res) => {
         global.io.to(`user-${id}`).emit('notification:boardLeft', {boardId});
       }
     }
+
     
     
     
