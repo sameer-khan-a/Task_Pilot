@@ -16,7 +16,7 @@ exports.createTask = async (req, res) => {
     const access = await hasBoardAccess(userId, boardId);
     if (!access) return res.status(403).json({ msg: "Access denied to this board" });
 
-    const task = await Task.create({ title, description, status, boardId, dueDate, userId });
+    const task = await Task.create({ title, description, status, boardId, dueDate, userId: req.user.id });
 
     const today = moment().startOf('day');
     const due = moment(task.dueDate).startOf('day');
