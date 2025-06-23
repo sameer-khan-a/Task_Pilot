@@ -219,6 +219,7 @@ exports.leaveBoard = async (req, res) => {
     }
 
     // Remove user from the board first
+    await membership.destroy();
     
     // Then get the updated list of members
     const members = await BoardMember.findAll({ where: { boardId: board.id } });
@@ -226,9 +227,7 @@ exports.leaveBoard = async (req, res) => {
     if (!allUserIds.includes(board.createdBy)) {
       allUserIds.push(board.createdBy);
     }
-    if (!allUserIds.includes(userId)) {
-      allUserIds.push(userId);
-    }
+  
     
     // Emit notification refresh to others
     for (const id of allUserIds) {
@@ -237,12 +236,7 @@ exports.leaveBoard = async (req, res) => {
       }
     }
     
-    // Emit refresh to the person who left as well
-    if (global.io) {
-      global.io.to(`user-${userId}`).emit('notification:refresh');
-    }
-    await membership.destroy();
-
+    
     res.status(200).json({ msg: 'Left board successfully' });
   } catch (err) {
     console.error('Leave Board error', err);
