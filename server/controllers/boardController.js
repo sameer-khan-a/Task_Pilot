@@ -171,6 +171,15 @@ exports.deleteBoard = async (req, res) => {
     await BoardInvitation.destroy({where: {boardId: board.id}});  
     // Delete the board itself
     await board.destroy();
+    const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
+
+// Create an array of all user IDs (members + owner)
+const allUserIds = members.map(m => m.userId);
+    for(const userId of allUserIds){
+       if (global.io) {
+          global.io.to(`user-${userId}`).emit('notification:refresh');
+        }
+    }
     res.status(200).json({ msg: "Board deleted successfully !!!" });
   } catch (err) {
     res.status(500).json({ msg: "Error deleting board", error: err.message });
@@ -204,6 +213,15 @@ exports.leaveBoard = async (req, res) => {
 
     // Remove user from the board
     await membership.destroy();
+        const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
+
+// Create an array of all user IDs (members + owner)
+const allUserIds = members.map(m => m.userId);
+    for(const userId of allUserIds){
+       if (global.io) {
+          global.io.to(`user-${userId}`).emit('notification:refresh');
+        }
+    }
     res.status(200).json({ msg: 'Left board successfully' });
   } catch (err) {
     console.error('Leave Board error', err);

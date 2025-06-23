@@ -96,6 +96,11 @@ socket.on("notification:delete", ({ taskId }) => {
       prev.filter(n => n.taskId !== taskId)
     );
   });
+socket.on("notification:refresh", () => {
+      console.log("Received notification: refresh");
+      fetchTaskNotifications();
+    
+  });
 socket.on("notification:update", (updatedNotification) => {
     console.log("Received updated notification" + updatedNotification);
     setNotifications(prev => 
