@@ -231,6 +231,9 @@ exports.leaveBoard = async (req, res) => {
     // Then get the updated list of members
     const members = await BoardMember.findAll({ where: { boardId: board.id } });
     const allUserIds = members.map(m => m.userId);
+    if(!allUserIds.includes(userId)){
+      allUserIds.push(userId);
+    }
     if (!allUserIds.includes(board.createdBy)) {
       allUserIds.push(board.createdBy);
     }
