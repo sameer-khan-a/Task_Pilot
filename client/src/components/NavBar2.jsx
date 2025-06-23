@@ -110,7 +110,8 @@ return () => socket.disconnect();
 }, []);
 const token = localStorage.getItem("token");
 const userId = token ? JSON.parse(atob(token.split(".")[1])).id: null;
-
+console.log("owner id: ", userId);
+console.log("notification Creator id: ", n.createdBy);
 const personalTaskNotifs = notifications.filter(n => n.createdBy=== userId);
 const groupTaskNotifs = notifications.filter((n) => n.createdBy!== userId);
 return (
