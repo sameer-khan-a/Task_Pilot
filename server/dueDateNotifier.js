@@ -46,6 +46,7 @@ for (const userId of allUserIds) {
     if (!existing) {
       const newNotification = await Notification.create({
         userId,
+        createdBy: task.userId,
         taskId: task.id,
         boardId: task.boardId || null,
         message

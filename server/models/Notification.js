@@ -10,6 +10,10 @@ const Notification = sequelize.define('Notification', {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
+    createdBy: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
     boardId: {
         type: DataTypes.INTEGER,
         allowNull: true,
