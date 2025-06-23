@@ -16,8 +16,8 @@ window.location.href = '/login';
 };
 const soundRef = useRef(null);
 useEffect(() => {
-    soundRef.current = new Audio('./Notification.mp3');
-})
+    soundRef.current = new Audio('/sounds/Notification.mp3');
+}, [])
 // Fetch all pending invitations for the logged-in user
 const fetchInvitations = async () => {
 try {
