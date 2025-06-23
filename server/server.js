@@ -11,7 +11,7 @@ const {Server} = require('socket.io');
 // Import database connection functions and Sequelize instance
 const { connectDB } = require('./config/db');
 const { sequelize } = require('./config/db');
-
+const cors = require('cors');
 // Import route handlers for different parts of the API
 const boardRoutes = require('./routes/boardRoutes');
 const taskRoutes = require('./routes/taskRoutes');
