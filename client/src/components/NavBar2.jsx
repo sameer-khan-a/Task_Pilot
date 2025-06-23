@@ -240,7 +240,7 @@ Reject
         return (
             <li key={`noti-${n.id}`}
             className={`dropdown-item ${n.isRead ? "text-muted": ""}`}
-            >
+            ><br />
                 <span>
                     {firstLine}
                     {!n.isRead && (
@@ -277,7 +277,7 @@ Reject
         return (
             <li key={`noti-${n.id}`}
             className={`dropdown-item ${n.isRead ? "text-muted": ""}`}
-            >
+            ><br />
                 <span>
                     {firstLine}
                     {!n.isRead && (
