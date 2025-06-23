@@ -111,8 +111,8 @@ return () => socket.disconnect();
 const token = localStorage.getItem("token");
 const userId = token ? JSON.parse(atob(token.split(".")[1])).id: null;
 
-const personalTaskNotifs = notifications.filter(n => n.userId === userId);
-const groupTaskNotifs = notifications.filter((n) => n.userId !== userId);
+const personalTaskNotifs = notifications.filter(n => n.createdBy=== userId);
+const groupTaskNotifs = notifications.filter((n) => n.createdBy!== userId);
 return (
 <nav
 className="navbar navbar-expand-lg navbar-dark fixed-top shadow"

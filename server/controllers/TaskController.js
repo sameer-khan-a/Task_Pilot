@@ -10,6 +10,7 @@ const { BoardMember, User } = require('../models');
 exports.createTask = async (req, res) => {
   const { title, description, status, boardId, dueDate } = req.body;
   const userId = req.user.id;
+  
 
   try {
     const access = await hasBoardAccess(userId, boardId);
@@ -42,6 +43,7 @@ if (!allUserIds.includes(board.createdBy)) {
       for (const userId of allUserIds) {
         const newNotification = await Notification.create({
           userId: userId,
+          createdBy: task.userId,
           taskId: task.id,
           boardId,
           message
@@ -124,6 +126,7 @@ if (!allUserIds.includes(board.createdBy)) {
           if (!existingNotification) {
             const newNotification = await Notification.create({
               userId: userId,
+              createdBy: task.userId,
               taskId: task.id,
               boardId: task.boardId,
               message
