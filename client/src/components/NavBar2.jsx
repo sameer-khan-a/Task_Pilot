@@ -102,6 +102,7 @@ socket.on("notification:refresh", () => {
     
   });
   socket.on("notification:boardLeft", ({boardId}) => {
+    console.log("Board left triggerd");
     setNotifications(prev => prev.filter(n=> n.boardId !== boardId));
     fetchBoards();
 
