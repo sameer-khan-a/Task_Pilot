@@ -158,6 +158,13 @@ exports.deleteBoard = async (req, res) => {
   try {
     // Check if user has access
     const board = await checkBoardAccess(req.params.boardId, req.user.id);
+    const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
+
+// Create an array of all user IDs (members + owner)
+const allUserIds = members.map(m => m.userId);
+if(!allUserIds.includes(board.cratedBy)){
+  allUserIds.push(board.createdBy);
+}
     if (!board) return res.status(404).json({ msg: "Access Denied" });
 
     // Only the owner can delete the board
@@ -171,10 +178,6 @@ exports.deleteBoard = async (req, res) => {
     await BoardInvitation.destroy({where: {boardId: board.id}});  
     // Delete the board itself
     await board.destroy();
-    const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
-
-// Create an array of all user IDs (members + owner)
-const allUserIds = members.map(m => m.userId);
     for(const userId of allUserIds){
        if (global.io) {
           global.io.to(`user-${userId}`).emit('notification:refresh');
@@ -191,7 +194,13 @@ exports.leaveBoard = async (req, res) => {
   try {
     const userId = req.user.id;
     const boardId = req.params.boardId;
+        const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
 
+// Create an array of all user IDs (members + owner)
+const allUserIds = members.map(m => m.userId);
+if(!allUserIds.includes(board.cratedBy)){
+  allUserIds.push(board.createdBy);
+}
     // Find board
     const board = await Board.findByPk(boardId);
     if (!board) {
@@ -211,17 +220,13 @@ exports.leaveBoard = async (req, res) => {
       return res.status(404).json({ msg: 'You are not a member of this board' });
     }
 
-    // Remove user from the board
-    await membership.destroy();
-        const members = await BoardMember.findAll({ where: { boardId: board.boardId } });
-
-// Create an array of all user IDs (members + owner)
-const allUserIds = members.map(m => m.userId);
+    
     for(const userId of allUserIds){
-       if (global.io) {
-          global.io.to(`user-${userId}`).emit('notification:refresh');
-        }
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:refresh');
+      }
     }
+    await membership.destroy();
     res.status(200).json({ msg: 'Left board successfully' });
   } catch (err) {
     console.error('Leave Board error', err);
