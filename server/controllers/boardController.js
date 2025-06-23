@@ -89,9 +89,11 @@ exports.getBoards = async (req, res) => {
       include: [
         {
           model: BoardMember,
+          as: 'BoardMembers',
           include: [
             {
               model: User,
+              as: 'User',
               attributes: ['id', 'email']
             }
           ]
