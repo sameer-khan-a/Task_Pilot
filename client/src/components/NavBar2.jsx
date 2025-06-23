@@ -108,7 +108,11 @@ fetchInvitations();
 fetchTaskNotifications();
 return () => socket.disconnect();
 }, []);
+const token = localStorage.getItem("token");
+const userId = token ? JSON.parse(atob(token.split(".")[1])).id: null;
 
+const personalTaskNotifs = notifications.filter(n => n.userId === userId);
+const groupTaskNotifs = notifications.filter((n) => n.userId !== userId);
 return (
 <nav
 className="navbar navbar-expand-lg navbar-dark fixed-top shadow"
@@ -224,51 +228,93 @@ Reject
 </li>
 ))
 )}
-<li><hr className="dropdown-divider" /></li>
-<li className="dropdown-header fw-bold">Task alerts</li>
-{notifications.length === 0 ? (
-    <li className="dropdown-item text-muted">No Task Notifications</li>
+<li>
+    <hr className="dropdown-divider" />
+</li>
+<li className="dropdown-header fw-bold">Personal Task alerts</li>
+{personalTaskNotifs.length===0 ? (
+    <li className="dropdown-item text-muted">No Personal Task Notifications</li>
 ): (
-    notifications.map(n => {
-
+    personalTaskNotifs.map((n) => {
         const [firstLine, secondLine] = n.message.split("\n");
         return (
-
-            <li key={`noti-${n.id}`} className={`dropdown-item ${n.isRead? 'text-muted': ''}`}>
-            <span>{firstLine}
-                {!n.isRead && <span className="badge bg-warning text-dark ms-2">New</span>}
-            </span>
-            <br />
-            <span className="small text-muted">-{secondLine}</span>
-            <br />{!n.isRead && (
-                <button
-                className="btn btn-sm btn-outline-secondary ms-2"
-                onClick={() => markNotificationAsRead(n.id)}
-                >
-                    Mark as read
-                </button>
-            )}
+            <li key={`noti-${n.id}`}
+            className={`dropdown-item ${n.isRead ? "text-muted": ""}`}
+            >
+                <span>
+                    {firstLine}
+                    {!n.isRead && (
+                        <span className="badge bg-warning text-dark ms-2">New</span>
+                    )}
+                    
+                </span>
+                <br />
+                <span className="small text-muted">-{secondLine}</span>
+                <br />
+                 {!n.isRead && (
+                        <button className="btn btn-sm btn-outline-secondary ms-2"
+                        onClick={() => markNotificationAsRead(n.id)}
+                        >
+                            Mark as read
+                        </button>
+                    )}
+            </li>
             
-        </li>
-)}
-    ))
-}
+            
+        );
+    })
 
+)}
+<li>
+    <hr className="dropdown-divider" />
+</li>
+<li className="dropdown-header fw-bold">Group Task alerts</li>
+{groupTaskNotifs.length===0 ? (
+    <li className="dropdown-item text-muted">No Group Task Notifications</li>
+): (
+    groupTaskNotifs.map((n) => {
+        const [firstLine, secondLine] = n.message.split("\n");
+        return (
+            <li key={`noti-${n.id}`}
+            className={`dropdown-item ${n.isRead ? "text-muted": ""}`}
+            >
+                <span>
+                    {firstLine}
+                    {!n.isRead && (
+                        <span className="badge bg-warning text-dark ms-2">New</span>
+                    )}
+                    
+                </span>
+                <br />
+                <span className="small text-muted">-{secondLine}</span>
+                <br />
+                 {!n.isRead && (
+                        <button className="btn btn-sm btn-outline-secondary ms-2"
+                        onClick={() => markNotificationAsRead(n.id)}
+                        >
+                            Mark as read
+                        </button>
+                    )}
+            </li>
+            
+            
+        );
+    })
+
+)}
 </ul>
 </div>
-
-{/* Slogan on the right side of navbar */}
-<span
-className="navbar-text"
-style={{color: 'rgb(200, 218, 219)', fontWeight: 'bold'}}
->
-Where Productivity Takes Flight !
-</span>
-</div>
-</div>
-</div>
-</nav>
-);
+  <span
+              className="navbar-text"
+              style={{ color: "rgb(200, 218, 219)", fontWeight: "bold" }}
+            >
+              Where Productivity Takes Flight !
+            </span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 }
 
 export default Navbar2;
