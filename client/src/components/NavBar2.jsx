@@ -211,7 +211,7 @@ style={{top: '10px', left: '40px', fontSize: '0.7rem'}}
 <ul
 className="dropdown-menu dropdown-menu-start "
 aria-labelledby="invitationDropdown"
-style={{minWidth: '300px', background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'}}
+style={{minWidth: '300px', maxHeight: '70vh', overflowY: 'auto', background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'}}
 >
 <li className="dropdown-header fw-bold">Invitation alerts</li>
 {/* Show message if no invitations */}
