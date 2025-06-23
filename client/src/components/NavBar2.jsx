@@ -247,11 +247,12 @@ Reject
                         <span>
                             <br />
                         <span className="badge bg-warning text-dark ms-2">New</span>
-                        <br />
+                        
                     </span>
                     )}
                     
                 </span>
+                <br />
                 <span className="small text-muted">-{secondLine}</span>
                 <br />
                  {!n.isRead && (
@@ -288,11 +289,12 @@ Reject
 
                 <br />
                         <span className="badge bg-warning text-dark ms-2">New</span>
-                        <br />
                         </span>
+                        
                     )}
                     
                 </span>
+                <br />
                 <span className="small text-muted">-{secondLine}</span>
                 <br />
                  {!n.isRead && (
