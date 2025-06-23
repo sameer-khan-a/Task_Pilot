@@ -101,8 +101,9 @@ socket.on("notification:refresh", () => {
       fetchTaskNotifications();
     
   });
-    socket.on("notification:boardLeft", ({boardId}) => {
+  socket.on("notification:boardLeft", ({boardId}) => {
     setNotifications(prev => prev.filter(n=> n.boardId !== boardId));
+    fetchTaskNotifications();
 
   })
 socket.on("notification:update", (updatedNotification) => {
