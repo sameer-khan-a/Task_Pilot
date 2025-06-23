@@ -11,7 +11,7 @@ const {Server} = require('socket.io');
 // Import database connection functions and Sequelize instance
 const { connectDB } = require('./config/db');
 const { sequelize } = require('./config/db');
-const cors = require('cors');
+
 // Import route handlers for different parts of the API
 const boardRoutes = require('./routes/boardRoutes');
 const taskRoutes = require('./routes/taskRoutes');
@@ -57,19 +57,9 @@ io.on('connection', (socket) => {
   })
 })
 // Enable CORS (Cross-Origin Resource Sharing) to allow frontend apps from different origins to communicate
-const allowedOrigins = [
-  'https://task-pilot-31jkxp6h3-sameer-khan-as-projects-6af58ee7.vercel.app',
-  'http://localhost:3000' // (optional, for local dev)
-];
-
+const cors = require("cors");
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: "*",
   credentials: true,
 }));
 
