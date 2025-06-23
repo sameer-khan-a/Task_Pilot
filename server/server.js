@@ -57,9 +57,19 @@ io.on('connection', (socket) => {
   })
 })
 // Enable CORS (Cross-Origin Resource Sharing) to allow frontend apps from different origins to communicate
-const cors = require("cors");
+const allowedOrigins = [
+  'https://task-pilot-31jkxp6h3-sameer-khan-as-projects-6af58ee7.vercel.app',
+  'http://localhost:3000' // (optional, for local dev)
+];
+
 app.use(cors({
-  origin: "*",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
