@@ -97,6 +97,7 @@ Notification.belongsTo(User, {
   foreignKey: 'userId',
   as: 'User',
 });
+Board.belongsTo(User, { foreignKey: 'createdBy', as: 'owner' });
 
 // ---------------------- Export all models ----------------------
 
