@@ -72,6 +72,7 @@ exports.getInvitations = async (req, res) => {
       include: [
         {
           model: Board,
+          as: 'Board',
           attributes: ['id', 'name', 'description']
         },
         {
