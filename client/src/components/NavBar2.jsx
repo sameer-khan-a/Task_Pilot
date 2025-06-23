@@ -111,7 +111,7 @@ return () => socket.disconnect();
 const token = localStorage.getItem("token");
 const userId = token ? JSON.parse(atob(token.split(".")[1])).id: null;
 notifications.map(n => {
-    console.log("notification creator id: ", n.createdBy);
+    console.log("notification creator id: ", n.createdBy, " and current user: ", userId);
 })
 console.log("owner id: ", userId);
 const personalTaskNotifs = notifications.filter(n => n.createdBy=== userId);
