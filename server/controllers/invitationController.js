@@ -120,7 +120,13 @@ exports.respondInvitation = async (req, res) => {
         role: 'member',
       });
     }
-
+    const members = await BoardMember.findAll({ where: { boardId: invitation.boardId } });
+    const allUserIds = members.map(m => m.userId);
+     for (const userId of allUserIds) {
+      if (global.io) {
+        global.io.to(`user-${userId}`).emit('notification:refresh');
+      }
+    }
     // If declined, delete the invitation
     if (response === 'declined') {
       await BoardInvitation.destroy({ where: { id: invitationId } });
