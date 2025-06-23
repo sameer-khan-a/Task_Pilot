@@ -252,7 +252,6 @@ Reject
                     )}
                     
                 </span>
-                <br />
                 <span className="small text-muted">-{secondLine}</span>
                 <br />
                  {!n.isRead && (
