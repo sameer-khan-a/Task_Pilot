@@ -103,7 +103,6 @@ socket.on("notification:refresh", () => {
   });
   socket.on("notification:boardLeft", ({boardId}) => {
     setNotifications(prev => prev.filter(n=> n.boardId !== boardId));
-    fetchTaskNotifications();
     fetchBoards();
 
   })
