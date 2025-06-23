@@ -1,4 +1,5 @@
 // Import necessary models
+const { checkDueDateNotifications } = require('../dueDateNotifier');
 const { User, Board, BoardInvitation, BoardMember } = require('../models');
 
 // Controller to send an invitation to a user to join a board
@@ -120,8 +121,10 @@ exports.respondInvitation = async (req, res) => {
         role: 'member',
       });
     }
+    await checkDueDateNotifications(invitation.boardId);
     const members = await BoardMember.findAll({ where: { boardId: invitation.boardId } });
     const allUserIds = members.map(m => m.userId);
+
      for (const userId of allUserIds) {
       if (global.io) {
         global.io.to(`user-${userId}`).emit('notification:refresh');
