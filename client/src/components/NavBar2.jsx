@@ -245,7 +245,8 @@ Reject
                     {firstLine}
                     {!n.isRead && (
                         <span>
-                        <span className="badge bg-warning text-dark ms-2">New</span><br />
+                            <br />
+                        <span className="badge bg-warning text-dark ms-2">New</span>
                     </span>
                     )}
                     
@@ -285,8 +286,8 @@ Reject
                     {!n.isRead && (
                         <span>
 
-                        <span className="badge bg-warning text-dark ms-2">New</span>
                 <br />
+                        <span className="badge bg-warning text-dark ms-2">New</span>
                         </span>
                     )}
                     
