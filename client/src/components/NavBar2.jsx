@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {io} from "socket.io-client";
 import { useRef } from "react";
-import notificationSound from '/sounds/Notification.mp3';
+import notificationSound from '../../public/sounds/Notification.mp3';
 function Navbar2 ({fetchBoards}) {
 // State to store pending board invitations
 const socketRef = useRef(null);
