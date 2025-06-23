@@ -232,11 +232,12 @@ exports.leaveBoard = async (req, res) => {
   
     
     // Emit notification refresh to others
-    for (const id of allUserIds) {
+   for (const id of allUserIds) {
       if (global.io) {
-        global.io.to(`user-${id}`).emit('notification:refresh');
+        global.io.to(`user-${id}`).emit('notification:boardLeft', {boardId});
       }
     }
+    
     
     
     res.status(200).json({ msg: 'Left board successfully' });
