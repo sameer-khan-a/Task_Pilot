@@ -242,6 +242,11 @@ exports.leaveBoard = async (req, res) => {
 
     // Remove user from the board first
     await membership.destroy();
+     await Task.destroy({where: {
+      boardId,
+      createdBy: userId,
+
+    }})
     await Notification.destroy({where: {
       userId: userId,
       boardId: boardId
