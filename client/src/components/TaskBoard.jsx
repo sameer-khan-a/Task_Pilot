@@ -49,9 +49,9 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
       
     <DragDropContext onDragEnd={onDragEnd}>
       {/* Container to hold all columns */}
- <div className="d-flex overflow-auto w-100 align-items-center justify-content-center flex-wrap" style={{ minHeight: '400px' }}>
+ <div className="d-flex overflow-auto w-100 align-items-center justify-content-center flex-nowrap" style={{ minHeight: '400px' }}>
   <div
-    className="d-flex align-items-start justify-content-center flex-wrap"
+    className="d-flex align-items-start justify-content-center flex-nowrap"
     style={{
       gap: '20px',
       padding: '10px',
