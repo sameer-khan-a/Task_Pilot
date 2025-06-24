@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar1 from '../components/Navbar1';
@@ -13,6 +13,10 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const soundRef = useRef(null);
+      useEffect(() => {
+          soundRef.current = new Audio('/sounds/Sound.wav');
+      }, []);
   // Hook to navigate to another route
   const navigate = useNavigate();
 
@@ -46,12 +50,14 @@ const Register = () => {
 
     try {
       // Send registration data to backend
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+      await axios.post(`process.env.DATABASE_URL/api/auth/register`, {
         name,
         email,
         password,
       });
-
+       if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       // Navigate to login page on success
       navigate('/login');
     } catch (err) {

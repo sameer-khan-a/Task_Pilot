@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar2 from './NavBar2';
@@ -27,18 +27,22 @@ const BoardSelector = () => {
   const [error, setError] = useState("");
 
   const [message, setMessage] = useState("");
+    const soundRef = useRef(null);
+      useEffect(() => {
+          soundRef.current = new Audio('/sounds/Sound.wav');
+      }, [])
   // React Router navigation hook to programmatically navigate between routes
   const navigate = useNavigate();
 
   // State to trigger refresh for board members lists keyed by board id
   const [memberRefreshKeys, setMemberRefreshKeys] = useState({});
 
-  // Fetch boards and their owner emails from ${import.meta.env.VITE_BACKEND_URL}/api when component mounts
+  // Fetch boards and their owner emails from process.env.DATABASE_URL/api when component mounts
    const fetchBoards = async () => {
       setLoading(true);
       try {
         // Get all boards for the user
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards`, {
+        const res = await axios.get(`process.env.DATABASE_URL/api/boards`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Auth token from localStorage
           },
@@ -50,7 +54,7 @@ const BoardSelector = () => {
         const boardsWithOwnerEmail = await Promise.all(
           boardsData.map(async (board) => {
             try {
-              const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${board.createdBy}`, {
+              const userRes = await axios.get(`process.env.DATABASE_URL/api/user/${board.createdBy}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -84,9 +88,9 @@ const BoardSelector = () => {
     setError("");// Don't allow empty board names
     setLoading(true);
     try {
-      // Create new board via ${import.meta.env.VITE_BACKEND_URL}/api
+      // Create new board via process.env.DATABASE_URL/api
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/boards/create`,
+        `process.env.DATABASE_URL/api/boards/create`,
         { name: newBoardName },
         {
           headers: {
@@ -96,12 +100,14 @@ const BoardSelector = () => {
       );
 
       // Fetch owner's email for the new board
-      const userRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${res.data.createdBy}`, {
+      const userRes = await axios.get(`process.env.DATABASE_URL/api/user/${res.data.createdBy}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-
+        if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       // Add new board to boards state
       setBoards([...boards, {...res.data, ownerEmail: userRes.data.email}]);
       setNewBoardName(''); // Clear input after creation
@@ -119,9 +125,9 @@ const BoardSelector = () => {
   const handleUpdate = async (boardId) => {
     setLoading(true);
     try {
-      // Update board name via ${import.meta.env.VITE_BACKEND_URL}/api
+      // Update board name via process.env.DATABASE_URL/api
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`,
+        `process.env.DATABASE_URL/api/boards/${boardId}`,
         { name: editedName },
         {
           headers: {
@@ -129,7 +135,9 @@ const BoardSelector = () => {
           },
         }
       );
-
+  if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       // Update the board in local state with new data
       const updated = boards.map((b) => (b.id === boardId ? res.data : b));
       setBoards(updated);
@@ -151,8 +159,8 @@ const BoardSelector = () => {
     
     setLoading(true);
     try {
-      // Delete board via ${import.meta.env.VITE_BACKEND_URL}/api
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
+      // Delete board via process.env.DATABASE_URL/api
+      await axios.delete(`process.env.DATABASE_URL/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -172,13 +180,13 @@ const BoardSelector = () => {
     
     setLoading(true);
     try {
-      // Post to leave board ${import.meta.env.VITE_BACKEND_URL}/api
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
+      // Post to leave board process.env.DATABASE_URL/api
+      await axios.post(`process.env.DATABASE_URL/api/boards/${boardId}/leave`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-
+ 
       // Remove the left board from state
       setBoards(boards.filter((b)=> b.id !== boardId));
     } catch(err){
@@ -197,14 +205,16 @@ const BoardSelector = () => {
     if(!email) return; // Do nothing if email input is empty
 
     try {
-      // Send invite via ${import.meta.env.VITE_BACKEND_URL}/api
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${boardId}/invite`, 
+      // Send invite via process.env.DATABASE_URL/api
+      await axios.post(`process.env.DATABASE_URL/api/invitations/${boardId}/invite`, 
         { email },{headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }
       );
-
+  if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       // Trigger refresh of board members component by updating refresh key
       setMemberRefreshKeys(prev => ({
         ...prev,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import CreateTaskForm from './createTaskForm';
 import { useParams } from 'react-router-dom';
@@ -11,11 +11,15 @@ const BoardPage = () => {
   const { boardId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const soundRef = useRef(null);
+    useEffect(() => {
+        soundRef.current = new Audio('/sounds/Sound.wav');
+    }, [])
   // Fetch all tasks for the specific board
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${boardId}`, {
+      const res = await axios.get(`process.env.DATABASE_URL/api/tasks/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -41,7 +45,7 @@ const BoardPage = () => {
   const fetchBoardDetails = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
+      const res = await axios.get(`process.env.DATABASE_URL/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -65,11 +69,14 @@ const BoardPage = () => {
     if (newTitle) {
       try {
         const res = await axios.put(
-          `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${task.id}`,
+          `process.env.DATABASE_URL/api/tasks/${task.id}`,
           { title: newTitle, description: newDesc, dueDate: newDate },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
         // Replace updated task in list
+       if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
         setTasks(tasks.map((t) => (t.id === task.id ? res.data : t)));
       } catch (err) {
         console.error('Update error: ', err);
@@ -85,9 +92,10 @@ const BoardPage = () => {
   const handleDeleteTask = async (taskId) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`, {
+      await axios.delete(`process.env.DATABASE_URL/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
+      
       setTasks(tasks.filter((t) => t.id !== taskId)); // Remove deleted task from list
     } catch (err) {
       console.error('Delete error: ', err);
@@ -111,10 +119,13 @@ const BoardPage = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`,
+        `process.env.DATABASE_URL/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
+      if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       setTasks((prevTasks) =>
         prevTasks.map((t) => (t.id.toString() === taskId.toString() ? res.data : t))
       );

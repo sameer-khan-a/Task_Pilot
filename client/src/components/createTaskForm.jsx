@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
 const CreateTaskForm = ({ boardId, onTaskCreated }) => {
@@ -12,7 +12,8 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
   const [dueDate, setDueDate] = useState('');
 
   const [message, setMessage] = useState("");
-
+ const soundRef = useRef(null);
+      
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submit behavior (page reload)
@@ -21,7 +22,7 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
     try {
       // POST request to create a new task
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/tasks/create`,
+        `process.env.DATABASE_URL/api/tasks/create`,
         {
           title, // Task title from state
           description, // Task description from state
@@ -35,6 +36,9 @@ const CreateTaskForm = ({ boardId, onTaskCreated }) => {
           },
         }
       );
+        if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
 
       // Call callback to inform parent component of the new task
       onTaskCreated(res.data);

@@ -16,13 +16,13 @@ window.location.href = '/login';
 };
 const soundRef = useRef(null);
 useEffect(() => {
-    soundRef.current = new Audio('/sounds/Notification.mp3.mp3');
+    soundRef.current = new Audio('/sounds/Sound.wav');
 }, [])
 // Fetch all pending invitations for the logged-in user
 const fetchInvitations = async () => {
 try {
 const token = localStorage.getItem('token'); // Get auth token
-const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/invitations/my`, {
+const res = await axios.get(`process.env.DATABASE_URL/api/invitations/my`, {
 headers: {Authorization: `Bearer ${token}`},
 });
 setInvitations(res.data); // Store invitations in state
@@ -33,7 +33,7 @@ console.error("Error fetching invitations: ", err); // Log error
 const fetchTaskNotifications = async () => {
     try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, {
+        const res = await axios.get(`process.env.DATABASE_URL/api/notifications`, {
             headers: {Authorization: `Bearer ${token}`},
         });
         console.log(res.data);
@@ -45,12 +45,29 @@ const fetchTaskNotifications = async () => {
 const markNotificationAsRead = async (notificationId) => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${notificationId}/read`, null,  {
+        await axios.put(`process.env.DATABASE_URL/api/notifications/${notificationId}/read`, null,  {
             headers: {Authorization: `Bearer ${token}`},
         });
+          if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
         fetchTaskNotifications();
     } catch(err){
         console.error("Failed to mark notification as read: ", err);
+    }
+};
+const deleteNotification = async (notificationId) => {
+    try{
+        const token = localStorage.getItem('token');
+        await axios.delete(`process.env.DATABASE_URL/api/notifications/${notificationId}`, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+        setNotifications((prev) => 
+        prev.filter((n) => n.id !== notificationId)
+    );
+
+    } catch(err){
+        console.error("Failed to delete notification", err);
     }
 };
 // Function to accept or decline an invitation
@@ -59,7 +76,7 @@ try {
 const token = localStorage.getItem('token'); // Get auth token
 // Send response (accepted/declined) to backend
 await axios.post(
-`${import.meta.env.VITE_BACKEND_URL}/api/invitations/${invitationId}/respond`,
+`process.env.DATABASE_URL/api/invitations/${invitationId}/respond`,
 {response: action},
 {
 headers: {Authorization: `Bearer ${token}`},
@@ -83,7 +100,7 @@ const token = localStorage.getItem('token');
 if(!token) return;
 
 const userId = JSON.parse(atob(token.split('.')[1])).id;
-const socket = io(import.meta.env.VITE_BACKEND_URL, {
+const socket = io(process.env.DATABASE_URL, {
     transports: ['websocket'],
     withCredentials: true,
 });
@@ -127,10 +144,14 @@ socket.on("notification:update", (updatedNotification) => {
             n.id === updatedNotification.id ? updatedNotification : n
         )
     )
-        if(soundRef.current){
-        soundRef.current.play().catch(err => console.log("Play error: ", err));
-    }
+       
 })
+socket.on("board:update", ({boardId, newName}) => {
+    console.log("Received board:update event for board", boardId, " with updated name ", newName);
+    fetchBoards();
+    fetchInvitations();
+    fetchTaskNotifications();
+});
 fetchInvitations();
 fetchTaskNotifications();
 return () => socket.disconnect();
@@ -218,7 +239,7 @@ style={{background: "transparent", border: "none", color: "white"}}
 className="position-absolute translate-middle badge rounded-pill bg-danger"
 style={{top: '10px', left: '40px', fontSize: '0.7rem'}}
 >
-{invitations.length + notifications.length}
+{invitations.length + notifications.filter(n=>!n.isRead).length}
 </span>
 )}
 </button>
@@ -227,7 +248,7 @@ style={{top: '10px', left: '40px', fontSize: '0.7rem'}}
 <ul
 className="dropdown-menu dropdown-menu-start "
 aria-labelledby="invitationDropdown"
-style={{minWidth: '300px', maxHeight: '80vh', overflowY: 'auto', background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'}}
+style={{minWidth: '300px', maxHeight: '70vh', overflowY: 'auto', background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'}}
 >
 <li className="dropdown-header fw-bold">Invitation alerts</li>
 {/* Show message if no invitations */}
@@ -258,6 +279,7 @@ Reject
 <li>
     <hr className="dropdown-divider" />
 </li>
+<li className="dropdown-header fw-bold">Invitation alerts</li>
 <li className="dropdown-header fw-bold">Personal Task alerts</li>
 {personalTaskNotifs.length===0 ? (
     <li className="dropdown-item text-muted">No Personal Task Notifications</li>
@@ -289,6 +311,12 @@ Reject
                             Mark as read
                         </button>
                     )}
+                        <button className="btn btn-sm btn-danger btn-outline-secondary ms-2"
+                        onClick={() => deleteNotification(n.id)}
+                        >
+                            Delete
+                        </button>
+                    
             </li>
             
             

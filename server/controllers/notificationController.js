@@ -3,7 +3,7 @@ const {Notification} = require('../models');
 exports.getNotifications = async (req, res) => {
     try{
         const notifications = await Notification.findAll({
-            where: {userId: req.user.id},
+            where: {userId: req.user.id, isDeleted: false},
             order: [['createdAt', 'DESC']]
         });
         const now = new Date();
@@ -46,14 +46,16 @@ exports.markAsRead = async (req, res) => {
 
 exports.deleteNotification = async(req, res) => {
     const {id} = req.params;
-
-    try {
-        const deleted = await Notification.destroy({
+    const notification = await Notification.findOne({
             where: {id, userId: req.user.id}
         });
-        if(!deleted) {
+    try {
+   
+        if(!notification) {
             return res.status(404).json({message: "Notification not found"})
         }
+        notification.isDeleted = true;
+        await notification.save();
         res.json({message: 'Notification deleted successfully'});
     } catch(error){
         console.error("Error deleting notification: ", error);

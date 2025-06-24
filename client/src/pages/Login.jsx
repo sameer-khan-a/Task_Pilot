@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Navbar1 from "../components/Navbar1";
 import Footer from "../components/Footer";
@@ -11,6 +11,10 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  const soundRef = useRef(null);
+  useEffect(() => {
+      soundRef.current = new Audio('/sounds/Sound.wav');
+  }, [])
   // State for displaying login errors
   const [error, setError] = useState("");
 
@@ -34,12 +38,14 @@ function Login() {
 
     try {
       // Send login request to backend
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
+      const res = await axios.post(`process.env.DATABASE_URL/api/auth/login`, {
         email,
         password,
       });
-
       // Save token to localStorage for authentication
+      if(soundRef.current){
+       soundRef.current.play().catch(err => console.log("Play error: ", err));
+   }
       localStorage.setItem("token", res.data.token);
 
       // Redirect to homepage
@@ -60,14 +66,16 @@ function Login() {
       return;
     }
     setLoading(true);
-
+    
     try {
       // Send reset password request to backend
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
+      const res = await axios.post(`process.env.DATABASE_URL/api/auth/reset-password`, {
         email: forgotEmail,
         password: newPassword,
       });
-
+       if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       // Show success message
       setForgotMessage("Password reset successfully");
     } catch (err) {

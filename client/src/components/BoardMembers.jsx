@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 // Component to display members of a specific board
 const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardOwnerEmail }) => {
   const [members, setMembers] = useState([]);
   const [showAll, setShowAll] = useState(false); // Controls 'See more' toggle
-
-  // Fetch members from the ${import.meta.env.VITE_BACKEND_URL}/api
+  const socketRef = useRef(null);
+  const soundRef = useRef(null);
+  useEffect(() => {
+      soundRef.current = new Audio('/sounds/Sound.wav');
+  }, [])
+  // Fetch members from the process.env.DATABASE_URL/api
   const fetchMembers = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}`, {
+      const res = await axios.get(`process.env.DATABASE_URL/api/boardmembers/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      
       setMembers(res.data); // Store members in state
     } catch (err) {
       console.error("Error fetching board members", err);
@@ -23,14 +28,18 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Run fetchMembers on initial load or when refreshKey changes
   useEffect(() => {
     fetchMembers();
+
   }, [refreshKey]);
 
   // Handle removing a member from the board
   const removeMembers = async (userId) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}/members/${userId}`, {
+      await axios.delete(`process.env.DATABASE_URL/api/boardmembers/${boardId}/members/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
+      if(soundRef.current){
+        soundRef.current.play().catch(err => console.log("Play error: ", err));
+    }
       fetchMembers(); // Refresh member list after removal
     } catch (err) {
       console.error("Failed to remove member", err);

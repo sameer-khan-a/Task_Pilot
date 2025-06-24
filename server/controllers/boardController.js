@@ -4,7 +4,7 @@ const Board = require('../models/Board');
 const { Op } = require('sequelize');
 const { checkBoardAccess } = require('../utils/permissions');
 const Task = require('../models/Task');
-
+const {sequelize} = require('../config/db')
 // Controller to create a new board
 exports.createBoard = async (req, res) => {
   const { name, description } = req.body;
@@ -138,6 +138,7 @@ exports.updateBoard = async (req, res) => {
   try {
     // Check if user has access
     const board = await checkBoardAccess(req.params.boardId, req.user.id);
+    const oldName = board.name;
     if (!board) return res.status(403).json({ msg: "Access Denied" });
 
     // Only the owner can update the board
@@ -147,8 +148,27 @@ exports.updateBoard = async (req, res) => {
     // Update fields
     board.name = name || board.name;
     board.description = description || board.description;
-
+    
     await board.save();
+    await Notification.update({
+      message: sequelize.literal(`REPLACE(message, '${oldName}', '${name}')`)
+    }, {
+      where: {boardId: board.id}
+    });
+    const members = await BoardMember.findAll({where: {boardId: board.id}});
+    const allUserIds = members.map(m=>m.userId);
+    if(!allUserIds.includes(board.createdBy)){
+      allUserIds.push(board.createdBy);
+    }
+    for(const userId of allUserIds){
+if(global.io){
+
+  io.to(`user-${userId}`).emit("board:update", {
+    boardId: board.id,
+    newName: name
+  })
+}
+    }
     res.status(200).json(board);
   } catch (err) {
     res.status(500).json({ msg: 'Error updating board', error: err.message });

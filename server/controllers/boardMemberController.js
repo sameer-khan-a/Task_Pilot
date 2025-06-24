@@ -2,6 +2,7 @@
 const Board = require('../models/Board');
 const User = require('../models/User');
 const BoardMember = require('../models/BoardMember');
+const Notification = require('../models/Notification');
 
 // Controller to add a user to a board (used internally or by admins)
 exports.addMember = async (req, res) => {
@@ -53,11 +54,16 @@ exports.removeMember = async (req, res) => {
 
         // Attempt to remove the member from the board
         const deleted = await BoardMember.destroy({ where: { boardId, userId } });
-
         // If no rows deleted, user wasn't a member
         if (!deleted) return res.status(404).json({ msg: 'Member not found in board' });
+           await Notification.destroy({where: {
+      userId: userId,
+      boardId: boardId
+
+    }})
         if (global.io) {
         global.io.to(`user-${userId}`).emit('notification:boardLeft', {boardId});
+        global.io.to(`user-${userId}`).emit('notification:refresh', {boardId});
       }
         // Success response
         res.status(200).json({ msg: 'Member removed successfully' });
