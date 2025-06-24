@@ -359,6 +359,11 @@ Reject
                             Mark as read
                         </button>
                     )}
+                    <button className="btn btn-sm btn-danger text-light btn-outline-secondary ms-2"
+                        onClick={() => deleteNotification(n.id)}
+                        >
+                            Delete
+                        </button>
             </li>
             
             
