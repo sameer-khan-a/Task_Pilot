@@ -53,7 +53,7 @@ exports.removeMember = async (req, res) => {
         }
            await Task.destroy({where: {
       boardId,
-      createdBy: userId,
+      userId
 
     }})
         // Attempt to remove the member from the board
