@@ -207,7 +207,7 @@ function Login() {
           <div
             className="card p-4 rounded-5"
             style={{
-              width: "350px",
+              width: "300px",
               background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)'
             }}
           >
@@ -273,7 +273,7 @@ function Login() {
                 style={{
                   background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                   color: 'white',
-                  disabled: loading,
+                  disabled: {loading},
                 }}
                 >
                      {loading?'Resetting...':'Reset'}
