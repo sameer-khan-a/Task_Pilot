@@ -37,12 +37,12 @@ const BoardSelector = () => {
   // State to trigger refresh for board members lists keyed by board id
   const [memberRefreshKeys, setMemberRefreshKeys] = useState({});
 
-  // Fetch boards and their owner emails from ${process.env.DATABASE_URL}/api when component mounts
+  // Fetch boards and their owner emails from ${process.env.VITE_BACKEND_URL}/api when component mounts
    const fetchBoards = async () => {
       setLoading(true);
       try {
         // Get all boards for the user
-        const res = await axios.get(`${process.env.DATABASE_URL}/api/boards`, {
+        const res = await axios.get(`${process.env.VITE_BACKEND_URL}/api/boards`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Auth token from localStorage
           },
@@ -54,7 +54,7 @@ const BoardSelector = () => {
         const boardsWithOwnerEmail = await Promise.all(
           boardsData.map(async (board) => {
             try {
-              const userRes = await axios.get(`${process.env.DATABASE_URL}/api/user/${board.createdBy}`, {
+              const userRes = await axios.get(`${process.env.VITE_BACKEND_URL}/api/user/${board.createdBy}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -88,9 +88,9 @@ const BoardSelector = () => {
     setError("");// Don't allow empty board names
     setLoading(true);
     try {
-      // Create new board via ${process.env.DATABASE_URL}/api
+      // Create new board via ${process.env.VITE_BACKEND_URL}/api
       const res = await axios.post(
-        `${process.env.DATABASE_URL}/api/boards/create`,
+        `${process.env.VITE_BACKEND_URL}/api/boards/create`,
         { name: newBoardName },
         {
           headers: {
@@ -100,7 +100,7 @@ const BoardSelector = () => {
       );
 
       // Fetch owner's email for the new board
-      const userRes = await axios.get(`${process.env.DATABASE_URL}/api/user/${res.data.createdBy}`, {
+      const userRes = await axios.get(`${process.env.VITE_BACKEND_URL}/api/user/${res.data.createdBy}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -125,9 +125,9 @@ const BoardSelector = () => {
   const handleUpdate = async (boardId) => {
     setLoading(true);
     try {
-      // Update board name via ${process.env.DATABASE_URL}/api
+      // Update board name via ${process.env.VITE_BACKEND_URL}/api
       const res = await axios.put(
-        `${process.env.DATABASE_URL}/api/boards/${boardId}`,
+        `${process.env.VITE_BACKEND_URL}/api/boards/${boardId}`,
         { name: editedName },
         {
           headers: {
@@ -159,8 +159,8 @@ const BoardSelector = () => {
     
     setLoading(true);
     try {
-      // Delete board via ${process.env.DATABASE_URL}/api
-      await axios.delete(`${process.env.DATABASE_URL}/api/boards/${boardId}`, {
+      // Delete board via ${process.env.VITE_BACKEND_URL}/api
+      await axios.delete(`${process.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -180,8 +180,8 @@ const BoardSelector = () => {
     
     setLoading(true);
     try {
-      // Post to leave board ${process.env.DATABASE_URL}/api
-      await axios.post(`${process.env.DATABASE_URL}/api/boards/${boardId}/leave`, {}, {
+      // Post to leave board ${process.env.VITE_BACKEND_URL}/api
+      await axios.post(`${process.env.VITE_BACKEND_URL}/api/boards/${boardId}/leave`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -205,8 +205,8 @@ const BoardSelector = () => {
     if(!email) return; // Do nothing if email input is empty
 
     try {
-      // Send invite via ${process.env.DATABASE_URL}/api
-      await axios.post(`${process.env.DATABASE_URL}/api/invitations/${boardId}/invite`, 
+      // Send invite via ${process.env.VITE_BACKEND_URL}/api
+      await axios.post(`${process.env.VITE_BACKEND_URL}/api/invitations/${boardId}/invite`, 
         { email },{headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
