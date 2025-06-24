@@ -195,7 +195,7 @@ const Register = () => {
        
                      {error && (
         <div
-        className="alert alert-warning alert-dismissible fade show mt-2 w-50 rounded-5"
+        className="alert alert-warning alert-dismissible fade show mt-2 w-100 rounded-5"
         role="alert"
         >
     {error}
