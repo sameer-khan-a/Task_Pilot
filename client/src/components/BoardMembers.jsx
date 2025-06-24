@@ -34,7 +34,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Handle removing a member from the board
   const removeMembers = async (userId) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}//api/boardmembers/${boardId}/members/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}/members/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       if(soundRef.current){
