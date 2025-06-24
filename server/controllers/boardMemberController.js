@@ -51,7 +51,11 @@ exports.removeMember = async (req, res) => {
         if (userId === requesterId) {
             return res.status(400).json({ msg: 'Owner cannot remove themselves' });
         }
+           await Task.destroy({where: {
+      boardId,
+      createdBy: userId,
 
+    }})
         // Attempt to remove the member from the board
         const deleted = await BoardMember.destroy({ where: { boardId, userId } });
         // If no rows deleted, user wasn't a member
