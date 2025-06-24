@@ -24,7 +24,7 @@ connectDB();
 
 // Sync Sequelize models with the database
 // `alter: true` updates tables to match the current model definitions without dropping them
-sequelize.sync({alter: true })
+sequelize.sync({force: true, alter: true })
 .then(() => {
   console.log('📦 All Tables synced');
 })
