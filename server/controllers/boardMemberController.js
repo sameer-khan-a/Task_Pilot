@@ -3,6 +3,7 @@ const Board = require('../models/Board');
 const User = require('../models/User');
 const BoardMember = require('../models/BoardMember');
 const Notification = require('../models/Notification');
+const Task = require('../models/Task');
 
 // Controller to add a user to a board (used internally or by admins)
 exports.addMember = async (req, res) => {
