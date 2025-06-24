@@ -201,7 +201,7 @@ function Login() {
       {/* Forgot Password popup */}
       {showPopup && (
         <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          className="position-fixed top-0 start-0 w-120 h-120 d-flex justify-content-center align-items-center"
           style={{ backgroundColor: "rgba(0,0,0,0.6)", zIndex: 9999 }}
         >
           <div
@@ -272,10 +272,11 @@ function Login() {
                 className="btn btn-md w-50 mb-2 rounded-5"
                 style={{
                   background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
-                  color: 'white'
+                  color: 'white',
+                  disabled: loading,
                 }}
                 >
-                     {loading?<img src="https://ima.alfatango.org/images/loader.gif" height="22px" width="40px" alt="" />:'Reset'}
+                     {loading?'Resetting...':'Reset'}
               </button>
               <br />
 
