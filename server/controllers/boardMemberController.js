@@ -66,9 +66,17 @@ exports.removeMember = async (req, res) => {
       boardId: boardId
 
     }})
-        if (global.io) {
+     const members = await BoardMember.findAll({ where: { boardId: boardId } });
+    const allUserIds = members.map(m => m.userId);
+if(!allUserIds.includes(board.createdBy)){
+      allUserIds.push(board.createdBy);
+    }
+     for (const userId of allUserIds) {
+      if (global.io) {
         global.io.to(`user-${userId}`).emit('notification:boardLeft', {boardId});
         global.io.to(`user-${userId}`).emit('notification:refresh', {boardId});
+    }
+      
       }
         // Success response
         res.status(200).json({ msg: 'Member removed successfully' });
