@@ -33,18 +33,21 @@ const Register = () => {
     // Validate name
     if (!nameRegex.test(name)) {
       alert('Name should contain only letters and be at least 2 characters long.');
+      setLoading(false);
       return;
     }
-
+    
     // Validate password
     if (!passwordRegex.test(password)) {
       alert('Password must be at least 8 characters long and include uppercase, lowercase, number and special character.');
+      setLoading(false);
       return;
     }
-
+    
     // Check if passwords match
     if (password !== confirmPassword) {
       alert("Passwords do not match !");
+      setLoading(false);
       return;
     }
 
