@@ -183,6 +183,10 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                   </small>
                                 </div>
                               </div>
+                              <div style={{ marginBottom: '6px', textAlign: 'center' }}>
+                                      <b style={{ display: 'block', marginBottom: '2px' }}>dueDate</b>
+                                      <p style={{ margin: 0, wordBreak: 'break-word' }}>{task.dueDate}</p>
+                                    </div>
 
                               {/* Task Buttons */}
                               <div
