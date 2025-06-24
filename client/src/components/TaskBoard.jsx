@@ -74,8 +74,8 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                   overflowX: 'auto',
                   flex: '0 0 29%',
                   padding: '20px 40px',
-                  minWidth: '355px',
-                  maxWidth: '400px',
+                  maxWidth: '360px',
+                  
                   background: status === 'todo' ? 'linear-gradient(to top,rgb(241, 124, 122), #2c3e55)':
                   status === 'inprogress' ? 'linear-gradient(to top,rgb(102, 92, 243), #2c3e55)':
                   'linear-gradient(to top,rgb(91, 238, 118), #2c3e55)', 
@@ -107,8 +107,8 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             style={{
-                              ...dragStyle,
-                              background: getDueDateColor(task.dueDate),
+                          ...dragStyle,
+                              background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
                               transition: 'transform 0.25s ease, opacity 0.25s ease',
                               opacity: snapshot.isDragging ? 0.8 : 1,
                               transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
