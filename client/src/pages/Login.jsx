@@ -269,11 +269,12 @@ function Login() {
 
               <button
                 type="submit"
+                disabled={loading}
                 className="btn btn-md w-50 mb-2 rounded-5"
                 style={{
                   background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                   color: 'white',
-                  disabled: {loading},
+                  
                 }}
                 >
                      {loading?'Resetting...':'Reset'}
