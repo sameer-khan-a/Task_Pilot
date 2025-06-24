@@ -172,7 +172,7 @@ const BoardPage = () => {
           <CreateTaskForm boardId={boardId} onTaskCreated={handleTaskCreated} />
         </div>
 
-        <div className="col-12 d-flex flex-column flex-wrap ">
+        <div className="col-12 d-flex flex-column flex-nowrap ">
           {/* Board name header */}
           <h2 className="w-100 mb-4 text-center" style={{ color: '#2c3e50' }}>
             {boardName} 
