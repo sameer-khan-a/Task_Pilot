@@ -6,16 +6,7 @@ import moment from 'moment';
 const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) => {
   // Group tasks into columns by status (todo, inprogress, done)
   const columns = groupTasksByStatus(tasks);
-  
-
-  // Handles task drop logic
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
-    if (!destination || destination.droppableId === source.droppableId) return;
-    onDragUpdate(draggableId, destination.droppableId);
-  };
-
-  const getDueDateColor = (dueDate) => {
+    const getDueDateColor = (dueDate) => {
     if(!dueDate) return 'linear-gradient(to bottom, rgb(244, 190, 190), #F0E68C)';
 
     const today = new Date();
@@ -28,6 +19,16 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
     if(due.getTime() === today.getTime()) return "linear-gradient(to top, rgb(172, 169, 208),rgb(103, 92, 198))"; 
     return 'linear-gradient(to top, rgb(147, 187, 159),rgb(74, 219, 115))';
   }
+
+
+  // Handles task drop logic
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+    if (!destination || destination.droppableId === source.droppableId) return;
+    onDragUpdate(draggableId, destination.droppableId);
+  };
+
+  
 
   // State to track which task description is expanded
   const [expandedCharsByTask, setExpandedCharsByTask] = useState({});
@@ -51,7 +52,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
       {/* Container to hold all columns */}
  <div className="d-flex overflow-auto w-100 align-items-center justify-content-center flex-nowrap" style={{ minHeight: '400px' }}>
   <div
-    className="d-flex align-items-start justify-content-center flex-nowrap w-100"
+    className="d-flex align-items-start justify-content-center flex-nowrap"
     style={{
       gap: '20px',
       padding: '10px',
@@ -75,11 +76,10 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                   flex: '0 0 29%',
                   padding: '20px 40px',
                   maxWidth: '360px',
-                  
                   background: status === 'todo' ? 'linear-gradient(to top,rgb(241, 124, 122), #2c3e55)':
                   status === 'inprogress' ? 'linear-gradient(to top,rgb(102, 92, 243), #2c3e55)':
                   'linear-gradient(to top,rgb(91, 238, 118), #2c3e55)', 
-                  minHeight: '460px',
+                  minHeight: '400px',
                   borderRadius: '20%',
                   boxSizing: 'border-box',
                   color: 'white',
@@ -107,8 +107,8 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             style={{
-                          ...dragStyle,
-                              background: 'linear-gradient(to bottom,rgb(244, 190, 190), #F0E68C)',
+                              ...dragStyle,
+                              background: getDueDateColor(task.dueDate),
                               transition: 'transform 0.25s ease, opacity 0.25s ease',
                               opacity: snapshot.isDragging ? 0.8 : 1,
                               transform: `${transform}${snapshot.isDragging ? ' scale(1.13)' : ''}`,
@@ -164,7 +164,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                     style={{
                                       marginTop: '4px',
                                       background: 'transparent',
-                                      color: 'burlywood',
+                                      color: '#007bff',
                                       border: 'none',
                                       cursor: 'pointer',
                                       fontSize: '0.875rem',
@@ -175,14 +175,10 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                     </button>
                                   )}
                                 </div>
-                                    <div style={{ marginBottom: '6px', textAlign: 'center' }}>
-                                      <b style={{ display: 'block', marginBottom: '2px' }}>dueDate</b>
-                                      <p style={{ margin: 0, wordBreak: 'break-word' }}>{task.dueDate}</p>
-                                    </div>
 
                                 {/* Task Creation Time */}
                                 <div style={{ marginBottom: '8px', textAlign: 'center' }}>
-                                  <small style={{ fontStyle: 'italic', color: '#553' }}>
+                                  <small style={{ fontStyle: 'italic', color: '#555' }}>
                                     Created {moment(task.createdAt).fromNow()}
                                   </small>
                                 </div>
@@ -208,7 +204,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                   onClick={() => onUpdateTask(task)}
                                   style={{
                                     
-                                    background: 'linear-gradient(to bottom right, #2c3e55, #4a6b8c)',
+                                    background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                     color: 'white',
                                     borderRadius: '40%',
                                   }}
@@ -224,7 +220,7 @@ const TaskBoard = ({ tasks, onDragUpdate, onUpdateTask, onDeleteTask,loading }) 
                                   onClick={() => onDeleteTask(task.id)}
                                   style={{
                                     
-                                    background: 'linear-gradient(to bottom right, #2c3e55, #4a6b8c)',
+                                    background: 'linear-gradient(to bottom right, #2c3e50, #4a6b8c)',
                                     color: 'white',
                                     borderRadius: '40%',
                                   }}
