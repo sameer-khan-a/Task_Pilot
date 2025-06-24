@@ -19,7 +19,7 @@ const BoardPage = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/tasks/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -45,7 +45,7 @@ const BoardPage = () => {
   const fetchBoardDetails = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/boards/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -69,7 +69,7 @@ const BoardPage = () => {
     if (newTitle) {
       try {
         const res = await axios.put(
-          `${import.meta.env.VITE_BACKEND_URL}/tasks/${task.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${task.id}`,
           { title: newTitle, description: newDesc, dueDate: newDate },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
@@ -92,7 +92,7 @@ const BoardPage = () => {
   const handleDeleteTask = async (taskId) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/tasks/${taskId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       
@@ -119,7 +119,7 @@ const BoardPage = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/tasks/${taskId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
