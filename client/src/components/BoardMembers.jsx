@@ -13,7 +13,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Fetch members from the process.env.DATABASE_URL/api
   const fetchMembers = async () => {
     try {
-      const res = await axios.get(`process.env.DATABASE_URL/api/boardmembers/${boardId}`, {
+      const res = await axios.get(`${process.env.DATABASE_URL}/api/boardmembers/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -34,7 +34,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Handle removing a member from the board
   const removeMembers = async (userId) => {
     try {
-      await axios.delete(`process.env.DATABASE_URL/api/boardmembers/${boardId}/members/${userId}`, {
+      await axios.delete(`${process.env.DATABASE_URL}//api/boardmembers/${boardId}/members/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       if(soundRef.current){
