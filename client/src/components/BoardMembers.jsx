@@ -10,10 +10,10 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   useEffect(() => {
       soundRef.current = new Audio('/sounds/Sound.wav');
   }, [])
-  // Fetch members from the process.env.VITE_BACKEND_URL/api
+  // Fetch members from the import.meta.env.VITE_BACKEND_URL/api
   const fetchMembers = async () => {
     try {
-      const res = await axios.get(`${process.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -34,7 +34,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
   // Handle removing a member from the board
   const removeMembers = async (userId) => {
     try {
-      await axios.delete(`${process.env.VITE_BACKEND_URL}//api/boardmembers/${boardId}/members/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}//api/boardmembers/${boardId}/members/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       if(soundRef.current){

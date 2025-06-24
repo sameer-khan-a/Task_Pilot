@@ -38,7 +38,7 @@ function Login() {
 
     try {
       // Send login request to backend
-      const res = await axios.post(`${process.env.VITE_BACKEND_URL}/api/auth/login`, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -69,7 +69,7 @@ function Login() {
     
     try {
       // Send reset password request to backend
-      const res = await axios.post(`${process.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
         email: forgotEmail,
         password: newPassword,
       });

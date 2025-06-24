@@ -50,7 +50,7 @@ const Register = () => {
 
     try {
       // Send registration data to backend
-      await axios.post(`${process.env.VITE_BACKEND_URL}/api/auth/register`, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
         name,
         email,
         password,
