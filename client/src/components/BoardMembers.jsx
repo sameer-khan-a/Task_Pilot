@@ -37,9 +37,7 @@ const BoardMembers = ({ boardId, currentUserId, refreshKey, boardOwnerId, boardO
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/boardmembers/${boardId}/members/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
-      if(soundRef.current){
-        soundRef.current.play().catch(err => console.log("Play error: ", err));
-    }
+      
       fetchMembers(); // Refresh member list after removal
     } catch (err) {
       console.error("Failed to remove member", err);
