@@ -305,7 +305,7 @@ Reject
                 <span className="small text-muted">-{secondLine}</span>
                 <br />
                  {!n.isRead && (
-                        <button className="btn btn-sm btn-outline-secondary ms-2"
+                        <button className="btn btn-sm btn-primary ms-2"
                         onClick={() => markNotificationAsRead(n.id)}
                         >
                             Mark as read
@@ -353,7 +353,7 @@ Reject
                 <span className="small text-muted">-{secondLine}</span>
                 <br />
                  {!n.isRead && (
-                        <button className="btn btn-sm btn-outline-secondary ms-2"
+                        <button className="btn btn-sm btn-primary ms-2"
                         onClick={() => markNotificationAsRead(n.id)}
                         >
                             Mark as read
