@@ -201,7 +201,7 @@ function Login() {
       {/* Forgot Password popup */}
       {showPopup && (
         <div
-          className="position-fixed top-0 start-0 w-80 h-80 d-flex justify-content-center align-items-center"
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
           style={{ backgroundColor: "rgba(0,0,0,0.6)", zIndex: 9999 }}
         >
           <div
