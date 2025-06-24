@@ -154,11 +154,21 @@ function Login() {
             {/* Show login error if any */}
             <center>
 
-            {error && (
-              <div className="alert alert-danger rounded-5 w-100" role="alert" >
-                {error}
-              </div>
-            )}
+                     {error && (
+        <div
+        className="alert alert-warning alert-dismissible fade show mt-2 w-100 rounded-5"
+        role="alert"
+        >
+    {error}
+    <button
+    type="button"
+    className="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    onClick={() => setError('')}
+    ></button>
+    </div>
+    )}
             </center>
 
             {/* Login button */}
